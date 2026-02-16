@@ -1,0 +1,7 @@
+{
+  "name": "ResidencialPassApp",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular-standalone"
+}
