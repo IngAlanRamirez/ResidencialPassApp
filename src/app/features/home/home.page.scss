@@ -1,0 +1,18 @@
+.home__container {
+  max-width: 24rem;
+  margin-inline: auto;
+  padding: 2rem 1rem;
+  text-align: center;
+}
+
+.home__title {
+  font-size: 1.75rem;
+  font-weight: 700;
+  margin: 0 0 0.5rem;
+}
+
+.home__subtitle {
+  color: var(--ion-color-medium);
+  margin: 0;
+  font-size: 1rem;
+}

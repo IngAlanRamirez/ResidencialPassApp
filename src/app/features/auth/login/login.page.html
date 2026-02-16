@@ -1,0 +1,60 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/auth"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Iniciar sesión</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="login">
+  <div class="login__container">
+    @if (errorMessage(); as msg) {
+      <div class="login__message login__message--error" role="alert">
+        {{ msg }}
+      </div>
+    }
+
+    <form class="login__form" [formGroup]="form" (ngSubmit)="onSubmit()">
+      <ion-item class="login__field" lines="full">
+        <ion-label position="stacked">Teléfono</ion-label>
+        <ion-input
+          formControlName="phone"
+          type="tel"
+          placeholder="Ej. 5512345678"
+          inputmode="tel"
+        ></ion-input>
+      </ion-item>
+      @if (form.get('phone')?.invalid && form.get('phone')?.touched) {
+        <ion-text color="danger" class="login__error">Ingresa un teléfono válido.</ion-text>
+      }
+
+      <ion-item class="login__field" lines="full">
+        <ion-label position="stacked">Contraseña</ion-label>
+        <ion-input
+          formControlName="password"
+          type="password"
+          placeholder="Tu contraseña"
+        ></ion-input>
+      </ion-item>
+      @if (form.get('password')?.invalid && form.get('password')?.touched) {
+        <ion-text color="danger" class="login__error">Mínimo 6 caracteres.</ion-text>
+      }
+
+      <div class="login__actions">
+        <ion-button
+          type="submit"
+          expand="block"
+          [disabled]="loadingSubmit()"
+          class="login__submit"
+        >
+          @if (loadingSubmit()) {
+            <ion-spinner name="crescent"></ion-spinner>
+          } @else {
+            Entrar
+          }
+        </ion-button>
+      </div>
+    </form>
+  </div>
+</ion-content>

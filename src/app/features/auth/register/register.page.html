@@ -1,0 +1,135 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/auth"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Registro de vecino</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="register">
+  <div class="register__container">
+    @if (successMessage(); as msg) {
+      <div class="register__message register__message--success" role="status">
+        {{ msg }}
+      </div>
+    }
+
+    @if (errorMessage(); as msg) {
+      <div class="register__message register__message--error" role="alert">
+        {{ msg }}
+      </div>
+    }
+
+    @if (hasStreetsError()) {
+      <p class="register__hint">No hay calles disponibles. Contacta al administrador.</p>
+    }
+
+    @if (loadingStreets()) {
+      <div class="register__loader">
+        <ion-spinner name="crescent"></ion-spinner>
+        <span class="register__loader-text">Cargando calles…</span>
+      </div>
+    } @else {
+      <form
+        class="register__form"
+        [formGroup]="form"
+        (ngSubmit)="onSubmit()"
+      >
+        <ion-item class="register__field" lines="full">
+          <ion-label position="stacked">Calle</ion-label>
+          <ion-select
+            formControlName="street"
+            placeholder="Selecciona tu calle"
+            interface="action-sheet"
+            class="register__select"
+          >
+            @for (street of streets(); track street.id) {
+              <ion-select-option [value]="street.name">{{ street.name }}</ion-select-option>
+            }
+          </ion-select>
+        </ion-item>
+        @if (form.get('street')?.invalid && form.get('street')?.touched) {
+          <ion-text color="danger" class="register__error">La calle es requerida.</ion-text>
+        }
+
+        <ion-item class="register__field" lines="full">
+          <ion-label position="stacked">Número</ion-label>
+          <ion-input
+            formControlName="number"
+            type="text"
+            placeholder="Ej. 14"
+            inputmode="numeric"
+          ></ion-input>
+        </ion-item>
+        @if (form.get('number')?.invalid && form.get('number')?.touched) {
+          <ion-text color="danger" class="register__error">El número es requerido.</ion-text>
+        }
+
+        <ion-item class="register__field" lines="full">
+          <ion-label position="stacked">Letra (opcional)</ion-label>
+          <ion-input
+            formControlName="letter"
+            type="text"
+            placeholder="Ej. A, B"
+            maxlength="20"
+          ></ion-input>
+        </ion-item>
+
+        <ion-item class="register__field" lines="full">
+          <ion-label position="stacked">Teléfono</ion-label>
+          <ion-input
+            formControlName="phone"
+            type="tel"
+            placeholder="Ej. 5512345678"
+            inputmode="tel"
+          ></ion-input>
+        </ion-item>
+        @if (form.get('phone')?.invalid && form.get('phone')?.touched) {
+          <ion-text color="danger" class="register__error">Ingresa un teléfono válido.</ion-text>
+        }
+
+        <ion-item class="register__field" lines="full">
+          <ion-label position="stacked">Contraseña</ion-label>
+          <ion-input
+            formControlName="password"
+            type="password"
+            placeholder="Mínimo 6 caracteres"
+          ></ion-input>
+        </ion-item>
+        @if (form.get('password')?.invalid && form.get('password')?.touched) {
+          <ion-text color="danger" class="register__error">Mínimo 6 caracteres.</ion-text>
+        }
+
+        <ion-item class="register__field" lines="full">
+          <ion-label position="stacked">Confirmar contraseña</ion-label>
+          <ion-input
+            formControlName="confirmPassword"
+            type="password"
+            placeholder="Repite tu contraseña"
+          ></ion-input>
+        </ion-item>
+        @if (form.get('confirmPassword')?.invalid && form.get('confirmPassword')?.touched) {
+          <ion-text color="danger" class="register__error">
+            Confirma tu contraseña correctamente.
+          </ion-text>
+        }
+
+        <div class="register__actions">
+          <ion-button
+            type="submit"
+            expand="block"
+            [disabled]="loadingSubmit()"
+            class="register__submit"
+          >
+            @if (loadingSubmit()) {
+              <ion-spinner name="crescent"></ion-spinner>
+            } @else {
+              Registrarme
+            }
+          </ion-button>
+        </div>
+      </form>
+    }
+  </div>
+</ion-content>

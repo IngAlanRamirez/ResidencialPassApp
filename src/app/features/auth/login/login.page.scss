@@ -1,0 +1,49 @@
+.login__container {
+  max-width: 28rem;
+  margin-inline: auto;
+  padding: 1rem;
+}
+
+.login__message {
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+  font-size: 0.9375rem;
+
+  &--error {
+    background: var(--ion-color-danger);
+    color: #fff;
+  }
+}
+
+.login__form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.login__field {
+  --padding-start: 0;
+  --inner-padding-end: 0;
+  --min-height: 3.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.login__error {
+  display: block;
+  font-size: 0.75rem;
+  margin-top: -0.25rem;
+  margin-bottom: 0.5rem;
+  padding-inline: 0.5rem;
+}
+
+.login__actions {
+  margin-top: 1.5rem;
+  padding-top: 0.5rem;
+}
+
+.login__submit {
+  margin-top: 0.5rem;
+  --border-radius: 8px;
+  font-weight: 600;
+}
