@@ -30,7 +30,7 @@
             Válido solo para el domicilio indicado.
           </p>
           @if (qrDataUrl(); as src) {
-            <div class="detalle-visita__qr-wrap">
+            <div class="detalle-visita__qr-wrap animate-scale-in">
               <img [src]="src" alt="Código QR de la visita" class="detalle-visita__qr" />
             </div>
             <ion-button expand="block" fill="outline" (click)="shareQR()" [disabled]="sharing()" class="detalle-visita__share">

@@ -65,7 +65,7 @@
         <p>No hay solicitudes pendientes de autorizar.</p>
       </div>
     } @else {
-      <div class="registros-pendientes__list">
+      <div class="registros-pendientes__list animate-stagger">
         @for (item of list(); track item.id) {
           <ion-card class="registros-pendientes__card">
             <ion-card-header>

@@ -22,7 +22,7 @@
     }
 
     @if (status() === 'scanned' || status() === 'loading') {
-      <div class="escanear-visita__actions-card">
+      <div class="escanear-visita__actions-card animate-scale-in">
         <h2 class="escanear-visita__actions-title">Código leído</h2>
         @if (isVisitFinished()) {
           <p class="escanear-visita__message escanear-visita__message--success" role="status">

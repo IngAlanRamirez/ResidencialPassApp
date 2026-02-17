@@ -34,6 +34,7 @@
 
       @if (isVigilante()) {
         <!-- Bitácora del vigilante: visitas que escaneó -->
+        <div class="historial-visitas__list animate-stagger">
         @for (v of visits(); track v.id) {
           <ion-card class="historial-visitas__card">
             <ion-card-header>
@@ -60,8 +61,10 @@
             </ion-card-content>
           </ion-card>
         }
+        </div>
       } @else {
         <!-- Historial vecino/admin: visitas que creó, con enlace a ver QR -->
+        <div class="historial-visitas__list animate-stagger">
         @for (v of visits(); track v.id) {
           <ion-card class="historial-visitas__card">
             <ion-card-header>
@@ -93,6 +96,7 @@
             </ion-card-content>
           </ion-card>
         }
+        </div>
       }
     }
   </div>
