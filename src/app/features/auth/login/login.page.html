@@ -23,23 +23,46 @@
         <ion-text color="danger" class="login__error">Ingresa un teléfono válido.</ion-text>
       }
 
-      <ion-item class="login__field" lines="full">
+      <ion-item class="login__field login__field--password" lines="full">
         <ion-label position="stacked">Contraseña</ion-label>
         <ion-input
           formControlName="password"
-          type="password"
+          [type]="showPassword() ? 'text' : 'password'"
           placeholder="Tu contraseña"
         ></ion-input>
+        <ion-button
+          fill="clear"
+          slot="end"
+          type="button"
+          class="login__eye-btn"
+          (click)="togglePasswordVisibility()"
+          aria-label="Mostrar u ocultar contraseña"
+        >
+          <ion-icon
+            slot="icon-only"
+            [name]="showPassword() ? 'eye-off-outline' : 'eye-outline'"
+          ></ion-icon>
+        </ion-button>
       </ion-item>
       @if (form.get('password')?.invalid && form.get('password')?.touched) {
         <ion-text color="danger" class="login__error">Mínimo 6 caracteres.</ion-text>
       }
 
+      <div class="login__remember">
+        <ion-checkbox
+          [checked]="rememberPassword()"
+          (ionChange)="onRememberChange($any($event))"
+          labelPlacement="end"
+        >
+          Recordar contraseña
+        </ion-checkbox>
+      </div>
+
       <div class="login__actions">
         <ion-button
           type="submit"
           expand="block"
-          [disabled]="loadingSubmit() || loadingBiometric()"
+          [disabled]="loadingSubmit()"
           class="login__submit"
         >
           @if (loadingSubmit()) {
@@ -50,24 +73,5 @@
         </ion-button>
       </div>
     </form>
-
-    @if (biometricAvailable()) {
-      <div class="login__biometric">
-        <ion-button
-          expand="block"
-          fill="outline"
-          (click)="loginWithBiometric()"
-          [disabled]="loadingBiometric() || loadingSubmit()"
-          class="login__biometric-btn"
-        >
-          @if (loadingBiometric()) {
-            <ion-spinner name="crescent"></ion-spinner>
-          } @else {
-            <ion-icon name="finger-print-outline" slot="start"></ion-icon>
-            Entrar con {{ biometricLabel() }}
-          }
-        </ion-button>
-      </div>
-    }
   </div>
 </ion-content>

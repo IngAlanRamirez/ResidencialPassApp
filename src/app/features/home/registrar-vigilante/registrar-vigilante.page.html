@@ -23,25 +23,51 @@
         <ion-text color="danger" class="registrar-vigilante__error">Ingresa un teléfono válido.</ion-text>
       }
 
-      <ion-item class="registrar-vigilante__field" lines="full">
+      <ion-item class="registrar-vigilante__field registrar-vigilante__field--password" lines="full">
         <ion-label position="stacked">Contraseña</ion-label>
         <ion-input
           formControlName="password"
-          type="password"
+          [type]="showPassword() ? 'text' : 'password'"
           placeholder="Mínimo 6 caracteres"
         ></ion-input>
+        <ion-button
+          fill="clear"
+          slot="end"
+          type="button"
+          class="registrar-vigilante__eye-btn"
+          (click)="togglePasswordVisibility()"
+          aria-label="Mostrar u ocultar contraseña"
+        >
+          <ion-icon
+            slot="icon-only"
+            [name]="showPassword() ? 'eye-off-outline' : 'eye-outline'"
+          ></ion-icon>
+        </ion-button>
       </ion-item>
       @if (form.get('password')?.invalid && form.get('password')?.touched) {
         <ion-text color="danger" class="registrar-vigilante__error">Mínimo 6 caracteres.</ion-text>
       }
 
-      <ion-item class="registrar-vigilante__field" lines="full">
+      <ion-item class="registrar-vigilante__field registrar-vigilante__field--password" lines="full">
         <ion-label position="stacked">Confirmar contraseña</ion-label>
         <ion-input
           formControlName="confirmPassword"
-          type="password"
+          [type]="showConfirmPassword() ? 'text' : 'password'"
           placeholder="Repite la contraseña"
         ></ion-input>
+        <ion-button
+          fill="clear"
+          slot="end"
+          type="button"
+          class="registrar-vigilante__eye-btn"
+          (click)="toggleConfirmPasswordVisibility()"
+          aria-label="Mostrar u ocultar contraseña"
+        >
+          <ion-icon
+            slot="icon-only"
+            [name]="showConfirmPassword() ? 'eye-off-outline' : 'eye-outline'"
+          ></ion-icon>
+        </ion-button>
       </ion-item>
       @if (form.hasError('passwordMismatch') && form.get('confirmPassword')?.touched) {
         <ion-text color="danger" class="registrar-vigilante__error">Las contraseñas no coinciden.</ion-text>

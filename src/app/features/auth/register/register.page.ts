@@ -22,7 +22,10 @@ import {
   IonText,
   IonBackButton,
   IonButtons,
+  IonIcon,
 } from '@ionic/angular/standalone';
+import { addIcons } from 'ionicons';
+import { eyeOutline, eyeOffOutline } from 'ionicons/icons';
 import { Subject, takeUntil } from 'rxjs';
 
 import { Router } from '@angular/router';
@@ -53,6 +56,7 @@ import { Street } from '../../../core/domain/models/street.model';
     IonText,
     IonBackButton,
     IonButtons,
+    IonIcon,
   ],
 })
 export class RegisterPage implements OnInit, OnDestroy {
@@ -67,6 +71,20 @@ export class RegisterPage implements OnInit, OnDestroy {
   readonly streets = signal<Street[]>([]);
   readonly loadingStreets = signal(true);
   readonly loadingSubmit = signal(false);
+  readonly showPassword = signal(false);
+  readonly showConfirmPassword = signal(false);
+
+  constructor() {
+    addIcons({ eyeOutline, eyeOffOutline });
+  }
+
+  togglePasswordVisibility(): void {
+    this.showPassword.update((v) => !v);
+  }
+
+  toggleConfirmPasswordVisibility(): void {
+    this.showConfirmPassword.update((v) => !v);
+  }
 
   readonly hasStreetsError = computed(
     () => !this.loadingStreets() && this.streets().length === 0

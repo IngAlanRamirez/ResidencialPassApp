@@ -24,7 +24,10 @@ import {
   IonText,
   IonBackButton,
   IonButtons,
+  IonIcon,
 } from '@ionic/angular/standalone';
+import { addIcons } from 'ionicons';
+import { eyeOutline, eyeOffOutline } from 'ionicons/icons';
 import { Router } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
 
@@ -50,6 +53,7 @@ import { ToastService } from '../../../core/data/services/toast.service';
     IonText,
     IonBackButton,
     IonButtons,
+    IonIcon,
   ],
 })
 export class RegistrarVigilantePage implements OnDestroy {
@@ -60,6 +64,20 @@ export class RegistrarVigilantePage implements OnDestroy {
   private readonly destroy$ = new Subject<void>();
 
   readonly loadingSubmit = signal(false);
+  readonly showPassword = signal(false);
+  readonly showConfirmPassword = signal(false);
+
+  constructor() {
+    addIcons({ eyeOutline, eyeOffOutline });
+  }
+
+  togglePasswordVisibility(): void {
+    this.showPassword.update((v) => !v);
+  }
+
+  toggleConfirmPasswordVisibility(): void {
+    this.showConfirmPassword.update((v) => !v);
+  }
 
   form = this.fb.group(
     {

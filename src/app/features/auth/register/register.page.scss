@@ -57,6 +57,20 @@
   --inner-padding-end: 0;
   --min-height: 3.5rem;
   margin-bottom: 0.5rem;
+
+  &--password {
+    position: relative;
+  }
+}
+
+.register__eye-btn {
+  --padding-start: 4px;
+  --padding-end: 4px;
+  margin-top: auto;
+  margin-bottom: 0;
+  height: 36px;
+  font-size: 1.2rem;
+  color: var(--ion-color-medium);
 }
 
 .register__select {
