@@ -4,53 +4,24 @@
   padding: 2rem 1rem;
 }
 
-.registrar-vigilante__message {
-  padding: 0.75rem 1rem;
-  border-radius: 8px;
-  margin-bottom: 1rem;
-  font-size: 0.9375rem;
-
-  &--error {
-    background: var(--ion-color-danger-tint);
-    color: var(--ion-color-danger-shade);
-  }
-
-  &--success {
-    background: var(--ion-color-success);
-    color: var(--ion-color-success-contrast);
-  }
-}
-
 .registrar-vigilante__form {
   display: flex;
   flex-direction: column;
-  gap: 0.25rem;
+  gap: 0.5rem;
 }
 
 .registrar-vigilante__field {
-  --background: var(--ion-color-light);
-  --border-radius: 8px;
-  margin-bottom: 0.5rem;
-
-  &--password {
-    position: relative;
-  }
+  margin-bottom: 0.25rem;
 }
 
 .registrar-vigilante__eye-btn {
   --padding-start: 4px;
   --padding-end: 4px;
   margin-top: auto;
-  margin-bottom: 0;
+  margin-bottom: auto;
   height: 36px;
   font-size: 1.2rem;
   color: var(--ion-color-medium);
-}
-
-.registrar-vigilante__error {
-  display: block;
-  font-size: 0.8125rem;
-  margin: -0.25rem 0 0.5rem;
 }
 
 .registrar-vigilante__actions {
@@ -59,4 +30,6 @@
 
 .registrar-vigilante__submit {
   margin-top: 0.5rem;
+  --border-radius: 8px;
+  font-weight: 600;
 }

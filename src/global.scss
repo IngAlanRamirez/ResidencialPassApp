@@ -54,11 +54,6 @@ ion-select {
   --highlight-color-focused: var(--vm-accent);
 }
 
-/* Item borders */
-ion-item {
-  --border-color: var(--ion-border-color);
-}
-
 /* Botones primarios con gradiente sutil */
 ion-button[fill="solid"]::part(native),
 ion-button:not([fill])::part(native) {

@@ -10,103 +10,111 @@
 <ion-content class="nueva-visita">
   <div class="nueva-visita__container">
     <form class="nueva-visita__form" [formGroup]="form" (ngSubmit)="onSubmit()">
-        <ion-item class="nueva-visita__field" lines="full">
-          <ion-label position="stacked">Nombre del visitante</ion-label>
-          <ion-input
-            formControlName="visitorName"
-            type="text"
-            placeholder="Nombre completo"
-            maxlength="200"
-          ></ion-input>
-        </ion-item>
-        @if (form.get('visitorName')?.invalid && form.get('visitorName')?.touched) {
-          <ion-text color="danger" class="nueva-visita__error">Ingresa el nombre del visitante.</ion-text>
+      <ion-input
+        formControlName="visitorName"
+        type="text"
+        label="Nombre del visitante"
+        labelPlacement="stacked"
+        placeholder="Nombre completo"
+        maxlength="200"
+        errorText="Ingresa el nombre del visitante."
+        fill="outline"
+        class="nueva-visita__field"
+      ></ion-input>
+
+      <ion-select
+        formControlName="identificationType"
+        label="Medio de identificación"
+        labelPlacement="stacked"
+        placeholder="Selecciona"
+        interface="action-sheet"
+        fill="outline"
+        class="nueva-visita__field"
+      >
+        @for (opt of identificationOptions; track opt.value) {
+          <ion-select-option [value]="opt.value">{{ opt.label }}</ion-select-option>
         }
+      </ion-select>
 
-        <ion-item class="nueva-visita__field" lines="full">
-          <ion-label position="stacked">Medio de identificación</ion-label>
-          <ion-select formControlName="identificationType" placeholder="Selecciona">
-            @for (opt of identificationOptions; track opt.value) {
-              <ion-select-option [value]="opt.value">{{ opt.label }}</ion-select-option>
-            }
-          </ion-select>
-        </ion-item>
+      <ion-select
+        formControlName="reason"
+        label="Motivo"
+        labelPlacement="stacked"
+        placeholder="Selecciona el motivo"
+        interface="action-sheet"
+        fill="outline"
+        class="nueva-visita__field"
+      >
+        @for (opt of reasonOptions; track opt.value) {
+          <ion-select-option [value]="opt.value">{{ opt.label }}</ion-select-option>
+        }
+      </ion-select>
 
-        <ion-item class="nueva-visita__field" lines="full">
-          <ion-label position="stacked">Motivo</ion-label>
-          <ion-select formControlName="reason" placeholder="Selecciona el motivo">
-            @for (opt of reasonOptions; track opt.value) {
-              <ion-select-option [value]="opt.value">{{ opt.label }}</ion-select-option>
-            }
-          </ion-select>
-        </ion-item>
-
-        <ion-item class="nueva-visita__field nueva-visita__field--checkbox" lines="none">
-          <ion-checkbox formControlName="entryOpenSchedule" labelPlacement="end">
-            Entrada abierta en horario
-          </ion-checkbox>
-        </ion-item>
+      <div class="nueva-visita__checkbox-group">
+        <ion-checkbox formControlName="entryOpenSchedule" labelPlacement="end">
+          Entrada abierta en horario
+        </ion-checkbox>
         <p class="nueva-visita__hint">Si activas entrada abierta, la hora se registrará al escanear el QR en la caseta.</p>
+      </div>
 
-        @if (!form.get('entryOpenSchedule')?.value) {
-          <ion-item class="nueva-visita__field" lines="full">
-            <ion-label position="stacked">Fecha y hora de entrada</ion-label>
-            <ion-input
-              formControlName="entryAt"
-              type="datetime-local"
-              [min]="minEntryLocal"
-            ></ion-input>
-          </ion-item>
-          @if (form.get('entryAt')?.invalid && form.get('entryAt')?.touched) {
-            <ion-text color="danger" class="nueva-visita__error">Ingresa la fecha y hora de entrada (hoy o futuro).</ion-text>
-          }
-        }
+      @if (!form.get('entryOpenSchedule')?.value) {
+        <ion-input
+          formControlName="entryAt"
+          type="datetime-local"
+          label="Fecha y hora de entrada"
+          labelPlacement="stacked"
+          [min]="minEntryLocal"
+          errorText="Ingresa la fecha y hora de entrada (hoy o futuro)."
+          fill="outline"
+          class="nueva-visita__field"
+        ></ion-input>
+      }
 
-        <ion-item class="nueva-visita__field nueva-visita__field--checkbox" lines="none">
-          <ion-checkbox formControlName="exitOpenSchedule" labelPlacement="end">
-            Salida abierta en horario
-          </ion-checkbox>
-        </ion-item>
+      <div class="nueva-visita__checkbox-group">
+        <ion-checkbox formControlName="exitOpenSchedule" labelPlacement="end">
+          Salida abierta en horario
+        </ion-checkbox>
         <p class="nueva-visita__hint">Si activas salida abierta, la hora se registrará al escanear el QR a la salida.</p>
+      </div>
 
-        @if (!form.get('exitOpenSchedule')?.value) {
-          <ion-item class="nueva-visita__field" lines="full">
-            <ion-label position="stacked">Fecha y hora de salida</ion-label>
-            <ion-input
-              formControlName="exitAt"
-              type="datetime-local"
-              [min]="minExitLocal"
-            ></ion-input>
-          </ion-item>
-          @if (form.get('exitAt')?.invalid && form.get('exitAt')?.touched) {
-            <ion-text color="danger" class="nueva-visita__error">Ingresa la fecha y hora de salida (posterior a la entrada).</ion-text>
+      @if (!form.get('exitOpenSchedule')?.value) {
+        <ion-input
+          formControlName="exitAt"
+          type="datetime-local"
+          label="Fecha y hora de salida"
+          labelPlacement="stacked"
+          [min]="minExitLocal"
+          errorText="Ingresa la fecha y hora de salida (posterior a la entrada)."
+          fill="outline"
+          class="nueva-visita__field"
+        ></ion-input>
+      }
+
+      <ion-textarea
+        formControlName="description"
+        label="Descripción (opcional)"
+        labelPlacement="stacked"
+        placeholder="Información adicional del visitante o motivo"
+        [maxlength]="500"
+        rows="3"
+        fill="outline"
+        class="nueva-visita__field"
+      ></ion-textarea>
+
+      <div class="nueva-visita__actions">
+        <ion-button
+          type="submit"
+          expand="block"
+          [disabled]="loadingSubmit()"
+          class="nueva-visita__submit"
+        >
+          @if (loadingSubmit()) {
+            <ion-spinner name="crescent"></ion-spinner>
+          } @else {
+            Generar código de visita
           }
-        }
-
-        <ion-item class="nueva-visita__field" lines="full">
-          <ion-label position="stacked">Descripción (opcional)</ion-label>
-          <ion-textarea
-            formControlName="description"
-            placeholder="Información adicional del visitante o motivo"
-            [maxlength]="500"
-            rows="3"
-          ></ion-textarea>
-        </ion-item>
-
-        <div class="nueva-visita__actions">
-          <ion-button
-            type="submit"
-            expand="block"
-            [disabled]="loadingSubmit()"
-            class="nueva-visita__submit"
-          >
-            @if (loadingSubmit()) {
-              <ion-spinner name="crescent"></ion-spinner>
-            } @else {
-              Generar código de visita
-            }
-          </ion-button>
-        </div>
-      </form>
+        </ion-button>
+      </div>
+    </form>
   </div>
 </ion-content>

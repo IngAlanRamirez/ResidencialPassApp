@@ -19,6 +19,9 @@ import {
 } from '@ionic/angular/standalone';
 import { Subject, takeUntil } from 'rxjs';
 import * as QRCode from 'qrcode';
+import { Capacitor } from '@capacitor/core';
+import { Share } from '@capacitor/share';
+import { Filesystem, Directory } from '@capacitor/filesystem';
 
 import { VisitsApiService } from '../../../core/data/services/visits-api.service';
 import { ToastService } from '../../../core/data/services/toast.service';
@@ -120,36 +123,45 @@ export class DetalleVisitaPage implements OnInit, OnDestroy {
 
     this.sharing.set(true);
     try {
-      const res = await fetch(dataUrl);
-      const blob = await res.blob();
-      const file = new File([blob], 'qr-visita.png', { type: 'image/png' });
-
-      const title = 'Código QR - Visita';
-      const text = `Visita registrada: ${v.visitorName}. Código único de un solo uso.`;
-
-      if (navigator.share && navigator.canShare?.({ files: [file] })) {
-        await navigator.share({ title, text, files: [file] });
-      } else if (navigator.share) {
-        await navigator.share({
-          title,
-          text: `${text} (comparte la captura del QR si tu app no permite enviar la imagen).`,
-        });
+      if (Capacitor.isNativePlatform()) {
+        await this.shareNative(dataUrl, v.visitorName);
       } else {
-        const link = document.createElement('a');
-        link.href = dataUrl;
-        link.download = 'qr-visita.png';
-        link.click();
+        this.shareWeb(dataUrl);
       }
     } catch (err) {
       if ((err as Error).name !== 'AbortError') {
-        const link = document.createElement('a');
-        link.href = dataUrl;
-        link.download = 'qr-visita.png';
-        link.click();
+        this.shareWeb(dataUrl);
       }
     } finally {
       this.sharing.set(false);
     }
+  }
+
+  private async shareNative(dataUrl: string, visitorName: string): Promise<void> {
+    const base64Data = dataUrl.split(',')[1];
+    const fileName = `qr-visita-${Date.now()}.png`;
+
+    const savedFile = await Filesystem.writeFile({
+      path: fileName,
+      data: base64Data,
+      directory: Directory.Cache,
+    });
+
+    await Share.share({
+      title: 'Código QR - Visita',
+      text: `Visita registrada: ${visitorName}. Código único de un solo uso.`,
+      files: [savedFile.uri],
+      dialogTitle: 'Compartir código QR',
+    });
+
+    Filesystem.deleteFile({ path: fileName, directory: Directory.Cache }).catch(() => {});
+  }
+
+  private shareWeb(dataUrl: string): void {
+    const link = document.createElement('a');
+    link.href = dataUrl;
+    link.download = 'qr-visita.png';
+    link.click();
   }
 
   formatDate(iso: string | null): string {
