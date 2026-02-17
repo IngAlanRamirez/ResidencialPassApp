@@ -16,6 +16,7 @@ import { IonicRouteStrategy, provideIonicAngular } from '@ionic/angular/standalo
 import { routes } from './app/app.routes';
 import { AppComponent } from './app/app.component';
 import { AuthTokenInterceptor } from './app/core/data/interceptors/auth-token.interceptor';
+import { AuthErrorInterceptor } from './app/core/data/interceptors/auth-error.interceptor';
 
 bootstrapApplication(AppComponent, {
   providers: [
@@ -26,6 +27,11 @@ bootstrapApplication(AppComponent, {
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthTokenInterceptor,
+      multi: true,
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthErrorInterceptor,
       multi: true,
     },
   ],

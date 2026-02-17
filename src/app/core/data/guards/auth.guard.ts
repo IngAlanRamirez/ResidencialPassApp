@@ -1,0 +1,18 @@
+import { inject } from '@angular/core';
+import { CanActivateFn, Router } from '@angular/router';
+import { AuthStateService } from '../services/auth-state.service';
+
+/**
+ * Protege rutas que requieren sesión activa.
+ * Si no hay token, redirige a /auth/login.
+ */
+export const authGuard: CanActivateFn = () => {
+  const authState = inject(AuthStateService);
+  const router = inject(Router);
+
+  if (authState.isLoggedIn()) {
+    return true;
+  }
+
+  return router.createUrlTree(['/auth/login']);
+};
