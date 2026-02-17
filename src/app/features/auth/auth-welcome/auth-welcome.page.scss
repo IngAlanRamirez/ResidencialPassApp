@@ -1,19 +1,40 @@
+.auth-welcome {
+  --background: var(--ion-background-color);
+}
+
 .auth-welcome__container {
   max-width: 24rem;
   margin-inline: auto;
-  padding: 2rem 1rem;
+  padding: 2rem 1.5rem;
   text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100%;
+}
+
+.auth-welcome__brand {
+  margin-bottom: 2rem;
+}
+
+.auth-welcome__logo {
+  width: 200px;
+  height: auto;
+  border-radius: 16px;
+  object-fit: contain;
 }
 
 .auth-welcome__title {
   font-size: 1.75rem;
   font-weight: 700;
   margin: 0 0 0.5rem;
+  color: var(--ion-text-color);
 }
 
 .auth-welcome__subtitle {
   color: var(--ion-color-medium);
-  margin: 0 0 2rem;
+  margin: 0 0 2.5rem;
   font-size: 0.9375rem;
 }
 
@@ -21,9 +42,11 @@
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
+  width: 100%;
 }
 
 .auth-welcome__btn {
-  --border-radius: 8px;
+  --border-radius: 10px;
   font-weight: 600;
+  letter-spacing: 0.02em;
 }

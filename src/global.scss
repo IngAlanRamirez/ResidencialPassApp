@@ -1,12 +1,6 @@
 /*
- * App Global CSS
+ * Villa María Residencial – Global Styles
  * ----------------------------------------------------------------------------
- * Put style rules here that you want to apply globally. These styles are for
- * the entire app and not just one component. Additionally, this file can be
- * used as an entry point to import other CSS/Sass files to be included in the
- * output CSS.
- * For more information on global stylesheets, visit the documentation:
- * https://ionicframework.com/docs/layout/global-stylesheets
  */
 
 /* Core CSS required for Ionic components to work properly */
@@ -18,20 +12,98 @@
 @import "@ionic/angular/css/typography.css";
 @import "@ionic/angular/css/display.css";
 
-/* Optional CSS utils that can be commented out */
+/* Optional CSS utils */
 @import "@ionic/angular/css/padding.css";
 @import "@ionic/angular/css/float-elements.css";
 @import "@ionic/angular/css/text-alignment.css";
 @import "@ionic/angular/css/text-transformation.css";
 @import "@ionic/angular/css/flex-utils.css";
 
-/**
- * Ionic Dark Mode
- * -----------------------------------------------------
- * For more info, please see:
- * https://ionicframework.com/docs/theming/dark-mode
- */
+/* Dark Mode – Siempre activo */
+@import "@ionic/angular/css/palettes/dark.always.css";
 
-/* @import "@ionic/angular/css/palettes/dark.always.css"; */
-/* @import "@ionic/angular/css/palettes/dark.class.css"; */
-@import '@ionic/angular/css/palettes/dark.system.css';
+/* ============================================================================
+   Global overrides – Villa María dark theme
+   ============================================================================ */
+
+/* Toolbar con línea de acento inferior */
+ion-toolbar {
+  --border-color: var(--vm-accent);
+  --border-width: 0 0 2px 0;
+  --border-style: solid;
+}
+
+/* Cards con hover sutil naranja */
+ion-card {
+  --background: var(--ion-card-background);
+  border: 1px solid var(--ion-border-color);
+  border-radius: 12px;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+
+  &:hover,
+  &:focus-within {
+    border-color: var(--vm-accent);
+    box-shadow: 0 4px 16px rgba(232, 146, 45, 0.1);
+  }
+}
+
+/* Input focus con acento */
+ion-input,
+ion-textarea,
+ion-select {
+  --highlight-color-focused: var(--vm-accent);
+}
+
+/* Item borders */
+ion-item {
+  --border-color: var(--ion-border-color);
+}
+
+/* Botones primarios con gradiente sutil */
+ion-button[fill="solid"]::part(native),
+ion-button:not([fill])::part(native) {
+  transition: opacity 0.15s ease;
+}
+
+/* Checkbox/toggle con color de acento */
+ion-checkbox {
+  --checkbox-background-checked: var(--vm-accent);
+  --border-color-checked: var(--vm-accent);
+}
+
+ion-toggle {
+  --track-background-checked: var(--vm-accent);
+}
+
+/* Spinner primary color */
+ion-spinner {
+  color: var(--vm-accent);
+}
+
+/* Alert styling */
+ion-alert {
+  --background: var(--vm-surface-elevated);
+}
+
+/* Toast styling */
+ion-toast {
+  --border-radius: 8px;
+}
+
+/* Scrollbar sutil para web */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--ion-color-step-300);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--vm-accent);
+}

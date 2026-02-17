@@ -9,6 +9,7 @@
   font-size: 1.75rem;
   font-weight: 700;
   margin: 0 0 0.5rem;
+  color: var(--ion-text-color);
 }
 
 .home__subtitle {
@@ -44,12 +45,23 @@
   ion-card {
     margin: 0;
     cursor: pointer;
-    transition: transform 0.15s ease, box-shadow 0.15s ease;
+    transition: transform 0.15s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  ion-card-title {
+    color: var(--vm-accent);
+    font-size: 1.05rem;
+  }
+
+  ion-card-content {
+    color: var(--ion-color-step-700);
+    font-size: 0.875rem;
   }
 
   &:hover ion-card,
   &:focus-visible ion-card {
     transform: translateY(-2px);
-    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+    border-color: var(--vm-accent);
+    box-shadow: 0 6px 20px rgba(232, 146, 45, 0.12);
   }
 }

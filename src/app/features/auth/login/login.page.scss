@@ -12,7 +12,7 @@
 
   &--error {
     background: var(--ion-color-danger);
-    color: #fff;
+    color: var(--ion-color-danger-contrast);
   }
 }
 

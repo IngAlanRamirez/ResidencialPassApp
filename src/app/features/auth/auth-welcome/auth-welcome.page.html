@@ -1,13 +1,15 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>Residencial Pass</ion-title>
-  </ion-toolbar>
-</ion-header>
-
-<ion-content class="auth-welcome">
+<ion-content class="auth-welcome" [fullscreen]="true">
   <div class="auth-welcome__container">
+    <div class="auth-welcome__brand">
+      <img
+        src="assets/images/logo-villa-maria.png"
+        alt="Villa María Residencial"
+        class="auth-welcome__logo"
+      />
+    </div>
+
     <h1 class="auth-welcome__title">Bienvenido</h1>
-    <p class="auth-welcome__subtitle">Acceso al fraccionamiento por QR</p>
+    <p class="auth-welcome__subtitle">Control de acceso al fraccionamiento</p>
 
     <div class="auth-welcome__actions">
       <ion-button routerLink="/auth/register" expand="block" class="auth-welcome__btn">
