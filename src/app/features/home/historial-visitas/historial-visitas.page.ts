@@ -5,6 +5,8 @@ import {
   IonToolbar,
   IonTitle,
   IonContent,
+  IonRefresher,
+  IonRefresherContent,
   IonBackButton,
   IonButtons,
   IonCard,
@@ -37,6 +39,8 @@ import {
     IonToolbar,
     IonTitle,
     IonContent,
+    IonRefresher,
+    IonRefresherContent,
     IonBackButton,
     IonButtons,
     IonCard,
@@ -67,6 +71,11 @@ export class HistorialVisitasPage implements OnInit {
   );
 
   ngOnInit(): void {
+    this.loadList();
+  }
+
+  loadList(): void {
+    this.loading.set(true);
     this.visitsApi.list().subscribe({
       next: (list) => {
         this.visits.set(list);
@@ -81,6 +90,22 @@ export class HistorialVisitasPage implements OnInit {
           err.error?.error ??
           'No se pudo cargar el historial.';
         this.toast.error(typeof msg === 'string' ? msg : 'Error al cargar.');
+      },
+    });
+  }
+
+  handleRefresh(event: Event): void {
+    const ev = event as CustomEvent<{ target: HTMLIonRefresherElement }>;
+    this.visitsApi.list().subscribe({
+      next: (list) => {
+        this.visits.set(list);
+        this.hasError.set(false);
+        ev.detail.target.complete();
+      },
+      error: () => {
+        this.hasError.set(true);
+        this.toast.error('No se pudo actualizar el historial.');
+        ev.detail.target.complete();
       },
     });
   }

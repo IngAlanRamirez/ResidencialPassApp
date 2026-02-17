@@ -51,6 +51,9 @@
 </ion-modal>
 
 <ion-content class="registros-pendientes">
+  <ion-refresher slot="fixed" (ionRefresh)="handleRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
   <div class="registros-pendientes__container">
     @if (loading()) {
       <div class="registros-pendientes__loading">

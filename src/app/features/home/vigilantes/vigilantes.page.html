@@ -8,6 +8,9 @@
 </ion-header>
 
 <ion-content class="vigilantes">
+  <ion-refresher slot="fixed" (ionRefresh)="handleRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
   <div class="vigilantes__container">
     @if (loading()) {
       <div class="vigilantes__loading">

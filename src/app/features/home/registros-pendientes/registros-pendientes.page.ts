@@ -10,6 +10,8 @@ import {
   IonToolbar,
   IonTitle,
   IonContent,
+  IonRefresher,
+  IonRefresherContent,
   IonBackButton,
   IonButtons,
   IonCard,
@@ -42,6 +44,8 @@ import type {
     IonToolbar,
     IonTitle,
     IonContent,
+    IonRefresher,
+    IonRefresherContent,
     IonBackButton,
     IonButtons,
     IonCard,
@@ -93,6 +97,23 @@ export class RegistrosPendientesPage implements OnInit, OnDestroy {
         error: () => {
           this.toast.error('No se pudo cargar el listado. Intenta de nuevo.');
           this.loading.set(false);
+        },
+      });
+  }
+
+  handleRefresh(event: Event): void {
+    const ev = event as CustomEvent<{ target: HTMLIonRefresherElement }>;
+    this.api
+      .getPending()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (data) => {
+          this.list.set(data);
+          ev.detail.target.complete();
+        },
+        error: () => {
+          this.toast.error('No se pudo actualizar el listado.');
+          ev.detail.target.complete();
         },
       });
   }

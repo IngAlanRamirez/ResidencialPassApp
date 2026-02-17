@@ -10,6 +10,8 @@ import {
   IonToolbar,
   IonTitle,
   IonContent,
+  IonRefresher,
+  IonRefresherContent,
   IonBackButton,
   IonButtons,
   IonCard,
@@ -36,6 +38,8 @@ import type { VigilanteListItem } from '../../../core/domain/models/user.model';
     IonToolbar,
     IonTitle,
     IonContent,
+    IonRefresher,
+    IonRefresherContent,
     IonBackButton,
     IonButtons,
     IonCard,
@@ -78,6 +82,23 @@ export class VigilantesPage implements OnInit, OnDestroy {
         error: () => {
           this.toast.error('No se pudo cargar la lista de vigilantes.');
           this.loading.set(false);
+        },
+      });
+  }
+
+  handleRefresh(event: Event): void {
+    const ev = event as CustomEvent<{ target: HTMLIonRefresherElement }>;
+    this.api
+      .getVigilantes()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (data) => {
+          this.list.set(data);
+          ev.detail.target.complete();
+        },
+        error: () => {
+          this.toast.error('No se pudo actualizar la lista.');
+          ev.detail.target.complete();
         },
       });
   }
