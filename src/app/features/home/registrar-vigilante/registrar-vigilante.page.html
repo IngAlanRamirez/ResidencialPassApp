@@ -9,17 +9,6 @@
 
 <ion-content class="registrar-vigilante">
   <div class="registrar-vigilante__container">
-    @if (errorMessage(); as msg) {
-      <div class="registrar-vigilante__message registrar-vigilante__message--error" role="alert">
-        {{ msg }}
-      </div>
-    }
-    @if (successMessage(); as msg) {
-      <div class="registrar-vigilante__message registrar-vigilante__message--success" role="status">
-        {{ msg }}
-      </div>
-    }
-
     <form class="registrar-vigilante__form" [formGroup]="form" (ngSubmit)="onSubmit()">
       <ion-item class="registrar-vigilante__field" lines="full">
         <ion-label position="stacked">Teléfono</ion-label>

@@ -52,17 +52,6 @@
 
 <ion-content class="registros-pendientes">
   <div class="registros-pendientes__container">
-    @if (successMessage(); as msg) {
-      <div class="registros-pendientes__message registros-pendientes__message--success" role="status">
-        {{ msg }}
-      </div>
-    }
-    @if (error(); as msg) {
-      <div class="registros-pendientes__message registros-pendientes__message--error" role="alert">
-        {{ msg }}
-      </div>
-    }
-
     @if (loading()) {
       <div class="registros-pendientes__loading">
         <ion-spinner name="crescent"></ion-spinner>

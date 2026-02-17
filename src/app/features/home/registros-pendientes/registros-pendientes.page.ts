@@ -26,6 +26,7 @@ import { listOutline } from 'ionicons/icons';
 import { Subject, takeUntil } from 'rxjs';
 
 import { RegistrationRequestsApiService } from '../../../core/data/services/registration-requests-api.service';
+import { ToastService } from '../../../core/data/services/toast.service';
 import type {
   RegistrationRequestItem,
   RegistrationRequestHistoryItem,
@@ -55,13 +56,12 @@ import type {
 })
 export class RegistrosPendientesPage implements OnInit, OnDestroy {
   private readonly api = inject(RegistrationRequestsApiService);
+  private readonly toast = inject(ToastService);
   private readonly destroy$ = new Subject<void>();
 
   readonly list = signal<RegistrationRequestItem[]>([]);
   readonly loading = signal(true);
-  readonly error = signal<string | null>(null);
   readonly processingId = signal<string | null>(null);
-  readonly successMessage = signal<string | null>(null);
 
   readonly showLogModal = signal(false);
   readonly historyList = signal<RegistrationRequestHistoryItem[]>([]);
@@ -81,7 +81,6 @@ export class RegistrosPendientesPage implements OnInit, OnDestroy {
   }
 
   loadList(): void {
-    this.error.set(null);
     this.loading.set(true);
     this.api
       .getPending()
@@ -92,7 +91,7 @@ export class RegistrosPendientesPage implements OnInit, OnDestroy {
           this.loading.set(false);
         },
         error: () => {
-          this.error.set('No se pudo cargar el listado. Intenta de nuevo.');
+          this.toast.error('No se pudo cargar el listado. Intenta de nuevo.');
           this.loading.set(false);
         },
       });
@@ -107,7 +106,6 @@ export class RegistrosPendientesPage implements OnInit, OnDestroy {
   }
 
   private updateStatus(id: string, status: 'approved' | 'rejected'): void {
-    this.successMessage.set(null);
     this.processingId.set(id);
     this.api
       .updateStatus(id, { status })
@@ -115,7 +113,7 @@ export class RegistrosPendientesPage implements OnInit, OnDestroy {
       .subscribe({
         next: (res) => {
           this.processingId.set(null);
-          this.successMessage.set(res.message);
+          this.toast.success(res.message);
           this.list.update((items) => items.filter((i) => i.id !== id));
         },
         error: (err) => {
@@ -124,7 +122,7 @@ export class RegistrosPendientesPage implements OnInit, OnDestroy {
             err.error?.message ??
             err.error?.error ??
             'No se pudo procesar la solicitud.';
-          this.error.set(typeof msg === 'string' ? msg : 'Error al procesar.');
+          this.toast.error(typeof msg === 'string' ? msg : 'Error al procesar.');
         },
       });
   }

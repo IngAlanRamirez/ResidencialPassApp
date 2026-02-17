@@ -9,17 +9,6 @@
 
 <ion-content class="vigilantes">
   <div class="vigilantes__container">
-    @if (successMessage(); as msg) {
-      <div class="vigilantes__message vigilantes__message--success" role="status">
-        {{ msg }}
-      </div>
-    }
-    @if (error(); as msg) {
-      <div class="vigilantes__message vigilantes__message--error" role="alert">
-        {{ msg }}
-      </div>
-    }
-
     @if (loading()) {
       <div class="vigilantes__loading">
         <ion-spinner name="crescent"></ion-spinner>

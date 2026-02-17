@@ -9,18 +9,6 @@
 
 <ion-content class="register">
   <div class="register__container">
-    @if (successMessage(); as msg) {
-      <div class="register__message register__message--success" role="status">
-        {{ msg }}
-      </div>
-    }
-
-    @if (errorMessage(); as msg) {
-      <div class="register__message register__message--error" role="alert">
-        {{ msg }}
-      </div>
-    }
-
     @if (hasStreetsError()) {
       <p class="register__hint">No hay calles disponibles. Contacta al administrador.</p>
     }

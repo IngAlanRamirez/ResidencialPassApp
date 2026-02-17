@@ -21,6 +21,7 @@ import {
 } from '@ionic/angular/standalone';
 import type { Html5Qrcode } from 'html5-qrcode';
 import { VisitsApiService } from '../../../core/data/services/visits-api.service';
+import { ToastService } from '../../../core/data/services/toast.service';
 
 @Component({
   selector: 'app-escanear-visita',
@@ -43,6 +44,7 @@ export class EscanearVisitaPage implements AfterViewInit, OnDestroy {
   private readonly platformId = inject(PLATFORM_ID);
   private readonly router = inject(Router);
   private readonly visitsApi = inject(VisitsApiService);
+  private readonly toast = inject(ToastService);
 
   readonly scannedVisitId = signal<string | null>(null);
   readonly scanStatus = signal<{ entryScanned: boolean; exitScanned: boolean } | null>(null);
@@ -84,6 +86,7 @@ export class EscanearVisitaPage implements AfterViewInit, OnDestroy {
       this.message.set(
         'No se pudo acceder a la cámara. Revisa los permisos o usa HTTPS.'
       );
+      this.toast.error(this.message());
     }
   }
 
@@ -104,6 +107,7 @@ export class EscanearVisitaPage implements AfterViewInit, OnDestroy {
       error: () => {
         this.status.set('error');
         this.message.set('No se pudo obtener el estado de la visita.');
+        this.toast.error('No se pudo obtener el estado de la visita.');
       },
     });
   }
@@ -130,12 +134,13 @@ export class EscanearVisitaPage implements AfterViewInit, OnDestroy {
     const comment = eventType === 'exit' ? this.exitComment() : undefined;
     this.visitsApi.scan(visitId, eventType, comment).subscribe({
       next: () => {
-        this.status.set('success');
-        this.message.set(
+        const msg =
           eventType === 'entry'
             ? 'Entrada registrada correctamente.'
-            : 'Salida registrada correctamente.'
-        );
+            : 'Salida registrada correctamente.';
+        this.status.set('success');
+        this.message.set(msg);
+        this.toast.success(msg);
         this.scannedVisitId.set(null);
         this.scanStatus.set(null);
         this.exitComment.set('');
@@ -148,6 +153,7 @@ export class EscanearVisitaPage implements AfterViewInit, OnDestroy {
           err.error?.error ??
           'No se pudo registrar. Intenta de nuevo.';
         this.message.set(typeof msg === 'string' ? msg : 'Error al registrar.');
+        this.toast.error(typeof msg === 'string' ? msg : 'Error al registrar.');
       },
     });
   }

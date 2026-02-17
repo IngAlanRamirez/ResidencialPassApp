@@ -9,12 +9,6 @@
 
 <ion-content class="login">
   <div class="login__container">
-    @if (errorMessage(); as msg) {
-      <div class="login__message login__message--error" role="alert">
-        {{ msg }}
-      </div>
-    }
-
     <form class="login__form" [formGroup]="form" (ngSubmit)="onSubmit()">
       <ion-item class="login__field" lines="full">
         <ion-label position="stacked">Teléfono</ion-label>

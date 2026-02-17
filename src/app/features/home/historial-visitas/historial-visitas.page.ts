@@ -17,6 +17,7 @@ import {
 
 import { AuthStateService } from '../../../core/data/services/auth-state.service';
 import { VisitsApiService } from '../../../core/data/services/visits-api.service';
+import { ToastService } from '../../../core/data/services/toast.service';
 import type { VisitResponse } from '../../../core/domain/models/visit.model';
 import {
   VISIT_REASON_OPTIONS,
@@ -49,10 +50,11 @@ import {
 export class HistorialVisitasPage implements OnInit {
   private readonly authState = inject(AuthStateService);
   private readonly visitsApi = inject(VisitsApiService);
+  private readonly toast = inject(ToastService);
 
   readonly visits = signal<VisitResponse[]>([]);
   readonly loading = signal(true);
-  readonly error = signal<string | null>(null);
+  readonly hasError = signal(false);
 
   readonly isVigilante = this.authState.isVigilancia;
   readonly pageTitle = computed(() =>
@@ -69,15 +71,16 @@ export class HistorialVisitasPage implements OnInit {
       next: (list) => {
         this.visits.set(list);
         this.loading.set(false);
-        this.error.set(null);
+        this.hasError.set(false);
       },
       error: (err) => {
         this.loading.set(false);
+        this.hasError.set(true);
         const msg =
           err.error?.message ??
           err.error?.error ??
           'No se pudo cargar el historial.';
-        this.error.set(typeof msg === 'string' ? msg : 'Error al cargar.');
+        this.toast.error(typeof msg === 'string' ? msg : 'Error al cargar.');
       },
     });
   }

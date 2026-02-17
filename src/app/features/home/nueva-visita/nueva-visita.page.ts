@@ -27,6 +27,7 @@ import { Router } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
 
 import { VisitsApiService } from '../../../core/data/services/visits-api.service';
+import { ToastService } from '../../../core/data/services/toast.service';
 import {
   VISIT_REASON_OPTIONS,
   IDENTIFICATION_TYPE_OPTIONS,
@@ -63,12 +64,12 @@ export class NuevaVisitaPage implements OnDestroy {
   private readonly fb = inject(FormBuilder);
   private readonly router = inject(Router);
   private readonly visitsApi = inject(VisitsApiService);
+  private readonly toast = inject(ToastService);
   private readonly destroy$ = new Subject<void>();
 
   readonly reasonOptions = VISIT_REASON_OPTIONS;
   readonly identificationOptions = IDENTIFICATION_TYPE_OPTIONS;
   readonly loadingSubmit = signal(false);
-  readonly errorMessage = signal<string | null>(null);
 
   form = this.fb.group({
     visitorName: ['', [Validators.required, Validators.maxLength(200)]],
@@ -113,8 +114,6 @@ export class NuevaVisitaPage implements OnDestroy {
   }
 
   onSubmit(): void {
-    this.errorMessage.set(null);
-
     const raw = this.form.getRawValue();
     const entryOpen = !!raw.entryOpenSchedule;
     const exitOpen = !!raw.exitOpenSchedule;
@@ -124,12 +123,12 @@ export class NuevaVisitaPage implements OnDestroy {
       return;
     }
     if (!entryOpen && !raw.entryAt?.trim()) {
-      this.errorMessage.set('Ingresa la fecha y hora de entrada o marca entrada abierta.');
+      this.toast.error('Ingresa la fecha y hora de entrada o marca entrada abierta.');
       this.form.get('entryAt')?.markAsTouched();
       return;
     }
     if (!exitOpen && !raw.exitAt?.trim()) {
-      this.errorMessage.set('Ingresa la fecha y hora de salida o marca salida abierta.');
+      this.toast.error('Ingresa la fecha y hora de salida o marca salida abierta.');
       this.form.get('exitAt')?.markAsTouched();
       return;
     }
@@ -142,18 +141,18 @@ export class NuevaVisitaPage implements OnDestroy {
     if (!entryOpen && raw.entryAt) {
       entryAt = this.toISOWithTimezone(raw.entryAt) ?? raw.entryAt;
       if (new Date(entryAt) < startOfToday) {
-        this.errorMessage.set('La fecha de entrada debe ser hoy o en el futuro.');
+        this.toast.error('La fecha de entrada debe ser hoy o en el futuro.');
         return;
       }
     }
     if (!exitOpen && raw.exitAt) {
       exitAt = this.toISOWithTimezone(raw.exitAt) ?? raw.exitAt;
       if (entryAt && new Date(exitAt) <= new Date(entryAt)) {
-        this.errorMessage.set('La hora de salida debe ser posterior a la de entrada.');
+        this.toast.error('La hora de salida debe ser posterior a la de entrada.');
         return;
       }
       if (new Date(exitAt) < startOfToday) {
-        this.errorMessage.set('La fecha de salida debe ser hoy o en el futuro.');
+        this.toast.error('La fecha de salida debe ser hoy o en el futuro.');
         return;
       }
     }
@@ -182,7 +181,7 @@ export class NuevaVisitaPage implements OnDestroy {
             err.error?.message ??
             err.error?.error ??
             'No se pudo registrar la visita. Intenta de nuevo.';
-          this.errorMessage.set(typeof msg === 'string' ? msg : 'Error al registrar.');
+          this.toast.error(typeof msg === 'string' ? msg : 'Error al registrar.');
         },
       });
   }

@@ -25,9 +25,11 @@ import {
 } from '@ionic/angular/standalone';
 import { Subject, takeUntil } from 'rxjs';
 
+import { Router } from '@angular/router';
 import { StreetsApiService } from '../../../core/data/services/streets-api.service';
 import { AuthApiService } from '../../../core/data/services/auth-api.service';
 import { DeviceIdService } from '../../../core/data/services/device-id.service';
+import { ToastService } from '../../../core/data/services/toast.service';
 import { Street } from '../../../core/domain/models/street.model';
 
 @Component({
@@ -55,16 +57,16 @@ import { Street } from '../../../core/domain/models/street.model';
 })
 export class RegisterPage implements OnInit, OnDestroy {
   private readonly fb = inject(FormBuilder);
+  private readonly router = inject(Router);
   private readonly streetsApi = inject(StreetsApiService);
   private readonly authApi = inject(AuthApiService);
   private readonly deviceId = inject(DeviceIdService);
+  private readonly toast = inject(ToastService);
   private readonly destroy$ = new Subject<void>();
 
   readonly streets = signal<Street[]>([]);
   readonly loadingStreets = signal(true);
   readonly loadingSubmit = signal(false);
-  readonly errorMessage = signal<string | null>(null);
-  readonly successMessage = signal<string | null>(null);
 
   readonly hasStreetsError = computed(
     () => !this.loadingStreets() && this.streets().length === 0
@@ -100,20 +102,17 @@ export class RegisterPage implements OnInit, OnDestroy {
         },
         error: () => {
           this.loadingStreets.set(false);
-          this.errorMessage.set('No se pudo cargar la lista de calles.');
+          this.toast.error('No se pudo cargar la lista de calles.');
         },
       });
   }
 
   async onSubmit(): Promise<void> {
-    this.errorMessage.set(null);
-    this.successMessage.set(null);
-
     const password = this.form.get('password')?.value;
     const confirmPassword = this.form.get('confirmPassword')?.value;
     if (password !== confirmPassword) {
       this.form.get('confirmPassword')?.setErrors({ mismatch: true });
-      this.errorMessage.set('Las contraseñas no coinciden.');
+      this.toast.error('Las contraseñas no coinciden.');
       return;
     }
 
@@ -138,10 +137,11 @@ export class RegisterPage implements OnInit, OnDestroy {
       })
       .pipe(takeUntil(this.destroy$))
       .subscribe({
-        next: (res) => {
+        next: async (res) => {
           this.loadingSubmit.set(false);
-          this.successMessage.set(res.message);
           this.form.reset();
+          await this.toast.success(res.message);
+          this.router.navigate(['/auth/login']);
         },
         error: (err) => {
           this.loadingSubmit.set(false);
@@ -149,7 +149,7 @@ export class RegisterPage implements OnInit, OnDestroy {
             err.error?.message ??
             err.message ??
             'Error al registrar. Intenta de nuevo.';
-          this.errorMessage.set(msg);
+          this.toast.error(msg);
         },
       });
   }

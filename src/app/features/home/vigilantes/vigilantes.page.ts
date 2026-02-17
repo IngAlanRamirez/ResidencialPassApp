@@ -23,6 +23,7 @@ import {
 import { Subject, takeUntil } from 'rxjs';
 
 import { UsersApiService } from '../../../core/data/services/users-api.service';
+import { ToastService } from '../../../core/data/services/toast.service';
 import type { VigilanteListItem } from '../../../core/domain/models/user.model';
 
 @Component({
@@ -48,13 +49,12 @@ import type { VigilanteListItem } from '../../../core/domain/models/user.model';
 export class VigilantesPage implements OnInit, OnDestroy {
   private readonly api = inject(UsersApiService);
   private readonly alertCtrl = inject(AlertController);
+  private readonly toast = inject(ToastService);
   private readonly destroy$ = new Subject<void>();
 
   readonly list = signal<VigilanteListItem[]>([]);
   readonly loading = signal(true);
-  readonly error = signal<string | null>(null);
   readonly processingId = signal<string | null>(null);
-  readonly successMessage = signal<string | null>(null);
 
   ngOnInit(): void {
     this.loadList();
@@ -67,7 +67,6 @@ export class VigilantesPage implements OnInit, OnDestroy {
 
   loadList(): void {
     this.loading.set(true);
-    this.error.set(null);
     this.api
       .getVigilantes()
       .pipe(takeUntil(this.destroy$))
@@ -77,7 +76,7 @@ export class VigilantesPage implements OnInit, OnDestroy {
           this.loading.set(false);
         },
         error: () => {
-          this.error.set('No se pudo cargar la lista de vigilantes.');
+          this.toast.error('No se pudo cargar la lista de vigilantes.');
           this.loading.set(false);
         },
       });
@@ -123,19 +122,17 @@ export class VigilantesPage implements OnInit, OnDestroy {
 
   deleteVigilante(id: string): void {
     this.processingId.set(id);
-    this.error.set(null);
-    this.successMessage.set(null);
     this.api
       .deleteVigilante(id)
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {
           this.list.update((arr) => arr.filter((v) => v.id !== id));
-          this.successMessage.set('Vigilante dado de baja correctamente.');
+          this.toast.success('Vigilante dado de baja correctamente.');
           this.processingId.set(null);
         },
         error: () => {
-          this.error.set('No se pudo dar de baja al vigilante.');
+          this.toast.error('No se pudo dar de baja al vigilante.');
           this.processingId.set(null);
         },
       });

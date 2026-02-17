@@ -74,16 +74,10 @@
     }
 
     @if (status() === 'success') {
-      <div class="escanear-visita__message escanear-visita__message--success" role="status">
-        {{ message() }}
-      </div>
       <p class="escanear-visita__hint">La cámara se reanudará en breve.</p>
     }
 
     @if (status() === 'error') {
-      <div class="escanear-visita__message escanear-visita__message--error" role="alert">
-        {{ message() }}
-      </div>
       <ion-button expand="block" (click)="scanAgain()">Intentar de nuevo</ion-button>
     }
   </div>

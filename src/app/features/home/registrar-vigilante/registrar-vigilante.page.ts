@@ -28,6 +28,7 @@ import {
 import { Subject, takeUntil } from 'rxjs';
 
 import { UsersApiService } from '../../../core/data/services/users-api.service';
+import { ToastService } from '../../../core/data/services/toast.service';
 
 @Component({
   selector: 'app-registrar-vigilante',
@@ -53,11 +54,10 @@ import { UsersApiService } from '../../../core/data/services/users-api.service';
 export class RegistrarVigilantePage implements OnDestroy {
   private readonly fb = inject(FormBuilder);
   private readonly usersApi = inject(UsersApiService);
+  private readonly toast = inject(ToastService);
   private readonly destroy$ = new Subject<void>();
 
   readonly loadingSubmit = signal(false);
-  readonly errorMessage = signal<string | null>(null);
-  readonly successMessage = signal<string | null>(null);
 
   form = this.fb.group(
     {
@@ -83,8 +83,6 @@ export class RegistrarVigilantePage implements OnDestroy {
   }
 
   onSubmit(): void {
-    this.errorMessage.set(null);
-    this.successMessage.set(null);
     if (this.form.invalid) {
       this.form.markAllAsTouched();
       return;
@@ -102,7 +100,7 @@ export class RegistrarVigilantePage implements OnDestroy {
       .subscribe({
         next: () => {
           this.loadingSubmit.set(false);
-          this.successMessage.set('Vigilante registrado correctamente.');
+          this.toast.success('Vigilante registrado correctamente.');
           this.form.reset();
         },
         error: (err) => {
@@ -111,7 +109,7 @@ export class RegistrarVigilantePage implements OnDestroy {
             err.error?.message ??
             err.error?.error ??
             'No se pudo registrar al vigilante. Intenta de nuevo.';
-          this.errorMessage.set(typeof msg === 'string' ? msg : 'Error al registrar.');
+          this.toast.error(typeof msg === 'string' ? msg : 'Error al registrar.');
         },
       });
   }

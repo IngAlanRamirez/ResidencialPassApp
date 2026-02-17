@@ -21,6 +21,7 @@ import { Subject, takeUntil } from 'rxjs';
 import * as QRCode from 'qrcode';
 
 import { VisitsApiService } from '../../../core/data/services/visits-api.service';
+import { ToastService } from '../../../core/data/services/toast.service';
 import {
   VISIT_REASON_OPTIONS,
   IDENTIFICATION_TYPE_OPTIONS,
@@ -51,6 +52,7 @@ export class DetalleVisitaPage implements OnInit, OnDestroy {
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
   private readonly visitsApi = inject(VisitsApiService);
+  private readonly toast = inject(ToastService);
   private readonly destroy$ = new Subject<void>();
 
   readonly reasonOptions = VISIT_REASON_OPTIONS;
@@ -58,13 +60,14 @@ export class DetalleVisitaPage implements OnInit, OnDestroy {
   readonly visit = signal<VisitResponse | null>(null);
   readonly qrDataUrl = signal<string | null>(null);
   readonly loading = signal(true);
-  readonly error = signal<string | null>(null);
+  readonly hasError = signal(false);
   readonly sharing = signal(false);
 
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id');
     if (!id) {
-      this.error.set('Visita no encontrada');
+      this.toast.error('Visita no encontrada');
+      this.hasError.set(true);
       this.loading.set(false);
       return;
     }
@@ -82,11 +85,12 @@ export class DetalleVisitaPage implements OnInit, OnDestroy {
         },
         error: (err) => {
           this.loading.set(false);
+          this.hasError.set(true);
           const msg =
             err.error?.message ??
             err.error?.error ??
             'No se pudo cargar la visita.';
-          this.error.set(typeof msg === 'string' ? msg : 'Error al cargar.');
+          this.toast.error(typeof msg === 'string' ? msg : 'Error al cargar.');
         },
       });
   }

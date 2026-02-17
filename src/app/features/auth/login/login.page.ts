@@ -25,6 +25,7 @@ import { Subject, takeUntil } from 'rxjs';
 import { AuthApiService } from '../../../core/data/services/auth-api.service';
 import { AuthStateService } from '../../../core/data/services/auth-state.service';
 import { DeviceIdService } from '../../../core/data/services/device-id.service';
+import { ToastService } from '../../../core/data/services/toast.service';
 
 @Component({
   selector: 'app-login',
@@ -52,11 +53,11 @@ export class LoginPage implements OnDestroy {
   private readonly authApi = inject(AuthApiService);
   private readonly authState = inject(AuthStateService);
   private readonly deviceId = inject(DeviceIdService);
+  private readonly toast = inject(ToastService);
   private readonly navCtrl = inject(NavController);
   private readonly destroy$ = new Subject<void>();
 
   readonly loadingSubmit = signal(false);
-  readonly errorMessage = signal<string | null>(null);
 
   form = this.fb.group({
     phone: ['', [Validators.required, Validators.pattern(/^\+?[0-9\s-]{10,}$/)]],
@@ -69,7 +70,6 @@ export class LoginPage implements OnDestroy {
   }
 
   async onSubmit(): Promise<void> {
-    this.errorMessage.set(null);
     if (this.form.invalid) {
       this.form.markAllAsTouched();
       return;
@@ -102,7 +102,7 @@ export class LoginPage implements OnDestroy {
             err.error?.message ??
             err.message ??
             'Error al iniciar sesión. Revisa tu teléfono y contraseña.';
-          this.errorMessage.set(msg);
+          this.toast.error(msg);
         },
       });
   }

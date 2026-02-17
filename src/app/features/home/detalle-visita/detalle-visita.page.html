@@ -14,10 +14,7 @@
         <ion-spinner name="crescent"></ion-spinner>
         <p>Cargando visita...</p>
       </div>
-    } @else if (error(); as msg) {
-      <div class="detalle-visita__message detalle-visita__message--error" role="alert">
-        {{ msg }}
-      </div>
+    } @else if (hasError()) {
       <ion-button expand="block" routerLink="/home">Ir al inicio</ion-button>
     } @else if (visit(); as v) {
       <div class="detalle-visita__success">

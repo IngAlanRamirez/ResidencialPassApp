@@ -9,12 +9,6 @@
 
 <ion-content class="nueva-visita">
   <div class="nueva-visita__container">
-    @if (errorMessage(); as msg) {
-      <div class="nueva-visita__message nueva-visita__message--error" role="alert">
-        {{ msg }}
-      </div>
-    }
-
     <form class="nueva-visita__form" [formGroup]="form" (ngSubmit)="onSubmit()">
         <ion-item class="nueva-visita__field" lines="full">
           <ion-label position="stacked">Nombre del visitante</ion-label>
