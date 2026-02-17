@@ -1,0 +1,62 @@
+.vigilantes__container {
+  max-width: 32rem;
+  margin-inline: auto;
+  padding: 1rem;
+}
+
+.vigilantes__message {
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+  font-size: 0.9375rem;
+
+  &--success {
+    background: var(--ion-color-success);
+    color: white;
+  }
+
+  &--error {
+    background: var(--ion-color-danger-tint);
+    color: var(--ion-color-danger-shade);
+  }
+}
+
+.vigilantes__loading,
+.vigilantes__empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  padding: 3rem 1rem;
+  text-align: center;
+  color: var(--ion-color-medium);
+
+  ion-spinner {
+    width: 2rem;
+    height: 2rem;
+  }
+}
+
+.vigilantes__list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.vigilantes__card {
+  margin: 0;
+}
+
+.vigilantes__meta {
+  margin: 0 0 0.5rem;
+  font-size: 0.9375rem;
+
+  &:last-of-type {
+    margin-bottom: 1rem;
+  }
+}
+
+.vigilantes__actions {
+  margin-top: 0.5rem;
+}

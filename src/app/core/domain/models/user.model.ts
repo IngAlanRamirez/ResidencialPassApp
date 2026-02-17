@@ -19,3 +19,10 @@ export interface UserProfile {
   status: string;
   address?: UserAddress | null;
 }
+
+export interface VigilanteListItem {
+  id: string;
+  phone: string;
+  status: string;
+  createdAt: string;
+}

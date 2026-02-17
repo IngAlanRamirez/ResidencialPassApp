@@ -54,22 +54,24 @@ export class HomePage implements OnInit {
     if (!p) return '';
     const role = (p.role ?? '').toLowerCase();
     if (role === 'vigilancia') return 'Buen día Vigilante';
-    if (role === 'admin') return 'Bienvenido, Administrador';
-    const addr = p.address;
-    if (addr && (addr.street || addr.number)) {
-      const street = addr.street ?? '';
-      const number = addr.number ?? '';
-      const parte = `${street} ${number}`.trim();
-      const letra = addr.letter?.trim();
-      if (parte) return letra ? `Bienvenido, ${parte} ${letra}` : `Bienvenido, ${parte}`;
-    }
-    return 'Bienvenido';
+    return 'Bienvenido Vecino';
   });
 
   readonly welcomeSubtitle = computed(() => {
     const p = this.profile();
     if (!p) return 'Bienvenido al acceso del fraccionamiento.';
     if ((p.role ?? '').toLowerCase() === 'vigilancia') return '';
+    const addr = p.address;
+    if (addr && (addr.street || addr.number)) {
+      const street = (addr.street ?? '').trim();
+      const number = (addr.number ?? '').trim();
+      const letter = addr.letter?.trim();
+      const parts: string[] = [];
+      if (street) parts.push(`Calle ${street}`);
+      if (number) parts.push(`Número ${number}`);
+      if (letter) parts.push(`Letra ${letter}`);
+      if (parts.length) return parts.join(', ');
+    }
     return 'Bienvenido al acceso del fraccionamiento.';
   });
 

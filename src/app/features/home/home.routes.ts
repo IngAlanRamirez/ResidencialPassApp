@@ -42,4 +42,9 @@ export const homeRoutes: Routes = [
     loadComponent: () =>
       import('./registrar-vigilante').then((m) => m.RegistrarVigilantePage),
   },
+  {
+    path: 'vigilantes',
+    loadComponent: () =>
+      import('./vigilantes/vigilantes.page').then((m) => m.VigilantesPage),
+  },
 ];
