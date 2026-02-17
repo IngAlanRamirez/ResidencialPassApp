@@ -9,6 +9,70 @@
 
 <ion-content class="registros-pendientes">
   <div class="registros-pendientes__container">
-    <p>Listado de solicitudes de registro pendientes de autorizar (próximamente).</p>
+    @if (successMessage(); as msg) {
+      <div class="registros-pendientes__message registros-pendientes__message--success" role="status">
+        {{ msg }}
+      </div>
+    }
+    @if (error(); as msg) {
+      <div class="registros-pendientes__message registros-pendientes__message--error" role="alert">
+        {{ msg }}
+      </div>
+    }
+
+    @if (loading()) {
+      <div class="registros-pendientes__loading">
+        <ion-spinner name="crescent"></ion-spinner>
+        <p>Cargando solicitudes...</p>
+      </div>
+    } @else if (list().length === 0) {
+      <div class="registros-pendientes__empty">
+        <p>No hay solicitudes pendientes de autorizar.</p>
+      </div>
+    } @else {
+      <div class="registros-pendientes__list">
+        @for (item of list(); track item.id) {
+          <ion-card class="registros-pendientes__card">
+            <ion-card-header>
+              <ion-card-title>{{ formatAddress(item) }}</ion-card-title>
+            </ion-card-header>
+            <ion-card-content>
+              <p class="registros-pendientes__meta">
+                <strong>Teléfono:</strong> {{ item.user.phone }}
+              </p>
+              <p class="registros-pendientes__meta">
+                <strong>Solicitud:</strong> {{ formatDate(item.createdAt) }}
+              </p>
+              <div class="registros-pendientes__actions">
+                <ion-button
+                  color="success"
+                  fill="solid"
+                  [disabled]="processingId() !== null"
+                  (click)="approve(item)"
+                >
+                  @if (processingId() === item.id) {
+                    <ion-spinner name="crescent"></ion-spinner>
+                  } @else {
+                    Aprobar
+                  }
+                </ion-button>
+                <ion-button
+                  color="danger"
+                  fill="outline"
+                  [disabled]="processingId() !== null"
+                  (click)="reject(item)"
+                >
+                  @if (processingId() === item.id) {
+                    <ion-spinner name="crescent"></ion-spinner>
+                  } @else {
+                    Rechazar
+                  }
+                </ion-button>
+              </div>
+            </ion-card-content>
+          </ion-card>
+        }
+      </div>
+    }
   </div>
 </ion-content>
