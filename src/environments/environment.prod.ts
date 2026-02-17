@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  apiUrl: 'https://api.tudominio.com',
+  apiUrl: 'https://residencial-pass-back-production.up.railway.app',
 };
