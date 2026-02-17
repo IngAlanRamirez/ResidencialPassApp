@@ -15,6 +15,7 @@ import {
   IonCardContent,
   IonSpinner,
   IonButton,
+  AlertController,
 } from '@ionic/angular/standalone';
 
 import { AuthStateService } from '../../../core/data/services/auth-state.service';
@@ -55,6 +56,7 @@ export class HistorialVisitasPage implements OnInit {
   private readonly authState = inject(AuthStateService);
   private readonly visitsApi = inject(VisitsApiService);
   private readonly toast = inject(ToastService);
+  private readonly alertCtrl = inject(AlertController);
 
   readonly visits = signal<VisitResponse[]>([]);
   readonly loading = signal(true);
@@ -150,24 +152,37 @@ export class HistorialVisitasPage implements OnInit {
     return v.status === 'pending';
   }
 
-  cancelVisit(v: VisitResponse): void {
+  async cancelVisit(v: VisitResponse): Promise<void> {
     if (!this.canCancel(v)) return;
-    if (!confirm(`¿Cancelar la visita de ${v.visitorName}? El código QR dejará de ser válido.`)) {
-      return;
-    }
-    const cancellingId = v.id;
-    this.visitsApi.cancel(cancellingId).subscribe({
+    const alert = await this.alertCtrl.create({
+      header: 'Cancelar visita',
+      message: `¿Cancelar la visita de ${v.visitorName}? El código QR dejará de ser válido.`,
+      buttons: [
+        { text: 'No', role: 'cancel' },
+        {
+          text: 'Sí, cancelar',
+          role: 'destructive',
+          handler: () => this.doCancelVisit(v.id),
+        },
+      ],
+    });
+    await alert.present();
+  }
+
+  private doCancelVisit(id: string): void {
+    this.visitsApi.cancel(id).subscribe({
       next: (updated) => {
         this.visits.update((list) =>
-          list.map((item) => (item.id === cancellingId ? updated : item))
+          list.map((item) => (item.id === id ? updated : item))
         );
+        this.toast.success('Visita cancelada.');
       },
       error: (err) => {
         const msg =
           err.error?.message ??
           err.error?.error ??
           'No se pudo cancelar la visita.';
-        alert(typeof msg === 'string' ? msg : 'Error al cancelar.');
+        this.toast.error(typeof msg === 'string' ? msg : 'Error al cancelar.');
       },
     });
   }
