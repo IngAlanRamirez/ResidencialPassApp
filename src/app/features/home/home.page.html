@@ -1,6 +1,12 @@
 <ion-header>
   <ion-toolbar>
     <ion-title>Residencial Pass</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="logout()" fill="clear" color="primary">
+        <ion-icon name="log-out-outline" slot="start"></ion-icon>
+        Cerrar sesión
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
@@ -22,6 +28,18 @@
     }
 
     <div class="home__cards">
+      @if (authState.isVigilancia()) {
+        <a routerLink="/home/escanear-visita" class="home__card">
+          <ion-card>
+            <ion-card-header>
+              <ion-card-title>Escanear visita con QR</ion-card-title>
+            </ion-card-header>
+            <ion-card-content>
+              Abre la cámara y escanea el código QR para registrar entrada o salida.
+            </ion-card-content>
+          </ion-card>
+        </a>
+      }
       @if (!authState.isVigilancia()) {
         <a routerLink="/home/nueva-visita" class="home__card">
           <ion-card>

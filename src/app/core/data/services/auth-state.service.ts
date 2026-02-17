@@ -67,6 +67,11 @@ export class AuthStateService {
     }
   }
 
+  /** Cierra la sesión (borra token y usuario en memoria y en localStorage). */
+  logout(): void {
+    this.clear();
+  }
+
   getToken(): string | null {
     return this._accessToken();
   }

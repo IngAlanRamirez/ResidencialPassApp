@@ -1,0 +1,90 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Escanear visita</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="escanear-visita">
+  <div class="escanear-visita__container">
+    @if (status() === 'scanning') {
+      <p class="escanear-visita__hint">Apunta la cámara al código QR de la visita.</p>
+      <div [id]="readerId" class="escanear-visita__reader"></div>
+    }
+
+    @if (status() === 'loading_status') {
+      <div class="escanear-visita__actions-card">
+        <ion-spinner name="crescent"></ion-spinner>
+        <p class="escanear-visita__hint">Verificando estado de la visita...</p>
+      </div>
+    }
+
+    @if (status() === 'scanned' || status() === 'loading') {
+      <div class="escanear-visita__actions-card">
+        <h2 class="escanear-visita__actions-title">Código leído</h2>
+        @if (isVisitFinished()) {
+          <p class="escanear-visita__message escanear-visita__message--success" role="status">
+            Visita ya finalizada (entrada y salida registradas).
+          </p>
+          <ion-button expand="block" fill="clear" (click)="scanAgain()">
+            Escanear otro
+          </ion-button>
+        } @else {
+          <p class="escanear-visita__actions-hint">
+            @if (canRegisterEntry()) {
+              Registra la entrada del visitante.
+            } @else if (canRegisterExit()) {
+              Registra la salida del visitante.
+            }
+          </p>
+          <div class="escanear-visita__buttons">
+            @if (canRegisterEntry()) {
+              <ion-button expand="block" (click)="registerEvent('entry')" [disabled]="status() === 'loading'">
+                @if (status() === 'loading') {
+                  <ion-spinner name="crescent"></ion-spinner>
+                } @else {
+                  Registrar entrada
+                }
+              </ion-button>
+            }
+            @if (canRegisterExit()) {
+              <ion-textarea
+                class="escanear-visita__comment-field"
+                label="Comentario o incidencia (opcional)"
+                labelPlacement="stacked"
+                [value]="exitComment()"
+                (ionInput)="onExitCommentInput($event)"
+                placeholder="Ej: incidente en salida, observación..."
+                [maxlength]="500"
+                [rows]="3"
+                fill="outline"
+              ></ion-textarea>
+              <ion-button expand="block" (click)="registerEvent('exit')" [disabled]="status() === 'loading'">
+                Registrar salida
+              </ion-button>
+            }
+            <ion-button expand="block" fill="clear" (click)="scanAgain()" [disabled]="status() === 'loading'">
+              Escanear otro
+            </ion-button>
+          </div>
+        }
+      </div>
+    }
+
+    @if (status() === 'success') {
+      <div class="escanear-visita__message escanear-visita__message--success" role="status">
+        {{ message() }}
+      </div>
+      <p class="escanear-visita__hint">La cámara se reanudará en breve.</p>
+    }
+
+    @if (status() === 'error') {
+      <div class="escanear-visita__message escanear-visita__message--error" role="alert">
+        {{ message() }}
+      </div>
+      <ion-button expand="block" (click)="scanAgain()">Intentar de nuevo</ion-button>
+    }
+  </div>
+</ion-content>

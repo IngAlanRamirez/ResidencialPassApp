@@ -32,6 +32,8 @@ export interface VisitResponse {
   scannedByEntryId?: string;
   /** Presente cuando un vigilante registró la salida (solo en listado de bitácora). */
   scannedByExitId?: string;
+  /** Comentario o incidencia al registrar la salida (opcional). */
+  exitComment?: string | null;
 }
 
 export const VISIT_REASON_OPTIONS: { value: VisitReason; label: string }[] = [

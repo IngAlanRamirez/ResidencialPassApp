@@ -1,5 +1,5 @@
 import { Component, inject, signal, computed, OnInit } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import {
   IonHeader,
   IonToolbar,
@@ -10,6 +10,9 @@ import {
   IonCardTitle,
   IonCardContent,
   IonSpinner,
+  IonButtons,
+  IonButton,
+  IonIcon,
 } from '@ionic/angular/standalone';
 
 import { AuthStateService } from '../../core/data/services/auth-state.service';
@@ -32,10 +35,14 @@ import type { UserProfile } from '../../core/domain/models/user.model';
     IonCardTitle,
     IonCardContent,
     IonSpinner,
+    IonButtons,
+    IonButton,
+    IonIcon,
   ],
 })
 export class HomePage implements OnInit {
   readonly authState = inject(AuthStateService);
+  private readonly router = inject(Router);
   private readonly usersApi = inject(UsersApiService);
 
   readonly profile = signal<UserProfile | null>(null);
@@ -45,20 +52,24 @@ export class HomePage implements OnInit {
   readonly welcomeTitle = computed(() => {
     const p = this.profile();
     if (!p) return '';
-    if (p.role === 'vigilancia') return 'Buenas tardes';
+    const role = (p.role ?? '').toLowerCase();
+    if (role === 'vigilancia') return 'Buen día Vigilante';
+    if (role === 'admin') return 'Bienvenido, Administrador';
     const addr = p.address;
-    if (addr) {
-      const parte = `${addr.street} ${addr.number}`.trim();
+    if (addr && (addr.street || addr.number)) {
+      const street = addr.street ?? '';
+      const number = addr.number ?? '';
+      const parte = `${street} ${number}`.trim();
       const letra = addr.letter?.trim();
-      return letra ? `Bienvenido, ${parte} ${letra}` : `Bienvenido, ${parte}`;
+      if (parte) return letra ? `Bienvenido, ${parte} ${letra}` : `Bienvenido, ${parte}`;
     }
-    return p.role === 'admin' ? 'Bienvenido, Administrador' : 'Bienvenido';
+    return 'Bienvenido';
   });
 
   readonly welcomeSubtitle = computed(() => {
     const p = this.profile();
     if (!p) return 'Bienvenido al acceso del fraccionamiento.';
-    if (p.role === 'vigilancia') return '';
+    if ((p.role ?? '').toLowerCase() === 'vigilancia') return '';
     return 'Bienvenido al acceso del fraccionamiento.';
   });
 
@@ -74,5 +85,10 @@ export class HomePage implements OnInit {
         this.profileError.set(true);
       },
     });
+  }
+
+  logout(): void {
+    this.authState.logout();
+    this.router.navigate(['/auth/login']);
   }
 }

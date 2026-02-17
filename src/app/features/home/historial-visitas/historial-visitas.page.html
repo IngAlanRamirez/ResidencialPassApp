@@ -53,6 +53,9 @@
                 <p class="historial-visitas__event historial-visitas__event--exit">
                   Salida registrada: {{ formatDate(v.exitAt) }}
                 </p>
+                @if (v.exitComment?.trim()) {
+                  <p class="historial-visitas__exit-comment">{{ v.exitComment }}</p>
+                }
               }
             </ion-card-content>
           </ion-card>

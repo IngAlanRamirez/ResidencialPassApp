@@ -17,6 +17,13 @@ export const homeRoutes: Routes = [
       import('./detalle-visita/detalle-visita.page').then((m) => m.DetalleVisitaPage),
   },
   {
+    path: 'escanear-visita',
+    loadComponent: () =>
+      import('./escanear-visita/escanear-visita.page').then(
+        (m) => m.EscanearVisitaPage
+      ),
+  },
+  {
     path: 'historial',
     loadComponent: () =>
       import('./historial-visitas/historial-visitas.page').then(
