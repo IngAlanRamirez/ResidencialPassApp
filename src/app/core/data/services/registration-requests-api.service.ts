@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { environment } from '../../../../environments/environment';
 import type {
   RegistrationRequestItem,
+  RegistrationRequestHistoryItem,
   UpdateStatusPayload,
 } from '../../domain/models/registration-request.model';
 
@@ -14,6 +15,10 @@ export class RegistrationRequestsApiService {
 
   getPending(): Observable<RegistrationRequestItem[]> {
     return this.http.get<RegistrationRequestItem[]>(this.baseUrl);
+  }
+
+  getHistory(): Observable<RegistrationRequestHistoryItem[]> {
+    return this.http.get<RegistrationRequestHistoryItem[]>(`${this.baseUrl}/history`);
   }
 
   updateStatus(

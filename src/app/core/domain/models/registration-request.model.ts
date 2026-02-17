@@ -16,4 +16,10 @@ export interface RegistrationRequestItem {
   user: RegistrationRequestUser;
 }
 
+/** Item de la bitácora: registros ya aprobados o rechazados. */
+export interface RegistrationRequestHistoryItem extends RegistrationRequestItem {
+  updatedAt: string;
+  validatedBy: RegistrationRequestUser | null;
+}
+
 export type UpdateStatusPayload = { status: 'approved' | 'rejected' };

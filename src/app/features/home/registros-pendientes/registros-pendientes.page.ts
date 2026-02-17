@@ -18,11 +18,18 @@ import {
   IonCardContent,
   IonButton,
   IonSpinner,
+  IonModal,
+  IonIcon,
 } from '@ionic/angular/standalone';
+import { addIcons } from 'ionicons';
+import { listOutline } from 'ionicons/icons';
 import { Subject, takeUntil } from 'rxjs';
 
 import { RegistrationRequestsApiService } from '../../../core/data/services/registration-requests-api.service';
-import type { RegistrationRequestItem } from '../../../core/domain/models/registration-request.model';
+import type {
+  RegistrationRequestItem,
+  RegistrationRequestHistoryItem,
+} from '../../../core/domain/models/registration-request.model';
 
 @Component({
   selector: 'app-registros-pendientes',
@@ -42,6 +49,8 @@ import type { RegistrationRequestItem } from '../../../core/domain/models/regist
     IonCardContent,
     IonButton,
     IonSpinner,
+    IonModal,
+    IonIcon,
   ],
 })
 export class RegistrosPendientesPage implements OnInit, OnDestroy {
@@ -53,6 +62,14 @@ export class RegistrosPendientesPage implements OnInit, OnDestroy {
   readonly error = signal<string | null>(null);
   readonly processingId = signal<string | null>(null);
   readonly successMessage = signal<string | null>(null);
+
+  readonly showLogModal = signal(false);
+  readonly historyList = signal<RegistrationRequestHistoryItem[]>([]);
+  readonly loadingHistory = signal(false);
+
+  constructor() {
+    addIcons({ listOutline });
+  }
 
   ngOnInit(): void {
     this.loadList();
@@ -126,5 +143,46 @@ export class RegistrosPendientesPage implements OnInit, OnDestroy {
   formatAddress(item: RegistrationRequestItem): string {
     const part = `${item.street} ${item.number}`.trim();
     return item.letter?.trim() ? `${part} ${item.letter.trim()}` : part;
+  }
+
+  openLogModal(): void {
+    this.showLogModal.set(true);
+    this.loadHistory();
+  }
+
+  closeLogModal(): void {
+    this.showLogModal.set(false);
+  }
+
+  loadHistory(): void {
+    this.loadingHistory.set(true);
+    this.api
+      .getHistory()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (data) => {
+          this.historyList.set(data);
+          this.loadingHistory.set(false);
+        },
+        error: () => {
+          this.loadingHistory.set(false);
+          this.historyList.set([]);
+        },
+      });
+  }
+
+  formatHistoryDate(iso: string): string {
+    const d = new Date(iso);
+    return d.toLocaleDateString('es-MX', {
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+    });
+  }
+
+  statusLabel(status: string): string {
+    return status === 'approved' ? 'Aprobado' : 'Rechazado';
   }
 }

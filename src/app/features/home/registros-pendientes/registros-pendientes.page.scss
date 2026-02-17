@@ -68,3 +68,62 @@
     min-width: 120px;
   }
 }
+
+/* Bitácora (modal) */
+.registros-pendientes__log-content {
+  --padding-top: 1rem;
+  --padding-bottom: 1rem;
+  --padding-start: 1rem;
+  --padding-end: 1rem;
+}
+
+.registros-pendientes__log-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  padding: 2rem;
+  color: var(--ion-color-medium);
+  font-size: 0.9375rem;
+
+  ion-spinner {
+    width: 2rem;
+    height: 2rem;
+  }
+}
+
+.registros-pendientes__log-empty {
+  padding: 2rem 1rem;
+  text-align: center;
+  color: var(--ion-color-medium);
+  font-size: 0.9375rem;
+  margin: 0;
+}
+
+.registros-pendientes__log-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.registros-pendientes__log-item {
+  padding: 0.75rem 0;
+  border-bottom: 1px solid var(--ion-color-light-shade);
+
+  &:last-child {
+    border-bottom: none;
+  }
+}
+
+.registros-pendientes__log-address {
+  display: block;
+  font-weight: 600;
+  font-size: 0.9375rem;
+  margin-bottom: 0.25rem;
+}
+
+.registros-pendientes__log-meta {
+  display: block;
+  font-size: 0.8125rem;
+  color: var(--ion-color-medium);
+}

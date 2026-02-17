@@ -4,8 +4,51 @@
       <ion-back-button defaultHref="/home"></ion-back-button>
     </ion-buttons>
     <ion-title>Registros pendientes</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="openLogModal()" title="Bitácora de registros">
+        <ion-icon name="list-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
+
+<ion-modal [isOpen]="showLogModal()" (didDismiss)="closeLogModal()">
+  <ng-template>
+    <ion-header>
+      <ion-toolbar>
+        <ion-title>Bitácora de registros</ion-title>
+        <ion-buttons slot="end">
+          <ion-button (click)="closeLogModal()">Cerrar</ion-button>
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-header>
+    <ion-content class="registros-pendientes__log-content">
+      @if (loadingHistory()) {
+        <div class="registros-pendientes__log-loading">
+          <ion-spinner name="crescent"></ion-spinner>
+          <p>Cargando bitácora...</p>
+        </div>
+      } @else if (historyList().length === 0) {
+        <p class="registros-pendientes__log-empty">No hay registros aprobados ni rechazados.</p>
+      } @else {
+        <ul class="registros-pendientes__log-list">
+          @for (item of historyList(); track item.id) {
+            <li class="registros-pendientes__log-item">
+              <span class="registros-pendientes__log-address">{{ formatAddress(item) }}</span>
+              <span class="registros-pendientes__log-meta">
+                {{ formatHistoryDate(item.updatedAt) }}
+                · {{ statusLabel(item.status) }}
+                @if (item.validatedBy) {
+                  · Por: {{ item.validatedBy.phone }}
+                }
+              </span>
+            </li>
+          }
+        </ul>
+      }
+    </ion-content>
+  </ng-template>
+</ion-modal>
 
 <ion-content class="registros-pendientes">
   <div class="registros-pendientes__container">
