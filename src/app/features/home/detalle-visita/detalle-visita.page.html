@@ -21,23 +21,30 @@
       <ion-button expand="block" routerLink="/home">Ir al inicio</ion-button>
     } @else if (visit(); as v) {
       <div class="detalle-visita__success">
-        <h2 class="detalle-visita__success-title">Visita registrada</h2>
-        <p class="detalle-visita__success-text">
-          Este código QR es <strong>único, de un solo uso e intransferible</strong>.
-          Válido solo para el domicilio indicado.
-        </p>
-        @if (qrDataUrl(); as src) {
-          <div class="detalle-visita__qr-wrap">
-            <img [src]="src" alt="Código QR de la visita" class="detalle-visita__qr" />
+        @if (v.status === 'cancelled') {
+          <div class="detalle-visita__cancelled" role="status">
+            <span class="detalle-visita__cancelled-badge">Cancelada</span>
+            <p class="detalle-visita__cancelled-text">Esta visita fue cancelada. El código QR ya no es válido.</p>
           </div>
-          <ion-button expand="block" fill="outline" (click)="shareQR()" [disabled]="sharing()" class="detalle-visita__share">
-            @if (sharing()) {
-              <ion-spinner name="crescent"></ion-spinner>
-            } @else {
-              <ion-icon name="share-outline" slot="start"></ion-icon>
-              Compartir código QR
-            }
-          </ion-button>
+        } @else {
+          <h2 class="detalle-visita__success-title">Visita registrada</h2>
+          <p class="detalle-visita__success-text">
+            Este código QR es <strong>único, de un solo uso e intransferible</strong>.
+            Válido solo para el domicilio indicado.
+          </p>
+          @if (qrDataUrl(); as src) {
+            <div class="detalle-visita__qr-wrap">
+              <img [src]="src" alt="Código QR de la visita" class="detalle-visita__qr" />
+            </div>
+            <ion-button expand="block" fill="outline" (click)="shareQR()" [disabled]="sharing()" class="detalle-visita__share">
+              @if (sharing()) {
+                <ion-spinner name="crescent"></ion-spinner>
+              } @else {
+                <ion-icon name="share-outline" slot="start"></ion-icon>
+                Compartir código QR
+              }
+            </ion-button>
+          }
         }
         <p class="detalle-visita__meta">
           <strong>Visitante:</strong> {{ v.visitorName }}<br>

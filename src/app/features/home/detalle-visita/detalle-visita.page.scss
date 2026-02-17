@@ -35,6 +35,35 @@
   padding: 0.5rem 0;
 }
 
+.detalle-visita__cancelled {
+  margin-bottom: 1.5rem;
+  padding: 1.5rem 1rem;
+  background: var(--ion-color-light);
+  border: 2px solid var(--ion-color-medium-tint);
+  border-radius: 12px;
+  text-align: center;
+}
+
+.detalle-visita__cancelled-badge {
+  display: inline-block;
+  padding: 0.35rem 0.75rem;
+  font-size: 0.875rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--ion-color-danger-contrast);
+  background: var(--ion-color-danger);
+  border-radius: 6px;
+  margin-bottom: 0.75rem;
+}
+
+.detalle-visita__cancelled-text {
+  font-size: 0.9375rem;
+  color: var(--ion-color-medium-shade);
+  margin: 0;
+  line-height: 1.4;
+}
+
 .detalle-visita__success-title {
   font-size: 1.25rem;
   font-weight: 700;

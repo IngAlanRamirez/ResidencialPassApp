@@ -18,4 +18,14 @@ export class VisitsApiService {
   getById(id: string): Observable<VisitResponse> {
     return this.http.get<VisitResponse>(`${this.baseUrl}/${id}`);
   }
+
+  /** Lista según rol: vecino/admin = visitas que creó; vigilante = visitas que escaneó. */
+  list(): Observable<VisitResponse[]> {
+    return this.http.get<VisitResponse[]>(this.baseUrl);
+  }
+
+  /** Cancelar visita (solo creador, solo si está pendiente). */
+  cancel(id: string): Observable<VisitResponse> {
+    return this.http.patch<VisitResponse>(`${this.baseUrl}/${id}/cancel`, {});
+  }
 }

@@ -75,7 +75,9 @@ export class DetalleVisitaPage implements OnInit, OnDestroy {
       .subscribe({
         next: (v) => {
           this.visit.set(v);
-          this.generateQR(v.id);
+          if (v.status !== 'cancelled') {
+            this.generateQR(v.id);
+          }
           this.loading.set(false);
         },
         error: (err) => {

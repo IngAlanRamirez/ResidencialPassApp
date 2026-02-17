@@ -28,6 +28,10 @@ export interface VisitResponse {
   letter: string | null;
   status: string;
   createdAt: string;
+  /** Presente cuando un vigilante registró la entrada (solo en listado de bitácora). */
+  scannedByEntryId?: string;
+  /** Presente cuando un vigilante registró la salida (solo en listado de bitácora). */
+  scannedByExitId?: string;
 }
 
 export const VISIT_REASON_OPTIONS: { value: VisitReason; label: string }[] = [

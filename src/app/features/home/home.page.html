@@ -22,24 +22,26 @@
     }
 
     <div class="home__cards">
-      <a routerLink="/home/nueva-visita" class="home__card">
-        <ion-card>
-          <ion-card-header>
-            <ion-card-title>Nueva visita</ion-card-title>
-          </ion-card-header>
-          <ion-card-content>
-            Iniciar el registro de una nueva visita.
-          </ion-card-content>
-        </ion-card>
-      </a>
+      @if (!authState.isVigilancia()) {
+        <a routerLink="/home/nueva-visita" class="home__card">
+          <ion-card>
+            <ion-card-header>
+              <ion-card-title>Nueva visita</ion-card-title>
+            </ion-card-header>
+            <ion-card-content>
+              Iniciar el registro de una nueva visita.
+            </ion-card-content>
+          </ion-card>
+        </a>
+      }
 
       <a routerLink="/home/historial" class="home__card">
         <ion-card>
           <ion-card-header>
-            <ion-card-title>Historial de visitas</ion-card-title>
+            <ion-card-title>{{ authState.isVigilancia() ? 'Bitácora de escaneos' : 'Historial de visitas' }}</ion-card-title>
           </ion-card-header>
           <ion-card-content>
-            Ver el historial de visitas registradas.
+            {{ authState.isVigilancia() ? 'Ver visitas en las que registraste entrada o salida.' : 'Ver el historial de visitas registradas.' }}
           </ion-card-content>
         </ion-card>
       </a>

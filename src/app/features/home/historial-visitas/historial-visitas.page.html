@@ -3,12 +3,94 @@
     <ion-buttons slot="start">
       <ion-back-button defaultHref="/home"></ion-back-button>
     </ion-buttons>
-    <ion-title>Historial de visitas</ion-title>
+    <ion-title>{{ pageTitle() }}</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content class="historial-visitas">
   <div class="historial-visitas__container">
-    <p>Pantalla de historial de visitas (próximamente).</p>
+    @if (loading()) {
+      <div class="historial-visitas__loading">
+        <ion-spinner name="crescent"></ion-spinner>
+        <p>Cargando...</p>
+      </div>
+    } @else if (error(); as msg) {
+      <div class="historial-visitas__message historial-visitas__message--error" role="alert">
+        {{ msg }}
+      </div>
+      <ion-button expand="block" routerLink="/home">Ir al inicio</ion-button>
+    } @else if (visits().length === 0) {
+      <div class="historial-visitas__empty">
+        <p>
+          @if (isVigilante()) {
+            Aún no has registrado entrada o salida de ninguna visita.
+          } @else {
+            No tienes visitas registradas. Crea una desde <a routerLink="/home/nueva-visita">Nueva visita</a>.
+          }
+        </p>
+      </div>
+    } @else {
+      <p class="historial-visitas__subtitle">{{ pageSubtitle() }}</p>
+
+      @if (isVigilante()) {
+        <!-- Bitácora del vigilante: visitas que escaneó -->
+        @for (v of visits(); track v.id) {
+          <ion-card class="historial-visitas__card">
+            <ion-card-header>
+              <ion-card-title>{{ v.visitorName }}</ion-card-title>
+            </ion-card-header>
+            <ion-card-content>
+              <p class="historial-visitas__meta">
+                <strong>Domicilio:</strong> {{ addressLabel(v) }}<br>
+                <strong>Motivo:</strong> {{ reasonLabel(v.reason) }}
+              </p>
+              @if (v.scannedByEntryId) {
+                <p class="historial-visitas__event historial-visitas__event--entry">
+                  Entrada registrada: {{ formatDate(v.entryAt) }}
+                </p>
+              }
+              @if (v.scannedByExitId) {
+                <p class="historial-visitas__event historial-visitas__event--exit">
+                  Salida registrada: {{ formatDate(v.exitAt) }}
+                </p>
+              }
+            </ion-card-content>
+          </ion-card>
+        }
+      } @else {
+        <!-- Historial vecino/admin: visitas que creó, con enlace a ver QR -->
+        @for (v of visits(); track v.id) {
+          <ion-card class="historial-visitas__card">
+            <ion-card-header>
+              <ion-card-title>{{ v.visitorName }}</ion-card-title>
+            </ion-card-header>
+            <ion-card-content>
+              <p class="historial-visitas__meta">
+                <strong>Domicilio:</strong> {{ addressLabel(v) }}<br>
+                <strong>Motivo:</strong> {{ reasonLabel(v.reason) }}<br>
+                <strong>Registrada:</strong> {{ formatDate(v.createdAt) }}<br>
+                <strong>Estado:</strong> {{ statusLabel(v.status) }}
+              </p>
+              @if (v.status === 'cancelled') {
+                <p class="historial-visitas__cancelled-legend" role="status">Visita cancelada</p>
+              } @else if (v.status === 'finished') {
+                <p class="historial-visitas__finished-legend" role="status">Visita finalizada</p>
+              } @else {
+                <div class="historial-visitas__actions">
+                  <ion-button expand="block" fill="outline" [routerLink]="['/home/visita', v.id]">
+                    Ver código QR
+                  </ion-button>
+                  @if (canCancel(v)) {
+                    <ion-button expand="block" fill="outline" color="danger" (click)="cancelVisit(v)">
+                      Cancelar visita
+                    </ion-button>
+                  }
+                </div>
+              }
+            </ion-card-content>
+          </ion-card>
+        }
+      }
+    }
   </div>
 </ion-content>
