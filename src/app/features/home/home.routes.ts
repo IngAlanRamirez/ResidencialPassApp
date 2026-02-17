@@ -6,4 +6,28 @@ export const homeRoutes: Routes = [
     loadComponent: () =>
       import('./home.page').then((m) => m.HomePage),
   },
+  {
+    path: 'nueva-visita',
+    loadComponent: () =>
+      import('./nueva-visita/nueva-visita.page').then((m) => m.NuevaVisitaPage),
+  },
+  {
+    path: 'historial',
+    loadComponent: () =>
+      import('./historial-visitas/historial-visitas.page').then(
+        (m) => m.HistorialVisitasPage
+      ),
+  },
+  {
+    path: 'registros-pendientes',
+    loadComponent: () =>
+      import('./registros-pendientes/registros-pendientes.page').then(
+        (m) => m.RegistrosPendientesPage
+      ),
+  },
+  {
+    path: 'registrar-vigilante',
+    loadComponent: () =>
+      import('./registrar-vigilante').then((m) => m.RegistrarVigilantePage),
+  },
 ];

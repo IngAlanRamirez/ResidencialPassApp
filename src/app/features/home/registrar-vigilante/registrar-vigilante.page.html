@@ -1,0 +1,77 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Registrar vigilante</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="registrar-vigilante">
+  <div class="registrar-vigilante__container">
+    @if (errorMessage(); as msg) {
+      <div class="registrar-vigilante__message registrar-vigilante__message--error" role="alert">
+        {{ msg }}
+      </div>
+    }
+    @if (successMessage(); as msg) {
+      <div class="registrar-vigilante__message registrar-vigilante__message--success" role="status">
+        {{ msg }}
+      </div>
+    }
+
+    <form class="registrar-vigilante__form" [formGroup]="form" (ngSubmit)="onSubmit()">
+      <ion-item class="registrar-vigilante__field" lines="full">
+        <ion-label position="stacked">Teléfono</ion-label>
+        <ion-input
+          formControlName="phone"
+          type="tel"
+          placeholder="Ej. 5512345678"
+          inputmode="tel"
+        ></ion-input>
+      </ion-item>
+      @if (form.get('phone')?.invalid && form.get('phone')?.touched) {
+        <ion-text color="danger" class="registrar-vigilante__error">Ingresa un teléfono válido.</ion-text>
+      }
+
+      <ion-item class="registrar-vigilante__field" lines="full">
+        <ion-label position="stacked">Contraseña</ion-label>
+        <ion-input
+          formControlName="password"
+          type="password"
+          placeholder="Mínimo 6 caracteres"
+        ></ion-input>
+      </ion-item>
+      @if (form.get('password')?.invalid && form.get('password')?.touched) {
+        <ion-text color="danger" class="registrar-vigilante__error">Mínimo 6 caracteres.</ion-text>
+      }
+
+      <ion-item class="registrar-vigilante__field" lines="full">
+        <ion-label position="stacked">Confirmar contraseña</ion-label>
+        <ion-input
+          formControlName="confirmPassword"
+          type="password"
+          placeholder="Repite la contraseña"
+        ></ion-input>
+      </ion-item>
+      @if (form.hasError('passwordMismatch') && form.get('confirmPassword')?.touched) {
+        <ion-text color="danger" class="registrar-vigilante__error">Las contraseñas no coinciden.</ion-text>
+      }
+
+      <div class="registrar-vigilante__actions">
+        <ion-button
+          type="submit"
+          expand="block"
+          [disabled]="loadingSubmit()"
+          class="registrar-vigilante__submit"
+        >
+          @if (loadingSubmit()) {
+            <ion-spinner name="crescent"></ion-spinner>
+          } @else {
+            Registrar vigilante
+          }
+        </ion-button>
+      </div>
+    </form>
+  </div>
+</ion-content>

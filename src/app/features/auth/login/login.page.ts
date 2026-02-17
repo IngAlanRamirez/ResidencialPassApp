@@ -23,6 +23,7 @@ import {
 import { Subject, takeUntil } from 'rxjs';
 
 import { AuthApiService } from '../../../core/data/services/auth-api.service';
+import { AuthStateService } from '../../../core/data/services/auth-state.service';
 import { DeviceIdService } from '../../../core/data/services/device-id.service';
 
 @Component({
@@ -49,6 +50,7 @@ import { DeviceIdService } from '../../../core/data/services/device-id.service';
 export class LoginPage implements OnDestroy {
   private readonly fb = inject(FormBuilder);
   private readonly authApi = inject(AuthApiService);
+  private readonly authState = inject(AuthStateService);
   private readonly deviceId = inject(DeviceIdService);
   private readonly navCtrl = inject(NavController);
   private readonly destroy$ = new Subject<void>();
@@ -86,7 +88,11 @@ export class LoginPage implements OnDestroy {
       .subscribe({
         next: (res) => {
           this.loadingSubmit.set(false);
-          // TODO: guardar token
+          this.authState.setSession(res.accessToken, {
+            id: res.user.id,
+            phone: res.user.phone,
+            role: res.user.role as 'vecino' | 'admin' | 'vigilancia',
+          });
           this.navCtrl.navigateRoot('/home', { replaceUrl: true });
         },
         error: (err) => {

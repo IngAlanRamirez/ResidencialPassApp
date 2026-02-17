@@ -6,7 +6,66 @@
 
 <ion-content class="home">
   <div class="home__container">
-    <h1 class="home__title">¡Hola!</h1>
-    <p class="home__subtitle">Bienvenido al acceso del fraccionamiento.</p>
+    @if (loadingProfile()) {
+      <div class="home__welcome">
+        <ion-spinner name="crescent"></ion-spinner>
+        <p class="home__subtitle">Cargando...</p>
+      </div>
+    } @else if (profileError()) {
+      <h1 class="home__title">¡Hola!</h1>
+      <p class="home__subtitle">Bienvenido al acceso del fraccionamiento.</p>
+    } @else {
+      <h1 class="home__title">{{ welcomeTitle() }}</h1>
+      @if (welcomeSubtitle()) {
+        <p class="home__subtitle">{{ welcomeSubtitle() }}</p>
+      }
+    }
+
+    <div class="home__cards">
+      <a routerLink="/home/nueva-visita" class="home__card">
+        <ion-card>
+          <ion-card-header>
+            <ion-card-title>Nueva visita</ion-card-title>
+          </ion-card-header>
+          <ion-card-content>
+            Iniciar el registro de una nueva visita.
+          </ion-card-content>
+        </ion-card>
+      </a>
+
+      <a routerLink="/home/historial" class="home__card">
+        <ion-card>
+          <ion-card-header>
+            <ion-card-title>Historial de visitas</ion-card-title>
+          </ion-card-header>
+          <ion-card-content>
+            Ver el historial de visitas registradas.
+          </ion-card-content>
+        </ion-card>
+      </a>
+
+      @if (authState.isAdmin()) {
+        <a routerLink="/home/registros-pendientes" class="home__card">
+          <ion-card>
+            <ion-card-header>
+              <ion-card-title>Registros pendientes</ion-card-title>
+            </ion-card-header>
+            <ion-card-content>
+              Ver solicitudes de registro pendientes de autorizar.
+            </ion-card-content>
+          </ion-card>
+        </a>
+        <a routerLink="/home/registrar-vigilante" class="home__card">
+          <ion-card>
+            <ion-card-header>
+              <ion-card-title>Registrar vigilante</ion-card-title>
+            </ion-card-header>
+            <ion-card-content>
+              Dar de alta un nuevo usuario con rol de vigilancia.
+            </ion-card-content>
+          </ion-card>
+        </a>
+      }
+    </div>
   </div>
 </ion-content>
