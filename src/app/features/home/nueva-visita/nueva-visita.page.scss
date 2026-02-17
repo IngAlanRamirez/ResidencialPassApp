@@ -1,5 +1,107 @@
 .nueva-visita__container {
-  padding: 2rem 1rem;
-  text-align: center;
+  max-width: 28rem;
+  margin-inline: auto;
+  padding: 1.5rem 1rem;
+}
+
+.nueva-visita__message {
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+  font-size: 0.9375rem;
+
+  &--error {
+    background: var(--ion-color-danger-tint);
+    color: var(--ion-color-danger-shade);
+  }
+}
+
+.nueva-visita__form {
+  text-align: left;
+}
+
+.nueva-visita__field {
+  --background: var(--ion-color-light);
+  --border-radius: 8px;
+  margin-bottom: 0.5rem;
+}
+
+.nueva-visita__field--checkbox {
+  --background: transparent;
+  --padding-start: 0;
+  --inner-padding-end: 0;
+  margin-bottom: 0.25rem;
+}
+
+.nueva-visita__hint {
+  font-size: 0.8125rem;
   color: var(--ion-color-medium);
+  margin: 0 0 0.75rem 0;
+  padding: 0 0 0 0.5rem;
+}
+
+.nueva-visita__error {
+  display: block;
+  font-size: 0.8125rem;
+  margin: -0.25rem 0 0.5rem;
+}
+
+.nueva-visita__actions {
+  margin-top: 1.5rem;
+}
+
+.nueva-visita__submit {
+  margin-top: 0.5rem;
+}
+
+/* Pantalla de éxito con QR */
+.nueva-visita__success {
+  text-align: center;
+  padding: 0.5rem 0;
+}
+
+.nueva-visita__success-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin: 0 0 0.75rem;
+}
+
+.nueva-visita__success-text {
+  font-size: 0.9375rem;
+  color: var(--ion-color-medium);
+  margin: 0 0 1.5rem;
+  line-height: 1.4;
+}
+
+.nueva-visita__qr-wrap {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 1.5rem;
+  padding: 1rem;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.nueva-visita__qr {
+  display: block;
+  width: 260px;
+  height: 260px;
+}
+
+.nueva-visita__share {
+  margin-bottom: 1rem;
+}
+
+.nueva-visita__meta {
+  text-align: left;
+  font-size: 0.9375rem;
+  margin: 0 0 1.5rem;
+  padding: 0 0.5rem;
+  line-height: 1.6;
+
+  strong {
+    display: inline-block;
+    min-width: 5rem;
+  }
 }

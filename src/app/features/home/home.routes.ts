@@ -12,6 +12,11 @@ export const homeRoutes: Routes = [
       import('./nueva-visita/nueva-visita.page').then((m) => m.NuevaVisitaPage),
   },
   {
+    path: 'visita/:id',
+    loadComponent: () =>
+      import('./detalle-visita/detalle-visita.page').then((m) => m.DetalleVisitaPage),
+  },
+  {
     path: 'historial',
     loadComponent: () =>
       import('./historial-visitas/historial-visitas.page').then(
