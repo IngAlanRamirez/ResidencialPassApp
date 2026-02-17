@@ -26,6 +26,7 @@ import { App } from '@capacitor/app';
 import { Capacitor } from '@capacitor/core';
 
 import { AuthStateService } from '../../core/data/services/auth-state.service';
+import { BiometricService } from '../../core/data/services/biometric.service';
 import { UsersApiService } from '../../core/data/services/users-api.service';
 import type { UserProfile } from '../../core/domain/models/user.model';
 
@@ -54,6 +55,7 @@ type BackButtonListenerHandle = { remove: () => Promise<void> };
 })
 export class HomePage implements OnInit, OnDestroy {
   readonly authState = inject(AuthStateService);
+  private readonly biometric = inject(BiometricService);
   private readonly router = inject(Router);
   private readonly usersApi = inject(UsersApiService);
   private readonly alertCtrl = inject(AlertController);
@@ -166,8 +168,9 @@ export class HomePage implements OnInit, OnDestroy {
     await alert.present();
   }
 
-  logout(): void {
+  async logout(): Promise<void> {
     this.authState.logout();
+    await this.biometric.disableBiometric();
     this.router.navigate(['/auth/login'], { replaceUrl: true });
   }
 }

@@ -39,7 +39,7 @@
         <ion-button
           type="submit"
           expand="block"
-          [disabled]="loadingSubmit()"
+          [disabled]="loadingSubmit() || loadingBiometric()"
           class="login__submit"
         >
           @if (loadingSubmit()) {
@@ -50,5 +50,24 @@
         </ion-button>
       </div>
     </form>
+
+    @if (biometricAvailable()) {
+      <div class="login__biometric">
+        <ion-button
+          expand="block"
+          fill="outline"
+          (click)="loginWithBiometric()"
+          [disabled]="loadingBiometric() || loadingSubmit()"
+          class="login__biometric-btn"
+        >
+          @if (loadingBiometric()) {
+            <ion-spinner name="crescent"></ion-spinner>
+          } @else {
+            <ion-icon name="finger-print-outline" slot="start"></ion-icon>
+            Entrar con {{ biometricLabel() }}
+          }
+        </ion-button>
+      </div>
+    }
   </div>
 </ion-content>
