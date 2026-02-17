@@ -173,7 +173,7 @@ export class NuevaVisitaPage implements OnDestroy {
       .subscribe({
         next: (visit) => {
           this.loadingSubmit.set(false);
-          this.router.navigate(['/home/visita', visit.id]);
+          this.router.navigate(['/home/visita', visit.id], { replaceUrl: true });
         },
         error: (err) => {
           this.loadingSubmit.set(false);

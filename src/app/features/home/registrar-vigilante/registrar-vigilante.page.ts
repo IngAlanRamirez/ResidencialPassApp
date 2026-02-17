@@ -25,6 +25,7 @@ import {
   IonBackButton,
   IonButtons,
 } from '@ionic/angular/standalone';
+import { Router } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
 
 import { UsersApiService } from '../../../core/data/services/users-api.service';
@@ -53,6 +54,7 @@ import { ToastService } from '../../../core/data/services/toast.service';
 })
 export class RegistrarVigilantePage implements OnDestroy {
   private readonly fb = inject(FormBuilder);
+  private readonly router = inject(Router);
   private readonly usersApi = inject(UsersApiService);
   private readonly toast = inject(ToastService);
   private readonly destroy$ = new Subject<void>();
@@ -101,7 +103,7 @@ export class RegistrarVigilantePage implements OnDestroy {
         next: () => {
           this.loadingSubmit.set(false);
           this.toast.success('Vigilante registrado correctamente.');
-          this.form.reset();
+          this.router.navigate(['/home'], { replaceUrl: true });
         },
         error: (err) => {
           this.loadingSubmit.set(false);

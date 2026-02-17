@@ -144,7 +144,7 @@ export class EscanearVisitaPage implements AfterViewInit, OnDestroy {
         this.scannedVisitId.set(null);
         this.scanStatus.set(null);
         this.exitComment.set('');
-        setTimeout(() => this.startScanner(), 2000);
+        setTimeout(() => this.router.navigate(['/home'], { replaceUrl: true }), 1500);
       },
       error: (err) => {
         this.status.set('error');

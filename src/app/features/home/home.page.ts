@@ -1,4 +1,11 @@
-import { Component, inject, signal, computed, OnInit } from '@angular/core';
+import {
+  Component,
+  inject,
+  signal,
+  computed,
+  OnInit,
+  OnDestroy,
+} from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import {
   IonHeader,
@@ -13,11 +20,16 @@ import {
   IonButtons,
   IonButton,
   IonIcon,
+  AlertController,
 } from '@ionic/angular/standalone';
+import { App } from '@capacitor/app';
+import { Capacitor } from '@capacitor/core';
 
 import { AuthStateService } from '../../core/data/services/auth-state.service';
 import { UsersApiService } from '../../core/data/services/users-api.service';
 import type { UserProfile } from '../../core/domain/models/user.model';
+
+type BackButtonListenerHandle = { remove: () => Promise<void> };
 
 @Component({
   selector: 'app-home',
@@ -40,10 +52,14 @@ import type { UserProfile } from '../../core/domain/models/user.model';
     IonIcon,
   ],
 })
-export class HomePage implements OnInit {
+export class HomePage implements OnInit, OnDestroy {
   readonly authState = inject(AuthStateService);
   private readonly router = inject(Router);
   private readonly usersApi = inject(UsersApiService);
+  private readonly alertCtrl = inject(AlertController);
+
+  private backButtonHandle: BackButtonListenerHandle | null = null;
+  private popstateHandler: (() => void) | null = null;
 
   readonly profile = signal<UserProfile | null>(null);
   readonly loadingProfile = signal(true);
@@ -89,8 +105,69 @@ export class HomePage implements OnInit {
     });
   }
 
+  ionViewWillEnter(): void {
+    this.registerBackButtonHandler();
+  }
+
+  ionViewWillLeave(): void {
+    this.unregisterBackButtonHandler();
+  }
+
+  ngOnDestroy(): void {
+    this.unregisterBackButtonHandler();
+  }
+
+  private registerBackButtonHandler(): void {
+    if (Capacitor.getPlatform() === 'android') {
+      App.addListener('backButton', () => this.handleBackAction()).then(
+        (handle) => {
+          this.backButtonHandle = handle;
+        }
+      );
+    } else if (Capacitor.getPlatform() === 'web') {
+      this.popstateHandler = () => this.handleBackAction();
+      window.history.pushState({ fromHome: true }, '', window.location.href);
+      window.addEventListener('popstate', this.popstateHandler);
+    }
+  }
+
+  private unregisterBackButtonHandler(): void {
+    if (this.backButtonHandle) {
+      this.backButtonHandle.remove();
+      this.backButtonHandle = null;
+    }
+    if (this.popstateHandler) {
+      window.removeEventListener('popstate', this.popstateHandler);
+      this.popstateHandler = null;
+    }
+  }
+
+  private async handleBackAction(): Promise<void> {
+    const alert = await this.alertCtrl.create({
+      header: 'Cerrar sesión',
+      message: '¿Quieres cerrar la sesión?',
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel',
+          handler: () => {
+            if (Capacitor.getPlatform() === 'web') {
+              window.history.pushState({ fromHome: true }, '', window.location.href);
+            }
+          },
+        },
+        {
+          text: 'Aceptar',
+          role: 'confirm',
+          handler: () => this.logout(),
+        },
+      ],
+    });
+    await alert.present();
+  }
+
   logout(): void {
     this.authState.logout();
-    this.router.navigate(['/auth/login']);
+    this.router.navigate(['/auth/login'], { replaceUrl: true });
   }
 }
