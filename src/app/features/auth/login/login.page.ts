@@ -68,7 +68,7 @@ export class LoginPage implements OnDestroy {
     this.destroy$.complete();
   }
 
-  onSubmit(): void {
+  async onSubmit(): Promise<void> {
     this.errorMessage.set(null);
     if (this.form.invalid) {
       this.form.markAllAsTouched();
@@ -77,12 +77,13 @@ export class LoginPage implements OnDestroy {
 
     const raw = this.form.getRawValue();
     this.loadingSubmit.set(true);
+    const deviceId = await this.deviceId.getDeviceId();
 
     this.authApi
       .login({
         phone: raw.phone!.trim(),
         password: raw.password!,
-        deviceId: this.deviceId.getDeviceId(),
+        deviceId,
       })
       .pipe(takeUntil(this.destroy$))
       .subscribe({

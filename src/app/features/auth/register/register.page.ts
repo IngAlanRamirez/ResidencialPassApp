@@ -105,7 +105,7 @@ export class RegisterPage implements OnInit, OnDestroy {
       });
   }
 
-  onSubmit(): void {
+  async onSubmit(): Promise<void> {
     this.errorMessage.set(null);
     this.successMessage.set(null);
 
@@ -125,6 +125,7 @@ export class RegisterPage implements OnInit, OnDestroy {
     const raw = this.form.getRawValue();
     const letter = raw.letter?.trim() || undefined;
     this.loadingSubmit.set(true);
+    const deviceId = await this.deviceId.getDeviceId();
 
     this.authApi
       .register({
@@ -133,7 +134,7 @@ export class RegisterPage implements OnInit, OnDestroy {
         letter,
         phone: raw.phone.trim(),
         password: raw.password,
-        deviceId: this.deviceId.getDeviceId(),
+        deviceId,
       })
       .pipe(takeUntil(this.destroy$))
       .subscribe({
