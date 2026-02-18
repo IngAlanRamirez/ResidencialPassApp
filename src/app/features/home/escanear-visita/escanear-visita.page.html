@@ -32,6 +32,24 @@
             Escanear otro
           </ion-button>
         } @else {
+          @if (scanStatus(); as st) {
+            <div class="escanear-visita__visit-info">
+              <p class="escanear-visita__visit-info-row">
+                <strong>Visitante:</strong> {{ st.visitorName }}
+              </p>
+              <p class="escanear-visita__visit-info-row">
+                <strong>Domicilio:</strong> {{ st.domicilio }}
+              </p>
+              <p class="escanear-visita__visit-info-row">
+                <strong>Motivo:</strong> {{ reasonLabel(st.reason) }}
+              </p>
+              @if (st.description) {
+                <p class="escanear-visita__visit-info-row">
+                  <strong>Descripción:</strong> {{ st.description }}
+                </p>
+              }
+            </div>
+          }
           <p class="escanear-visita__actions-hint">
             @if (canRegisterEntry()) {
               Registra la entrada del visitante.
@@ -41,6 +59,41 @@
           </p>
           <div class="escanear-visita__buttons">
             @if (canRegisterEntry()) {
+              <div class="escanear-visita__checkbox-group">
+                <ion-checkbox
+                  [checked]="entryHasVehicle()"
+                  (ionChange)="onEntryHasVehicleChange($event)"
+                  labelPlacement="end"
+                >
+                  Entra con vehículo
+                </ion-checkbox>
+              </div>
+              @if (entryHasVehicle()) {
+                <ion-input
+                  type="text"
+                  label="Placa del vehículo"
+                  labelPlacement="stacked"
+                  placeholder="Ej: ABC-1234"
+                  [value]="entryLicensePlate()"
+                  (ionInput)="onEntryLicensePlateInput($event)"
+                  [maxlength]="20"
+                  fill="outline"
+                  class="escanear-visita__plate-field"
+                ></ion-input>
+              }
+              <ion-select
+                label="¿Por qué medio se identificó?"
+                labelPlacement="stacked"
+                [value]="entryIdentificationType()"
+                (ionChange)="onEntryIdentificationChange($event)"
+                interface="action-sheet"
+                fill="outline"
+                class="escanear-visita__identification-select"
+              >
+                @for (opt of identificationOptions; track opt.value) {
+                  <ion-select-option [value]="opt.value">{{ opt.label }}</ion-select-option>
+                }
+              </ion-select>
               <ion-button expand="block" (click)="registerEvent('entry')" [disabled]="status() === 'loading'">
                 @if (status() === 'loading') {
                   <ion-spinner name="crescent"></ion-spinner>

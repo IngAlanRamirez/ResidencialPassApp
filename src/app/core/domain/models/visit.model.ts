@@ -4,7 +4,6 @@ export type IdentificationType = 'ine' | 'pasaporte' | 'licencia';
 
 export interface CreateVisitRequest {
   visitorName: string;
-  identificationType: IdentificationType;
   reason: VisitReason;
   entryOpenSchedule: boolean;
   exitOpenSchedule: boolean;
@@ -16,7 +15,8 @@ export interface CreateVisitRequest {
 export interface VisitResponse {
   id: string;
   visitorName: string;
-  identificationType: IdentificationType;
+  /** Medio de identificación; se registra al escanear la entrada (vigilante). */
+  identificationType: IdentificationType | null;
   reason: VisitReason;
   entryOpenSchedule: boolean;
   exitOpenSchedule: boolean;
@@ -34,6 +34,10 @@ export interface VisitResponse {
   scannedByExitId?: string;
   /** Comentario o incidencia al registrar la salida (opcional). */
   exitComment?: string | null;
+  /** Si el visitante entró con vehículo (registrado al escanear entrada). */
+  hasVehicle?: boolean;
+  /** Placa del vehículo (registrada al escanear entrada si hasVehicle). */
+  licensePlate?: string | null;
 }
 
 export const VISIT_REASON_OPTIONS: { value: VisitReason; label: string }[] = [

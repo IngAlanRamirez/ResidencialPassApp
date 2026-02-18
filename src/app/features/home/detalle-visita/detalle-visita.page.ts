@@ -124,7 +124,7 @@ export class DetalleVisitaPage implements OnInit, OnDestroy {
     this.sharing.set(true);
     try {
       if (Capacitor.isNativePlatform()) {
-        await this.shareNative(dataUrl, v.visitorName);
+        await this.shareNative(dataUrl);
       } else {
         this.shareWeb(dataUrl);
       }
@@ -137,7 +137,10 @@ export class DetalleVisitaPage implements OnInit, OnDestroy {
     }
   }
 
-  private async shareNative(dataUrl: string, visitorName: string): Promise<void> {
+  private readonly SHARE_LEGEND =
+    'Para brindar tu acceso se necesita una identificación y las únicas permitidas son INE, Licencia y Pasaporte.';
+
+  private async shareNative(dataUrl: string): Promise<void> {
     const base64Data = dataUrl.split(',')[1];
     const fileName = `qr-visita-${Date.now()}.png`;
 
@@ -149,7 +152,7 @@ export class DetalleVisitaPage implements OnInit, OnDestroy {
 
     await Share.share({
       title: 'Código QR - Visita',
-      text: `Visita registrada: ${visitorName}. Código único de un solo uso.`,
+      text: this.SHARE_LEGEND,
       files: [savedFile.uri],
       dialogTitle: 'Compartir código QR',
     });
@@ -190,7 +193,8 @@ export class DetalleVisitaPage implements OnInit, OnDestroy {
     return this.reasonOptions.find((o) => o.value === value)?.label ?? value;
   }
 
-  identificationLabel(value: IdentificationType): string {
+  identificationLabel(value: IdentificationType | null): string {
+    if (!value) return '—';
     return this.identificationOptions.find((o) => o.value === value)?.label ?? value;
   }
 

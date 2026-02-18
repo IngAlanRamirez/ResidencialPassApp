@@ -45,7 +45,12 @@
         }
         <p class="detalle-visita__meta">
           <strong>Visitante:</strong> {{ v.visitorName }}<br>
-          <strong>Identificación:</strong> {{ identificationLabel(v.identificationType) }}<br>
+          @if (v.identificationType) {
+            <strong>Identificación:</strong> {{ identificationLabel(v.identificationType) }}<br>
+          }
+          @if (v.hasVehicle && v.licensePlate) {
+            <strong>Vehículo:</strong> {{ v.licensePlate }}<br>
+          }
           <strong>Motivo:</strong> {{ reasonLabel(v.reason) }}<br>
           <strong>Entrada:</strong> {{ formatEntryExitLabel(v).entry }}<br>
           <strong>Salida:</strong> {{ formatEntryExitLabel(v).exit }}<br>

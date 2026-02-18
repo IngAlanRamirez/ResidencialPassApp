@@ -23,20 +23,6 @@
       ></ion-input>
 
       <ion-select
-        formControlName="identificationType"
-        label="Medio de identificación"
-        labelPlacement="stacked"
-        placeholder="Selecciona"
-        interface="action-sheet"
-        fill="outline"
-        class="nueva-visita__field"
-      >
-        @for (opt of identificationOptions; track opt.value) {
-          <ion-select-option [value]="opt.value">{{ opt.label }}</ion-select-option>
-        }
-      </ion-select>
-
-      <ion-select
         formControlName="reason"
         label="Motivo"
         labelPlacement="stacked"

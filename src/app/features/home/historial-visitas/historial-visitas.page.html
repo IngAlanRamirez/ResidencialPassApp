@@ -44,6 +44,9 @@
               <p class="historial-visitas__meta">
                 <strong>Domicilio:</strong> {{ addressLabel(v) }}<br>
                 <strong>Motivo:</strong> {{ reasonLabel(v.reason) }}
+                @if (v.hasVehicle && v.licensePlate) {
+                  <br><strong>Vehículo:</strong> {{ v.licensePlate }}
+                }
               </p>
               @if (v.scannedByEntryId) {
                 <p class="historial-visitas__event historial-visitas__event--entry">
@@ -73,8 +76,11 @@
             <ion-card-content>
               <p class="historial-visitas__meta">
                 <strong>Domicilio:</strong> {{ addressLabel(v) }}<br>
-                <strong>Motivo:</strong> {{ reasonLabel(v.reason) }}<br>
-                <strong>Registrada:</strong> {{ formatDate(v.createdAt) }}<br>
+                <strong>Motivo:</strong> {{ reasonLabel(v.reason) }}
+                @if (v.hasVehicle && v.licensePlate) {
+                  <br><strong>Vehículo:</strong> {{ v.licensePlate }}
+                }
+                <br><strong>Registrada:</strong> {{ formatDate(v.createdAt) }}<br>
                 <strong>Estado:</strong> {{ statusLabel(v.status) }}
               </p>
               @if (v.status === 'cancelled') {

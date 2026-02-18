@@ -27,9 +27,7 @@ import { VisitsApiService } from '../../../core/data/services/visits-api.service
 import { ToastService } from '../../../core/data/services/toast.service';
 import {
   VISIT_REASON_OPTIONS,
-  IDENTIFICATION_TYPE_OPTIONS,
   type VisitReason,
-  type IdentificationType,
 } from '../../../core/domain/models/visit.model';
 
 @Component({
@@ -62,12 +60,10 @@ export class NuevaVisitaPage implements OnDestroy {
   private readonly destroy$ = new Subject<void>();
 
   readonly reasonOptions = VISIT_REASON_OPTIONS;
-  readonly identificationOptions = IDENTIFICATION_TYPE_OPTIONS;
   readonly loadingSubmit = signal(false);
 
   form = this.fb.group({
     visitorName: ['', [Validators.required, Validators.maxLength(200)]],
-    identificationType: ['ine' as IdentificationType, Validators.required],
     reason: ['visitante' as VisitReason, Validators.required],
     entryOpenSchedule: [false],
     exitOpenSchedule: [false],
@@ -112,7 +108,7 @@ export class NuevaVisitaPage implements OnDestroy {
     const entryOpen = !!raw.entryOpenSchedule;
     const exitOpen = !!raw.exitOpenSchedule;
 
-    if (!raw.visitorName?.trim() || !raw.identificationType || !raw.reason) {
+    if (!raw.visitorName?.trim() || !raw.reason) {
       this.form.markAllAsTouched();
       return;
     }
@@ -155,7 +151,6 @@ export class NuevaVisitaPage implements OnDestroy {
     this.visitsApi
       .create({
         visitorName: raw.visitorName!.trim(),
-        identificationType: raw.identificationType!,
         reason: raw.reason!,
         entryOpenSchedule: entryOpen,
         exitOpenSchedule: exitOpen,

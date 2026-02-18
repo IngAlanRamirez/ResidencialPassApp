@@ -6,6 +6,7 @@ import {
   AfterViewInit,
   PLATFORM_ID,
 } from '@angular/core';
+import { Subject, takeUntil } from 'rxjs';
 import { isPlatformBrowser } from '@angular/common';
 import { Router } from '@angular/router';
 import {
@@ -18,10 +19,19 @@ import {
   IonButton,
   IonSpinner,
   IonTextarea,
+  IonSelect,
+  IonSelectOption,
+  IonCheckbox,
+  IonInput,
 } from '@ionic/angular/standalone';
 import type { Html5Qrcode } from 'html5-qrcode';
 import { VisitsApiService } from '../../../core/data/services/visits-api.service';
 import { ToastService } from '../../../core/data/services/toast.service';
+import {
+  IDENTIFICATION_TYPE_OPTIONS,
+  VISIT_REASON_OPTIONS,
+  type IdentificationType,
+} from '../../../core/domain/models/visit.model';
 
 @Component({
   selector: 'app-escanear-visita',
@@ -38,6 +48,10 @@ import { ToastService } from '../../../core/data/services/toast.service';
     IonButton,
     IonSpinner,
     IonTextarea,
+    IonSelect,
+    IonSelectOption,
+    IonCheckbox,
+    IonInput,
   ],
 })
 export class EscanearVisitaPage implements AfterViewInit, OnDestroy {
@@ -45,11 +59,27 @@ export class EscanearVisitaPage implements AfterViewInit, OnDestroy {
   private readonly router = inject(Router);
   private readonly visitsApi = inject(VisitsApiService);
   private readonly toast = inject(ToastService);
+  private readonly destroy$ = new Subject<void>();
 
+  readonly identificationOptions = IDENTIFICATION_TYPE_OPTIONS;
+  readonly reasonOptions = VISIT_REASON_OPTIONS;
   readonly scannedVisitId = signal<string | null>(null);
-  readonly scanStatus = signal<{ entryScanned: boolean; exitScanned: boolean } | null>(null);
+  readonly scanStatus = signal<{
+    entryScanned: boolean;
+    exitScanned: boolean;
+    visitorName: string;
+    domicilio: string;
+    reason: string;
+    description: string | null;
+  } | null>(null);
   readonly status = signal<'idle' | 'scanning' | 'loading_status' | 'scanned' | 'loading' | 'success' | 'error'>('scanning');
   readonly message = signal<string>('');
+  /** Medio de identificación al registrar entrada (solo cuando canRegisterEntry). */
+  entryIdentificationType = signal<IdentificationType>('ine');
+  /** Si el visitante entra con vehículo (solo al registrar entrada). */
+  entryHasVehicle = signal(false);
+  /** Placa del vehículo (solo cuando entryHasVehicle). */
+  entryLicensePlate = signal('');
   /** Comentario o incidencia al registrar la salida (solo cuando canRegisterExit). */
   exitComment = signal('');
 
@@ -62,6 +92,8 @@ export class EscanearVisitaPage implements AfterViewInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
     this.stopScanner();
   }
 
@@ -99,7 +131,10 @@ export class EscanearVisitaPage implements AfterViewInit, OnDestroy {
     this.status.set('loading_status');
     this.message.set('');
 
-    this.visitsApi.getScanStatus(id).subscribe({
+    this.visitsApi
+      .getScanStatus(id)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
       next: (st) => {
         this.scanStatus.set(st);
         this.status.set('scanned');
@@ -128,11 +163,33 @@ export class EscanearVisitaPage implements AfterViewInit, OnDestroy {
     const visitId = this.scannedVisitId();
     if (!visitId) return;
 
+    if (eventType === 'entry') {
+      const idType = this.entryIdentificationType();
+      if (!idType) {
+        this.toast.error('Selecciona el medio de identificación.');
+        return;
+      }
+      if (this.entryHasVehicle() && !this.entryLicensePlate().trim()) {
+        this.toast.error('Ingresa la placa del vehículo.');
+        return;
+      }
+    }
+
     this.status.set('loading');
     this.message.set('');
 
-    const comment = eventType === 'exit' ? this.exitComment() : undefined;
-    this.visitsApi.scan(visitId, eventType, comment).subscribe({
+    const options =
+      eventType === 'entry'
+        ? {
+            identificationType: this.entryIdentificationType(),
+            hasVehicle: this.entryHasVehicle(),
+            licensePlate: this.entryHasVehicle() ? this.entryLicensePlate().trim() : undefined,
+          }
+        : { exitComment: this.exitComment() };
+    this.visitsApi
+      .scan(visitId, eventType, options)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
       next: () => {
         const msg =
           eventType === 'entry'
@@ -143,6 +200,9 @@ export class EscanearVisitaPage implements AfterViewInit, OnDestroy {
         this.toast.success(msg);
         this.scannedVisitId.set(null);
         this.scanStatus.set(null);
+        this.entryIdentificationType.set('ine');
+        this.entryHasVehicle.set(false);
+        this.entryLicensePlate.set('');
         this.exitComment.set('');
         setTimeout(() => this.router.navigate(['/home'], { replaceUrl: true }), 1500);
       },
@@ -161,6 +221,9 @@ export class EscanearVisitaPage implements AfterViewInit, OnDestroy {
   scanAgain(): void {
     this.scannedVisitId.set(null);
     this.scanStatus.set(null);
+    this.entryIdentificationType.set('ine');
+    this.entryHasVehicle.set(false);
+    this.entryLicensePlate.set('');
     this.exitComment.set('');
     this.status.set('scanning');
     this.message.set('');
@@ -183,6 +246,29 @@ export class EscanearVisitaPage implements AfterViewInit, OnDestroy {
   isVisitFinished(): boolean {
     const st = this.scanStatus();
     return st !== null && st.entryScanned && st.exitScanned;
+  }
+
+  reasonLabel(value: string | null | undefined): string {
+    if (value == null) return '—';
+    return this.reasonOptions.find((o) => o.value === value)?.label ?? value;
+  }
+
+  onEntryIdentificationChange(ev: Event): void {
+    const e = ev as CustomEvent<{ value?: IdentificationType }>;
+    const value = e.detail?.value ?? (ev.target as HTMLIonSelectElement)?.value;
+    if (value) this.entryIdentificationType.set(value as IdentificationType);
+  }
+
+  onEntryHasVehicleChange(ev: Event): void {
+    const e = ev as CustomEvent<{ checked?: boolean }>;
+    this.entryHasVehicle.set(!!e.detail?.checked);
+    if (!e.detail?.checked) this.entryLicensePlate.set('');
+  }
+
+  onEntryLicensePlateInput(ev: Event): void {
+    const e = ev as CustomEvent<{ value?: string | number }>;
+    const raw = e.detail?.value ?? (ev.target as HTMLIonInputElement)?.value ?? '';
+    this.entryLicensePlate.set(String(raw ?? ''));
   }
 
   onExitCommentInput(ev: Event): void {

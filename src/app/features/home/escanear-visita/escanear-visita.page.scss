@@ -35,10 +35,39 @@
   margin: 0 0 0.5rem;
 }
 
+.escanear-visita__visit-info {
+  text-align: left;
+  background: var(--ion-color-step-100, #2a2a2a);
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.escanear-visita__visit-info-row {
+  margin: 0 0 0.5rem;
+  font-size: 0.9375rem;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
 .escanear-visita__actions-hint {
   font-size: 0.9375rem;
   color: var(--ion-color-medium);
   margin: 0 0 1.5rem;
+}
+
+.escanear-visita__checkbox-group {
+  margin-bottom: 1rem;
+}
+
+.escanear-visita__plate-field {
+  margin-bottom: 1rem;
+}
+
+.escanear-visita__identification-select {
+  margin-bottom: 1rem;
 }
 
 .escanear-visita__comment-field {
