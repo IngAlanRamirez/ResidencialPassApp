@@ -65,6 +65,16 @@
       </a>
 
       @if (authState.isAdmin()) {
+        <a routerLink="/home/vecinos" class="home__card">
+          <ion-card>
+            <ion-card-header>
+              <ion-card-title>Vecinos</ion-card-title>
+            </ion-card-header>
+            <ion-card-content>
+              Ver listado de vecinos y suspender cuentas por falta de pago.
+            </ion-card-content>
+          </ion-card>
+        </a>
         <a routerLink="/home/registros-pendientes" class="home__card">
           <ion-card>
             <ion-card-header>

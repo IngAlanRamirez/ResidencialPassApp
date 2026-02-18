@@ -26,3 +26,13 @@ export interface VigilanteListItem {
   status: string;
   createdAt: string;
 }
+
+export interface VecinoListItem {
+  id: string;
+  phone: string;
+  status: string;
+  street: string;
+  number: string;
+  letter?: string | null;
+  createdAt: string;
+}

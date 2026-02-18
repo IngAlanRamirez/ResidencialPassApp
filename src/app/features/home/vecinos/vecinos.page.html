@@ -1,0 +1,102 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Vecinos</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="vecinos">
+  <ion-refresher slot="fixed" (ionRefresh)="handleRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+  <div class="vecinos__container">
+    @if (loading()) {
+      <div class="vecinos__loading">
+        <ion-spinner name="crescent"></ion-spinner>
+        <p>Cargando vecinos...</p>
+      </div>
+    } @else if (list().length === 0) {
+      <div class="vecinos__empty">
+        <p>No hay vecinos registrados.</p>
+      </div>
+    } @else {
+      <p class="vecinos__hint">Suspende cuentas por falta de pago. El vecino no podrá iniciar sesión hasta reactivar.</p>
+      <div class="vecinos__search">
+        <ion-searchbar
+          placeholder="Buscar por teléfono, calle o número..."
+          [value]="searchQuery()"
+          (ionInput)="onSearchInput($event)"
+          debounce="200"
+        ></ion-searchbar>
+      </div>
+      <div class="vecinos__filters">
+        <ion-segment [value]="statusFilter()" (ionChange)="onStatusFilterChange($event)">
+          <ion-segment-button value="all">
+            <ion-label>Todos</ion-label>
+          </ion-segment-button>
+          <ion-segment-button value="active">
+            <ion-label>Activos</ion-label>
+          </ion-segment-button>
+          <ion-segment-button value="inactive">
+            <ion-label>Suspendidos</ion-label>
+          </ion-segment-button>
+        </ion-segment>
+      </div>
+      <div class="vecinos__list animate-stagger">
+        @if (filteredList().length === 0) {
+          <p class="vecinos__no-results">No se encontraron vecinos con ese criterio.</p>
+        } @else {
+        @for (item of filteredList(); track item.id) {
+          <ion-card class="vecinos__card">
+            <ion-card-header>
+              <ion-card-title>{{ formatAddress(item) }}</ion-card-title>
+            </ion-card-header>
+            <ion-card-content>
+              <p class="vecinos__meta">
+                <strong>Teléfono:</strong> {{ item.phone }}
+              </p>
+              <p class="vecinos__meta">
+                <strong>Estado:</strong> {{ statusLabel(item.status) }}
+              </p>
+              <p class="vecinos__meta">
+                <strong>Registrado:</strong> {{ formatDate(item.createdAt) }}
+              </p>
+              <div class="vecinos__actions">
+                @if (isActive(item)) {
+                  <ion-button
+                    color="warning"
+                    fill="outline"
+                    [disabled]="processingId() !== null"
+                    (click)="confirmSuspend(item)"
+                  >
+                    @if (processingId() === item.id) {
+                      <ion-spinner name="crescent"></ion-spinner>
+                    } @else {
+                      Suspender cuenta
+                    }
+                  </ion-button>
+                } @else {
+                  <ion-button
+                    color="success"
+                    fill="outline"
+                    [disabled]="processingId() !== null"
+                    (click)="confirmReactivate(item)"
+                  >
+                    @if (processingId() === item.id) {
+                      <ion-spinner name="crescent"></ion-spinner>
+                    } @else {
+                      Reactivar cuenta
+                    }
+                  </ion-button>
+                }
+              </div>
+            </ion-card-content>
+          </ion-card>
+        }
+        }
+      </div>
+    }
+  </div>
+</ion-content>

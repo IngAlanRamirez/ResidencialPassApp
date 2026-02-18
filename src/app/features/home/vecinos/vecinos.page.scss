@@ -1,0 +1,79 @@
+.vecinos__container {
+  max-width: 32rem;
+  margin-inline: auto;
+  padding: 1rem;
+}
+
+.vecinos__hint {
+  font-size: 0.875rem;
+  color: var(--ion-color-medium);
+  margin: 0 0 1rem;
+  padding-inline: 0.25rem;
+}
+
+.vecinos__search {
+  margin-bottom: 0.75rem;
+
+  ion-searchbar {
+    --background: var(--ion-color-step-100);
+    --border-radius: 8px;
+    padding: 0;
+  }
+}
+
+.vecinos__filters {
+  margin-bottom: 1rem;
+
+  ion-segment {
+    --background: var(--ion-color-step-100);
+    border-radius: 8px;
+  }
+}
+
+.vecinos__no-results {
+  text-align: center;
+  color: var(--ion-color-medium);
+  padding: 2rem 1rem;
+  margin: 0;
+  font-size: 0.9375rem;
+}
+
+.vecinos__loading,
+.vecinos__empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  padding: 3rem 1rem;
+  text-align: center;
+  color: var(--ion-color-medium);
+
+  ion-spinner {
+    width: 2rem;
+    height: 2rem;
+  }
+}
+
+.vecinos__list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.vecinos__card {
+  margin: 0;
+}
+
+.vecinos__meta {
+  margin: 0 0 0.5rem;
+  font-size: 0.9375rem;
+
+  &:last-of-type {
+    margin-bottom: 1rem;
+  }
+}
+
+.vecinos__actions {
+  margin-top: 0.5rem;
+}

@@ -54,4 +54,10 @@ export const homeRoutes: Routes = [
     loadComponent: () =>
       import('./vigilantes/vigilantes.page').then((m) => m.VigilantesPage),
   },
+  {
+    path: 'vecinos',
+    canActivate: [roleGuard('admin')],
+    loadComponent: () =>
+      import('./vecinos/vecinos.page').then((m) => m.VecinosPage),
+  },
 ];

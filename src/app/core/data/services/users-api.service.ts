@@ -2,7 +2,7 @@ import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../../../environments/environment';
-import type { UserProfile, VigilanteListItem } from '../../domain/models/user.model';
+import type { UserProfile, VigilanteListItem, VecinoListItem } from '../../domain/models/user.model';
 
 export interface CreateVigilanteRequest {
   phone: string;
@@ -28,5 +28,17 @@ export class UsersApiService {
 
   deleteVigilante(id: string): Observable<void> {
     return this.http.delete<void>(`${this.baseUrl}/vigilantes/${id}`);
+  }
+
+  getVecinos(): Observable<VecinoListItem[]> {
+    return this.http.get<VecinoListItem[]>(`${this.baseUrl}/vecinos`);
+  }
+
+  suspendVecino(id: string): Observable<void> {
+    return this.http.post<void>(`${this.baseUrl}/vecinos/${id}/suspend`, {});
+  }
+
+  reactivateVecino(id: string): Observable<void> {
+    return this.http.post<void>(`${this.baseUrl}/vecinos/${id}/reactivate`, {});
   }
 }
