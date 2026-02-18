@@ -21,6 +21,8 @@ import {
   IonCardContent,
   IonButton,
   IonSpinner,
+  IonBadge,
+  IonNote,
   AlertController,
   IonSearchbar,
   IonSegment,
@@ -53,6 +55,8 @@ import type { VecinoListItem } from '../../../core/domain/models/user.model';
     IonCardContent,
     IonButton,
     IonSpinner,
+    IonBadge,
+    IonNote,
     IonSearchbar,
     IonSegment,
     IonSegmentButton,
@@ -79,7 +83,8 @@ export class VecinosPage implements OnInit, OnDestroy {
     if (q) {
       items = items.filter((item) => {
         const address = this.formatAddress(item);
-        const searchable = `${item.phone} ${address} ${item.street} ${item.number} ${item.letter ?? ''} ${this.statusLabel(item.status)}`.toLowerCase();
+        const role = item.role ?? '';
+    const searchable = `${item.phone} ${address} ${item.street} ${item.number} ${item.letter ?? ''} ${this.statusLabel(item.status)} ${role}`.toLowerCase();
         return searchable.includes(q);
       });
     }
@@ -149,6 +154,9 @@ export class VecinosPage implements OnInit, OnDestroy {
   }
 
   formatAddress(item: VecinoListItem): string {
+    if (item.role === 'admin' && item.street === '-' && item.number === '-') {
+      return 'Administrador';
+    }
     const base = `${item.street} ${item.number}`.trim();
     return item.letter?.trim() ? `${base} ${item.letter.trim()}` : base;
   }

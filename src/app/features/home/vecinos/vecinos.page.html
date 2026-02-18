@@ -51,7 +51,12 @@
         @for (item of filteredList(); track item.id) {
           <ion-card class="vecinos__card">
             <ion-card-header>
-              <ion-card-title>{{ formatAddress(item) }}</ion-card-title>
+              <ion-card-title>
+                {{ formatAddress(item) }}
+                @if (item.role === 'admin') {
+                  <ion-badge color="primary" class="vecinos__role-badge">Admin</ion-badge>
+                }
+              </ion-card-title>
             </ion-card-header>
             <ion-card-content>
               <p class="vecinos__meta">
@@ -64,7 +69,9 @@
                 <strong>Registrado:</strong> {{ formatDate(item.createdAt) }}
               </p>
               <div class="vecinos__actions">
-                @if (isActive(item)) {
+                @if (item.role === 'admin') {
+                  <ion-note color="medium">Los administradores no pueden suspenderse.</ion-note>
+                } @else if (isActive(item)) {
                   <ion-button
                     color="warning"
                     fill="outline"

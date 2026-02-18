@@ -31,6 +31,7 @@ export interface VecinoListItem {
   id: string;
   phone: string;
   status: string;
+  role?: 'vecino' | 'admin';
   street: string;
   number: string;
   letter?: string | null;
