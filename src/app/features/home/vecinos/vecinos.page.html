@@ -69,9 +69,7 @@
                 <strong>Registrado:</strong> {{ formatDate(item.createdAt) }}
               </p>
               <div class="vecinos__actions">
-                @if (item.role === 'admin') {
-                  <ion-note color="medium">Los administradores no pueden suspenderse.</ion-note>
-                } @else if (isActive(item)) {
+                @if (isActive(item)) {
                   <ion-button
                     color="warning"
                     fill="outline"
