@@ -13,7 +13,7 @@ import { AuthStateService } from '../services/auth-state.service';
 import { ToastService } from '../services/toast.service';
 
 /**
- * Intercepta errores 401 (token inválido/expirado).
+ * Intercepta errores 401 (token inválido/expirado) y 403 (sin permisos).
  * Limpia la sesión y redirige al login.
  */
 @Injectable()
@@ -28,9 +28,13 @@ export class AuthErrorInterceptor implements HttpInterceptor {
   ): Observable<HttpEvent<unknown>> {
     return next.handle(req).pipe(
       catchError((error: HttpErrorResponse) => {
-        if (error.status === 401 && this.authState.isLoggedIn()) {
+        if (this.authState.isLoggedIn() && (error.status === 401 || error.status === 403)) {
           this.authState.logout();
-          this.toast.error('Tu sesión ha expirado. Inicia sesión de nuevo.');
+          this.toast.error(
+            error.status === 401
+              ? 'Tu sesión ha expirado. Inicia sesión de nuevo.'
+              : 'No tienes permisos para esta acción. Inicia sesión de nuevo.'
+          );
           this.router.navigate(['/auth/login'], { replaceUrl: true });
         }
         return throwError(() => error);
