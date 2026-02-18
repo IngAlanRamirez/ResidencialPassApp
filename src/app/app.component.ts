@@ -1,14 +1,31 @@
 import { Component, inject } from '@angular/core';
+import { NgIf } from '@angular/common';
 import { IonApp, IonRouterOutlet } from '@ionic/angular/standalone';
 import { AnimationController } from '@ionic/angular/standalone';
+import { SplashScreen } from '@capacitor/splash-screen';
+import { Capacitor } from '@capacitor/core';
 
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
-  imports: [IonApp, IonRouterOutlet],
+  imports: [NgIf, IonApp, IonRouterOutlet],
 })
 export class AppComponent {
   private readonly animationCtrl = inject(AnimationController);
+
+  showSplashOverlay = true;
+
+  constructor() {
+    this.initSplash();
+  }
+
+  private async initSplash(): Promise<void> {
+    if (Capacitor.isNativePlatform()) {
+      await SplashScreen.hide();
+    }
+    await new Promise((r) => setTimeout(r, 400));
+    this.showSplashOverlay = false;
+  }
 
   readonly pageTransition = (baseEl: HTMLElement, opts?: { enteringEl?: HTMLElement; leavingEl?: HTMLElement }): any => {
     const enteringEl = opts?.enteringEl;

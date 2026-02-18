@@ -3,6 +3,17 @@
  * ----------------------------------------------------------------------------
  */
 
+/* Splash overlay: imagen centrada, fondo negro en el espacio sobrante */
+.splash-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  background-color: #000000;
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
 /* Core CSS required for Ionic components to work properly */
 @import "@ionic/angular/css/core.css";
 

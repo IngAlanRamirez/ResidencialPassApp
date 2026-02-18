@@ -1,3 +1,9 @@
 <ion-app>
+  <!-- Overlay de splash: imagen completa mientras carga (evita círculo en Android 12+) -->
+  <div
+    *ngIf="showSplashOverlay"
+    class="splash-overlay"
+    [style.backgroundImage]="'url(assets/images/splash.png)'"
+  ></div>
   <ion-router-outlet [animation]="pageTransition"></ion-router-outlet>
 </ion-app>
