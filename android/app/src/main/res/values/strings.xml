@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
-    <string name="app_name">Residencial Pass</string>
-    <string name="title_activity_main">Residencial Pass</string>
+    <string name="app_name">Residencial Villa Maria</string>
+    <string name="title_activity_main">Residencial Villa Maria</string>
     <string name="package_name">com.residencialpass.app</string>
     <string name="custom_url_scheme">com.residencialpass.app</string>
 </resources>

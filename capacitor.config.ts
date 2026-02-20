@@ -2,7 +2,7 @@ import type { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
   appId: 'com.residencialpass.app',
-  appName: 'Residencial Pass',
+  appName: 'Residencial Villa Maria',
   webDir: 'www',
   server: {
     androidScheme: 'https',

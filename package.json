@@ -1,8 +1,8 @@
 {
   "name": "ResidencialPassApp",
   "version": "0.0.1",
-  "author": "Ionic Framework",
-  "homepage": "https://ionicframework.com/",
+  "author": "AR Solutions MX",
+  "homepage": "https://arsolutionsmx.com",
   "scripts": {
     "ng": "ng",
     "generate:favicon": "node -e \"require('sharp')('assets/icon.png').resize(48,48).png().toFile('src/assets/icon/favicon.png').then(()=>console.log('Favicon OK'))\"",
@@ -70,5 +70,5 @@
     "karma-jasmine-html-reporter": "~2.1.0",
     "typescript": "~5.9.0"
   },
-  "description": "An Ionic project"
+  "description": "Residencial Villa Maria - Control de acceso por QR"
 }
