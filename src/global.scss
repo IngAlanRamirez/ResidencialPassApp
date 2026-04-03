@@ -23,6 +23,20 @@
 @import "@ionic/angular/css/typography.css";
 @import "@ionic/angular/css/display.css";
 
+/* Design System RP */
+@import "./theme/variables";
+@import "./theme/typography";
+
+/* Reset de fuente global */
+* {
+  font-family: var(--rp-font);
+  box-sizing: border-box;
+}
+
+ion-content {
+  --background: var(--rp-bg);
+}
+
 /* Optional CSS utils */
 @import "@ionic/angular/css/padding.css";
 @import "@ionic/angular/css/float-elements.css";
@@ -30,11 +44,8 @@
 @import "@ionic/angular/css/text-transformation.css";
 @import "@ionic/angular/css/flex-utils.css";
 
-/* Dark Mode – Siempre activo */
-@import "@ionic/angular/css/palettes/dark.always.css";
-
 /* ============================================================================
-   Global overrides – Villa María dark theme
+   Global overrides – Villa María
    ============================================================================ */
 
 /* Toolbar con línea de acento inferior */
