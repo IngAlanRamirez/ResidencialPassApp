@@ -7,8 +7,8 @@
 }
 
 .hist-header__back {
-  width: 36px;
-  height: 36px;
+  width: 48px;
+  height: 48px;
   background: rgba(255, 255, 255, 0.1);
   border: none;
   border-radius: 10px;
@@ -55,7 +55,7 @@
 
 .hist-filter__btn {
   flex: 1;
-  min-height: 44px;
+  min-height: 48px;
   border: none;
   background: rgba(255, 255, 255, 0.08);
   font-family: var(--rp-font);
@@ -106,7 +106,7 @@
 
     p {
       margin: 0;
-      color: var(--rp-stone-600);
+      color: var(--rp-stone-500);
       font-size: 14px;
     }
   }
@@ -195,7 +195,7 @@
 .hist-item__id {
   font-family: var(--rp-font);
   font-size: 11px;
-  color: var(--rp-stone-400);
+  color: var(--rp-stone-300);
   margin: 0;
 }
 
@@ -229,7 +229,7 @@
   }
 
   strong {
-    color: var(--rp-stone-600);
+    color: var(--rp-stone-700);
     font-weight: 600;
   }
 }
