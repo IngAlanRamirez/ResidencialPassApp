@@ -11,6 +11,8 @@
         [placeholder]="placeholder"
         [disabled]="disabled"
         [value]="value"
+        [attr.min]="min || null"
+        [attr.max]="max || null"
         (input)="onInput($event)"
         (blur)="onBlur()"
       />

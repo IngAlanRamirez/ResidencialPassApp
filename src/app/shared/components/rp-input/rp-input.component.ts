@@ -22,9 +22,14 @@ import {
 })
 export class RpInputComponent implements ControlValueAccessor {
   @Input() label = '';
-  @Input() type: 'text' | 'password' | 'tel' | 'email' = 'text';
+  @Input() type: 'text' | 'password' | 'tel' | 'email' | 'datetime-local' =
+    'text';
   @Input() placeholder = '';
   @Input() errorMessage = '';
+  /** HTML `min` for `datetime-local` / `date` inputs (omit when empty). */
+  @Input() min = '';
+  /** HTML `max` for `datetime-local` / `date` inputs (omit when empty). */
+  @Input() max = '';
 
   value = '';
   disabled = false;
