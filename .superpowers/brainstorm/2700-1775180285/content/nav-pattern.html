@@ -1,0 +1,117 @@
+<h2>¿Cómo navegás por la app?</h2>
+<p class="subtitle">El patrón de navegación afecta todo — cómo el usuario llega a cada función según su rol</p>
+
+<div class="cards">
+
+  <!-- Opción A: Tab Bar -->
+  <div class="card" data-choice="a" onclick="toggleSelect(this)">
+    <div class="card-image" style="background:#fafaf9; padding:12px 12px 0 12px; border-radius:8px 8px 0 0; position:relative; min-height:200px;">
+      <!-- Header -->
+      <div style="background:#292524;color:white;border-radius:10px;padding:10px 14px;margin-bottom:10px;font-size:12px;font-weight:600;display:flex;align-items:center;gap:8px;">
+        <span>Buenos días, Vecino</span>
+        <div style="margin-left:auto;width:28px;height:28px;background:#ea580c;border-radius:50%;"></div>
+      </div>
+      <!-- Content area -->
+      <div style="background:white;border-radius:10px;padding:10px 12px;margin-bottom:8px;font-size:11px;color:#292524;font-weight:600;">Tus últimas visitas</div>
+      <div style="background:white;border-radius:10px;padding:10px 12px;margin-bottom:8px;border-left:3px solid #ea580c;">
+        <div style="font-size:11px;font-weight:600;color:#292524;">Juan García</div>
+        <div style="font-size:10px;color:#78716c;">Hoy 14:00 · Visitante · Pendiente</div>
+      </div>
+      <div style="background:white;border-radius:10px;padding:10px 12px;margin-bottom:6px;border-left:3px solid #d1fae5;">
+        <div style="font-size:11px;font-weight:600;color:#292524;">María López</div>
+        <div style="font-size:10px;color:#78716c;">Ayer 10:00 · Proveedor · Completada</div>
+      </div>
+      <!-- Tab Bar -->
+      <div style="background:white;border-top:1px solid #e7e5e4;display:flex;justify-content:space-around;padding:8px 0 4px;border-radius:0 0 10px 10px;margin-top:8px;">
+        <div style="text-align:center;color:#ea580c;">
+          <div style="font-size:18px;">🏠</div>
+          <div style="font-size:9px;font-weight:600;">Inicio</div>
+        </div>
+        <div style="text-align:center;color:#a8a29e;">
+          <div style="font-size:18px;">➕</div>
+          <div style="font-size:9px;">Visita</div>
+        </div>
+        <div style="text-align:center;color:#a8a29e;">
+          <div style="font-size:18px;">📋</div>
+          <div style="font-size:9px;">Historial</div>
+        </div>
+        <div style="text-align:center;color:#a8a29e;">
+          <div style="font-size:18px;">👤</div>
+          <div style="font-size:9px;">Perfil</div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>A — Tab Bar</h3>
+      <p>Navegación permanente en el fondo. El home muestra visitas recientes. Acceso directo a funciones con un tap. Tabs cambian según el rol.</p>
+    </div>
+  </div>
+
+  <!-- Opción B: Dashboard de Cards mejorado (hero + cards) -->
+  <div class="card" data-choice="b" onclick="toggleSelect(this)">
+    <div class="card-image" style="background:#fafaf9; padding:0; border-radius:8px 8px 0 0; overflow:hidden; min-height:200px;">
+      <!-- Hero Header -->
+      <div style="background:#292524;padding:14px 14px 22px;color:white;">
+        <div style="font-size:10px;color:#a8a29e;margin-bottom:2px;">Buenos días</div>
+        <div style="font-size:14px;font-weight:700;">Calle Principal 42 B</div>
+        <div style="font-size:10px;color:#ea580c;margin-top:4px;">● 2 visitas pendientes</div>
+      </div>
+      <!-- Cards flotando sobre el header -->
+      <div style="margin:-14px 10px 0;background:white;border-radius:12px;padding:10px;box-shadow:0 2px 12px rgba(0,0,0,0.12);display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px;">
+        <div style="background:#fff7ed;border-radius:8px;padding:10px;text-align:center;">
+          <div style="font-size:22px;">🔑</div>
+          <div style="font-size:10px;font-weight:600;color:#292524;margin-top:4px;">Nueva Visita</div>
+        </div>
+        <div style="background:#fef2f2;border-radius:8px;padding:10px;text-align:center;">
+          <div style="font-size:22px;">📋</div>
+          <div style="font-size:10px;font-weight:600;color:#292524;margin-top:4px;">Historial</div>
+        </div>
+      </div>
+      <div style="padding:0 10px;">
+        <div style="background:white;border-radius:10px;padding:8px 10px;font-size:10px;color:#78716c;display:flex;align-items:center;gap:6px;border:1px solid #f5f5f4;">
+          <span style="font-size:14px;">📅</span> Próxima visita: hoy a las 14:00 — Juan García
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>B — Dashboard Hero</h3>
+      <p>Header oscuro con datos del vecino, cards flotantes con acciones principales, y próxima visita abajo. Visualmente impactante, todo en una pantalla.</p>
+    </div>
+  </div>
+
+  <!-- Opción C: Action-First (vigilante-friendly) -->
+  <div class="card" data-choice="c" onclick="toggleSelect(this)">
+    <div class="card-image" style="background:#fafaf9; padding:12px; border-radius:8px 8px 0 0; min-height:200px;">
+      <!-- Header mínimo -->
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
+        <div>
+          <div style="font-size:11px;color:#78716c;">Residencial Villa María</div>
+          <div style="font-size:13px;font-weight:700;color:#292524;">Buen día, Vigilante</div>
+        </div>
+        <div style="width:32px;height:32px;background:#292524;border-radius:50%;"></div>
+      </div>
+      <!-- Big primary action -->
+      <div style="background:#292524;border-radius:14px;padding:18px;text-align:center;margin-bottom:10px;">
+        <div style="font-size:36px;margin-bottom:6px;">📷</div>
+        <div style="color:white;font-size:13px;font-weight:700;">Escanear QR</div>
+        <div style="color:#a8a29e;font-size:10px;margin-top:2px;">Registrar entrada o salida</div>
+      </div>
+      <!-- Secondary actions pequeños -->
+      <div style="display:flex;gap:8px;">
+        <div style="flex:1;background:white;border-radius:10px;padding:10px;text-align:center;border:1px solid #e7e5e4;">
+          <div style="font-size:18px;">📋</div>
+          <div style="font-size:10px;color:#292524;font-weight:600;margin-top:4px;">Bitácora</div>
+        </div>
+        <div style="flex:1;background:white;border-radius:10px;padding:10px;text-align:center;border:1px solid #e7e5e4;">
+          <div style="font-size:18px;">👤</div>
+          <div style="font-size:10px;color:#292524;font-weight:600;margin-top:4px;">Perfil</div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>C — Action-First</h3>
+      <p>La acción principal ocupa 60% de la pantalla (escanear QR para vigilantes, nueva visita para vecinos). Secundarias minimizadas. Enfocado y sin ruido visual.</p>
+    </div>
+  </div>
+
+</div>

@@ -1,0 +1,754 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ResidencialPass — Home por Rol</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --rp-stone-950: #1c1917;
+    --rp-stone-700: #44403c;
+    --rp-stone-500: #78716c;
+    --rp-stone-300: #a8a29e;
+    --rp-stone-100: #e7e5e4;
+    --rp-primary: #ea580c;
+    --rp-primary-dark: #c2410c;
+    --rp-primary-tint: #fff7ed;
+    --rp-success: #16a34a;
+    --rp-danger: #dc2626;
+    --rp-bg: #fafaf9;
+    --rp-surface: #ffffff;
+    --rp-font: 'Plus Jakarta Sans', system-ui, sans-serif;
+    --rp-radius-md: 10px;
+    --rp-radius-lg: 14px;
+    --rp-radius-xl: 18px;
+    --rp-radius-full: 9999px;
+    --rp-shadow-card: 0 2px 12px rgba(0,0,0,0.08);
+    --rp-page-padding: 20px;
+  }
+
+  body {
+    font-family: var(--rp-font);
+    background: #f0ede8;
+    min-height: 100vh;
+    padding: 48px 24px;
+  }
+
+  h1.page-title {
+    text-align: center;
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--rp-stone-950);
+    margin-bottom: 8px;
+  }
+
+  p.page-sub {
+    text-align: center;
+    font-size: 13px;
+    color: var(--rp-stone-500);
+    margin-bottom: 40px;
+  }
+
+  .phones-row {
+    display: flex;
+    gap: 32px;
+    justify-content: center;
+    align-items: flex-start;
+    flex-wrap: wrap;
+  }
+
+  .phone-col {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .role-label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    color: var(--rp-stone-500);
+    text-transform: uppercase;
+  }
+
+  /* Phone shell */
+  .phone {
+    width: 220px;
+    background: var(--rp-bg);
+    border-radius: 28px;
+    overflow: hidden;
+    box-shadow: 0 16px 48px rgba(0,0,0,0.18), 0 0 0 6px var(--rp-stone-950);
+    position: relative;
+  }
+
+  .phone__statusbar {
+    background: var(--rp-stone-950);
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 16px;
+    flex-shrink: 0;
+  }
+
+  .phone__statusbar span {
+    color: white;
+    font-size: 9px;
+    font-weight: 600;
+  }
+
+  /* HOME HEADER */
+  .home-header {
+    background: var(--rp-stone-950);
+    padding: 14px var(--rp-page-padding) 16px;
+  }
+
+  .home-header__hello {
+    font-size: 10px;
+    color: var(--rp-stone-500);
+  }
+
+  .home-header__name {
+    font-size: 18px;
+    font-weight: 800;
+    color: white;
+    margin-top: 2px;
+  }
+
+  /* Admin stats */
+  .home-header__stats {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 12px;
+    background: rgba(255,255,255,0.07);
+    border-radius: var(--rp-radius-lg);
+    padding: 10px 12px;
+  }
+
+  .stat {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1px;
+  }
+
+  .stat__val {
+    font-size: 16px;
+    font-weight: 800;
+    color: white;
+  }
+
+  .stat__lbl {
+    font-size: 8px;
+    color: var(--rp-stone-500);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+
+  .stat-divider {
+    width: 1px;
+    height: 28px;
+    background: rgba(255,255,255,0.12);
+  }
+
+  /* Content */
+  .home-content {
+    padding: 16px var(--rp-page-padding) 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    background: var(--rp-bg);
+  }
+
+  .section-label {
+    font-size: 8px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    color: var(--rp-stone-500);
+    text-transform: uppercase;
+    margin-bottom: 2px;
+  }
+
+  /* Hero card */
+  .hero-card {
+    background: var(--rp-surface);
+    border-radius: 16px;
+    padding: 16px 14px;
+    box-shadow: var(--rp-shadow-card);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 8px;
+  }
+
+  .hero-card--dark {
+    background: var(--rp-stone-950);
+  }
+
+  .hero-icon {
+    width: 52px;
+    height: 52px;
+    background: var(--rp-primary-tint);
+    border-radius: var(--rp-radius-xl);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 26px;
+  }
+
+  .hero-icon--dark {
+    background: rgba(234,88,12,0.18);
+  }
+
+  .hero-title {
+    font-size: 14px;
+    font-weight: 800;
+    color: var(--rp-stone-950);
+  }
+
+  .hero-title--light { color: white; }
+
+  .hero-desc {
+    font-size: 10px;
+    color: var(--rp-stone-500);
+  }
+
+  .hero-desc--light { color: var(--rp-stone-300); }
+
+  .hero-cta {
+    background: var(--rp-primary);
+    color: white;
+    border-radius: 10px;
+    padding: 8px 20px;
+    font-size: 11px;
+    font-weight: 700;
+    width: 100%;
+    text-align: center;
+  }
+
+  /* List card */
+  .list-card {
+    background: var(--rp-surface);
+    border-radius: var(--rp-radius-lg);
+    padding: 10px 12px;
+    box-shadow: var(--rp-shadow-card);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .list-icon {
+    width: 36px;
+    height: 36px;
+    background: var(--rp-primary-tint);
+    border-radius: var(--rp-radius-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+
+  .list-body { flex: 1; }
+
+  .list-title {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--rp-stone-950);
+    margin-bottom: 1px;
+  }
+
+  .list-sub {
+    font-size: 10px;
+    color: var(--rp-stone-500);
+  }
+
+  .list-arrow {
+    font-size: 16px;
+    color: var(--rp-stone-300);
+    flex-shrink: 0;
+  }
+
+  /* Badge */
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 2px 8px;
+    border-radius: var(--rp-radius-full);
+    font-size: 9px;
+    font-weight: 700;
+    border: 1px solid transparent;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .badge--pending {
+    background: var(--rp-primary-tint);
+    border-color: #fed7aa;
+    color: var(--rp-primary-dark);
+  }
+
+  /* Divider */
+  .divider {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 4px 0 2px;
+  }
+
+  .divider__label {
+    font-size: 8px;
+    font-weight: 700;
+    color: var(--rp-stone-500);
+    letter-spacing: 0.08em;
+    white-space: nowrap;
+    text-transform: uppercase;
+  }
+
+  .divider::before, .divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--rp-stone-100);
+  }
+
+  /* SCANNER phone */
+  .scanner-bg {
+    background: #111110;
+    padding: 16px var(--rp-page-padding);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .scanner-back {
+    align-self: flex-start;
+    width: 32px;
+    height: 32px;
+    background: rgba(255,255,255,0.12);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    color: white;
+  }
+
+  .viewfinder {
+    width: 140px;
+    height: 140px;
+    position: relative;
+  }
+
+  .corner {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    border-color: var(--rp-primary);
+    border-style: solid;
+    border-width: 0;
+  }
+
+  .corner--tl { top:0; left:0; border-top-width:3px; border-left-width:3px; border-radius:3px 0 0 0; }
+  .corner--tr { top:0; right:0; border-top-width:3px; border-right-width:3px; border-radius:0 3px 0 0; }
+  .corner--bl { bottom:0; left:0; border-bottom-width:3px; border-left-width:3px; border-radius:0 0 0 3px; }
+  .corner--br { bottom:0; right:0; border-bottom-width:3px; border-right-width:3px; border-radius:0 0 3px 0; }
+
+  .scan-line {
+    position: absolute;
+    left: 6px; right: 6px;
+    height: 2px;
+    background: var(--rp-primary);
+    top: 40%;
+    box-shadow: 0 0 8px rgba(234,88,12,0.7);
+    animation: sweep 2s ease-in-out infinite;
+  }
+
+  @keyframes sweep {
+    0%   { top: 10%; }
+    50%  { top: 90%; }
+    100% { top: 10%; }
+  }
+
+  .scanner-hint {
+    font-size: 10px;
+    color: rgba(255,255,255,0.45);
+    text-align: center;
+  }
+
+  /* Scanner bottom panel */
+  .scanner-panel {
+    background: var(--rp-surface);
+    border-radius: var(--rp-radius-xl) var(--rp-radius-xl) 0 0;
+    padding: 14px 14px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .scanner-visit-row {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 8px;
+  }
+
+  .scanner-name {
+    font-size: 13px;
+    font-weight: 800;
+    color: var(--rp-stone-950);
+  }
+
+  .scanner-detail {
+    font-size: 10px;
+    color: var(--rp-stone-500);
+    margin-top: 2px;
+  }
+
+  .scanner-id-label {
+    font-size: 8px;
+    font-weight: 700;
+    letter-spacing: 0.07em;
+    color: var(--rp-stone-500);
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+
+  .chips-row {
+    display: flex;
+    gap: 6px;
+  }
+
+  .chip {
+    flex: 1;
+    height: 30px;
+    border: 1.5px solid var(--rp-stone-100);
+    border-radius: var(--rp-radius-full);
+    background: var(--rp-bg);
+    font-size: 9px;
+    font-weight: 600;
+    color: var(--rp-stone-700);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .chip--active {
+    background: var(--rp-primary-tint);
+    border-color: var(--rp-primary);
+    color: var(--rp-primary);
+  }
+
+  .scanner-cta {
+    background: var(--rp-primary);
+    color: white;
+    border-radius: 10px;
+    padding: 9px;
+    font-size: 11px;
+    font-weight: 700;
+    text-align: center;
+  }
+
+  /* Admin section extra */
+  .admin-list-card {
+    background: var(--rp-surface);
+    border-radius: var(--rp-radius-lg);
+    padding: 9px 12px;
+    box-shadow: var(--rp-shadow-card);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  /* Scrollable phone content */
+  .phone-scroll {
+    overflow-y: auto;
+    max-height: 520px;
+  }
+
+  .phone-scroll::-webkit-scrollbar { display: none; }
+
+  /* Role tag */
+  .role-tag {
+    background: var(--rp-primary-tint);
+    border: 1px solid #fed7aa;
+    border-radius: var(--rp-radius-full);
+    padding: 4px 14px;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--rp-primary-dark);
+  }
+</style>
+</head>
+<body>
+
+<h1 class="page-title">ResidencialPass — Pantalla Home por Rol</h1>
+<p class="page-sub">Diseño final con tokens RP · Plus Jakarta Sans · Paleta Terracota</p>
+
+<div class="phones-row">
+
+  <!-- ===================== VECINO ===================== -->
+  <div class="phone-col">
+    <div class="role-tag">Vecino</div>
+    <div class="phone">
+      <div class="phone__statusbar">
+        <span>9:41</span>
+        <span>●●●</span>
+      </div>
+      <div class="phone-scroll">
+        <!-- Header -->
+        <div class="home-header">
+          <div class="home-header__hello">Hola,</div>
+          <div class="home-header__name">María García</div>
+        </div>
+        <!-- Content -->
+        <div class="home-content">
+          <!-- Hero: Nueva Visita -->
+          <div class="hero-card">
+            <div class="hero-icon">🧑‍💼</div>
+            <div>
+              <div class="hero-title">Nueva Visita</div>
+              <div class="hero-desc" style="margin-top:3px;">Generá un código QR para tu visitante</div>
+            </div>
+            <div class="hero-cta">Crear visita</div>
+          </div>
+
+          <!-- Secundarias -->
+          <div class="list-card">
+            <div class="list-icon">📋</div>
+            <div class="list-body">
+              <div class="list-title">Historial</div>
+              <div class="list-sub">Ver visitas pasadas</div>
+            </div>
+            <div class="list-arrow">›</div>
+          </div>
+
+          <div class="list-card">
+            <div class="list-icon">👤</div>
+            <div class="list-body">
+              <div class="list-title">Mi Perfil</div>
+              <div class="list-sub">Datos de tu cuenta</div>
+            </div>
+            <div class="list-arrow">›</div>
+          </div>
+
+          <!-- Próxima visita pill -->
+          <div style="background:var(--rp-surface);border-radius:var(--rp-radius-lg);padding:10px 12px;box-shadow:var(--rp-shadow-card);border-left:3px solid var(--rp-primary);">
+            <div style="font-size:8px;font-weight:700;color:var(--rp-primary);letter-spacing:0.07em;text-transform:uppercase;margin-bottom:3px;">PRÓXIMA VISITA</div>
+            <div style="font-size:11px;font-weight:700;color:var(--rp-stone-950);">Carlos Rodríguez</div>
+            <div style="font-size:9px;color:var(--rp-stone-500);margin-top:1px;">Hoy · 15:00 – 18:00</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="role-label">Gestión de visitas propias</div>
+  </div>
+
+  <!-- ===================== VIGILANCIA ===================== -->
+  <div class="phone-col">
+    <div class="role-tag">Vigilancia</div>
+    <div class="phone">
+      <div class="phone__statusbar" style="background:#111110;">
+        <span>9:41</span>
+        <span>●●●</span>
+      </div>
+      <div class="phone-scroll">
+        <!-- Header oscuro -->
+        <div class="home-header" style="background:#111110;">
+          <div class="home-header__hello">Turno activo,</div>
+          <div class="home-header__name">Jorge Ríos</div>
+        </div>
+        <!-- Scanner area -->
+        <div class="scanner-bg">
+          <div class="viewfinder">
+            <div class="corner corner--tl"></div>
+            <div class="corner corner--tr"></div>
+            <div class="corner corner--bl"></div>
+            <div class="corner corner--br"></div>
+            <div class="scan-line"></div>
+          </div>
+          <div class="scanner-hint">Apuntá la cámara al código QR</div>
+        </div>
+        <!-- Panel de visita detectada -->
+        <div class="scanner-panel">
+          <div class="scanner-visit-row">
+            <div>
+              <div class="scanner-name">Carlos Rodríguez</div>
+              <div class="scanner-detail">Calle del Roble 42 · Visita personal</div>
+            </div>
+            <div class="badge badge--pending">Pendiente</div>
+          </div>
+          <div>
+            <div class="scanner-id-label">Tipo de identificación</div>
+            <div class="chips-row">
+              <div class="chip chip--active">INE</div>
+              <div class="chip">Pasaporte</div>
+              <div class="chip">Licencia</div>
+            </div>
+          </div>
+          <div class="scanner-cta">✓ Registrar entrada</div>
+        </div>
+        <!-- Bitácora -->
+        <div style="background:var(--rp-bg);padding:0 var(--rp-page-padding) 20px;">
+          <div class="list-card" style="margin-top:10px;">
+            <div class="list-icon">📖</div>
+            <div class="list-body">
+              <div class="list-title">Mi Bitácora</div>
+              <div class="list-sub">12 escaneos este turno</div>
+            </div>
+            <div class="list-arrow">›</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="role-label">Control de acceso por QR</div>
+  </div>
+
+  <!-- ===================== ADMIN ===================== -->
+  <div class="phone-col">
+    <div class="role-tag">Admin</div>
+    <div class="phone">
+      <div class="phone__statusbar">
+        <span>9:41</span>
+        <span>●●●</span>
+      </div>
+      <div class="phone-scroll">
+        <!-- Header con stats -->
+        <div class="home-header">
+          <div class="home-header__hello">Hola,</div>
+          <div class="home-header__name">Roberto Admin</div>
+          <div class="home-header__stats">
+            <div class="stat">
+              <div class="stat__val">48</div>
+              <div class="stat__lbl">Vecinos</div>
+            </div>
+            <div class="stat-divider"></div>
+            <div class="stat">
+              <div class="stat__val" style="color:#f97316;">3</div>
+              <div class="stat__lbl">Pendientes</div>
+            </div>
+            <div class="stat-divider"></div>
+            <div class="stat">
+              <div class="stat__val">5</div>
+              <div class="stat__lbl">Vigilantes</div>
+            </div>
+          </div>
+        </div>
+        <!-- Content -->
+        <div class="home-content">
+          <!-- Zona Mis Visitas -->
+          <div class="section-label">Mis Visitas</div>
+
+          <div class="hero-card">
+            <div class="hero-icon">🧑‍💼</div>
+            <div>
+              <div class="hero-title">Nueva Visita</div>
+              <div class="hero-desc" style="margin-top:3px;">Generá un código QR</div>
+            </div>
+            <div class="hero-cta">Crear visita</div>
+          </div>
+
+          <div class="list-card">
+            <div class="list-icon">📋</div>
+            <div class="list-body">
+              <div class="list-title">Historial</div>
+              <div class="list-sub">Mis visitas pasadas</div>
+            </div>
+            <div class="list-arrow">›</div>
+          </div>
+
+          <!-- Divider -->
+          <div class="divider">
+            <div class="divider__label">Administración</div>
+          </div>
+
+          <!-- Lista admin -->
+          <div class="admin-list-card">
+            <div class="list-icon" style="font-size:16px;">📝</div>
+            <div class="list-body">
+              <div class="list-title">Registros pendientes</div>
+              <div class="list-sub">Aprobar vecinos nuevos</div>
+            </div>
+            <div class="badge badge--pending">3</div>
+            <div class="list-arrow">›</div>
+          </div>
+
+          <div class="admin-list-card">
+            <div class="list-icon" style="font-size:16px;">🏘️</div>
+            <div class="list-body">
+              <div class="list-title">Vecinos</div>
+              <div class="list-sub">Gestionar residentes</div>
+            </div>
+            <div class="list-arrow">›</div>
+          </div>
+
+          <div class="admin-list-card">
+            <div class="list-icon" style="font-size:16px;">🛡️</div>
+            <div class="list-body">
+              <div class="list-title">Vigilantes</div>
+              <div class="list-sub">Gestionar guardias</div>
+            </div>
+            <div class="list-arrow">›</div>
+          </div>
+
+          <div class="admin-list-card">
+            <div class="list-icon" style="font-size:16px;">➕</div>
+            <div class="list-body">
+              <div class="list-title">Registrar vigilante</div>
+              <div class="list-sub">Añadir nuevo guardia</div>
+            </div>
+            <div class="list-arrow">›</div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+    <div class="role-label">Dual Zone · Vecino + Administración</div>
+  </div>
+
+</div>
+
+<!-- Leyenda de tokens -->
+<div style="margin-top:48px;max-width:700px;margin-left:auto;margin-right:auto;background:#fff7ed;border:1px solid #fed7aa;border-radius:14px;padding:18px 20px;">
+  <div style="font-size:11px;font-weight:700;color:#c2410c;margin-bottom:12px;letter-spacing:0.06em;">DESIGN TOKENS APLICADOS</div>
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;">
+    <div>
+      <div style="font-size:10px;font-weight:700;color:#1c1917;margin-bottom:6px;">Colores primarios</div>
+      <div style="display:flex;flex-direction:column;gap:4px;">
+        <div style="display:flex;align-items:center;gap:6px;"><div style="width:14px;height:14px;background:#ea580c;border-radius:3px;"></div><span style="font-size:10px;color:#44403c;">--rp-primary</span></div>
+        <div style="display:flex;align-items:center;gap:6px;"><div style="width:14px;height:14px;background:#fff7ed;border:1px solid #fed7aa;border-radius:3px;"></div><span style="font-size:10px;color:#44403c;">--rp-primary-tint</span></div>
+        <div style="display:flex;align-items:center;gap:6px;"><div style="width:14px;height:14px;background:#1c1917;border-radius:3px;"></div><span style="font-size:10px;color:#44403c;">--rp-stone-950</span></div>
+      </div>
+    </div>
+    <div>
+      <div style="font-size:10px;font-weight:700;color:#1c1917;margin-bottom:6px;">Superficies</div>
+      <div style="display:flex;flex-direction:column;gap:4px;">
+        <div style="display:flex;align-items:center;gap:6px;"><div style="width:14px;height:14px;background:#fafaf9;border:1px solid #e7e5e4;border-radius:3px;"></div><span style="font-size:10px;color:#44403c;">--rp-bg</span></div>
+        <div style="display:flex;align-items:center;gap:6px;"><div style="width:14px;height:14px;background:#ffffff;border:1px solid #e7e5e4;border-radius:3px;"></div><span style="font-size:10px;color:#44403c;">--rp-surface</span></div>
+        <div style="display:flex;align-items:center;gap:6px;"><div style="width:14px;height:14px;background:#111110;border-radius:3px;"></div><span style="font-size:10px;color:#44403c;">Scanner bg</span></div>
+      </div>
+    </div>
+    <div>
+      <div style="font-size:10px;font-weight:700;color:#1c1917;margin-bottom:6px;">Radios</div>
+      <div style="display:flex;flex-direction:column;gap:4px;">
+        <div style="font-size:10px;color:#44403c;">Hero cards → 16px</div>
+        <div style="font-size:10px;color:#44403c;">List items → 14px</div>
+        <div style="font-size:10px;color:#44403c;">Badges → 9999px</div>
+        <div style="font-size:10px;color:#44403c;">Touch targets → 48px</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

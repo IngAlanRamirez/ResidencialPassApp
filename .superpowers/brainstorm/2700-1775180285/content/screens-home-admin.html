@@ -1,0 +1,229 @@
+<h2>Home Admin — con rol de vecino</h2>
+<p class="subtitle">Tres enfoques para combinar gestión administrativa y funciones de vecino en una sola pantalla.</p>
+
+<div style="display:flex; gap:24px; justify-content:center; flex-wrap:wrap; align-items:flex-start;">
+
+  <!-- OPCIÓN A: Segmento Mis Visitas | Administración -->
+  <div>
+    <div style="text-align:center; margin-bottom:10px; font-size:11px; font-weight:700; opacity:0.5; letter-spacing:0.08em;">A — SEGMENTO</div>
+    <div style="width:210px; background:#fafaf9; border-radius:24px; overflow:hidden; box-shadow:0 8px 32px rgba(0,0,0,0.15); border:6px solid #1c1917;">
+      <div style="background:#1c1917; height:28px; display:flex; align-items:center; justify-content:space-between; padding:0 14px;">
+        <span style="color:white; font-size:9px; font-weight:600;">9:41</span>
+        <span style="color:white; font-size:9px;">●●●</span>
+      </div>
+      <!-- Header -->
+      <div style="background:#1c1917; padding:14px 16px 18px;">
+        <div style="display:flex; align-items:flex-start; justify-content:space-between;">
+          <div>
+            <div style="font-size:9px; color:#78716c; font-family:'Plus Jakarta Sans',sans-serif; margin-bottom:2px;">Buenos días</div>
+            <div style="font-size:15px; font-weight:800; color:white; font-family:'Plus Jakarta Sans',sans-serif; line-height:1.1;">Calle Roble 42 B</div>
+          </div>
+          <div style="background:#ea580c;border-radius:8px;padding:3px 8px;flex-shrink:0;">
+            <span style="font-size:8px;color:white;font-weight:700;font-family:'Plus Jakarta Sans',sans-serif;">Admin</span>
+          </div>
+        </div>
+        <!-- Segmento switch -->
+        <div style="margin-top:12px;background:rgba(255,255,255,0.1);border-radius:10px;padding:3px;display:flex;gap:2px;">
+          <div style="flex:1;background:white;border-radius:8px;padding:6px;text-align:center;">
+            <span style="font-size:9px;font-weight:700;color:#1c1917;font-family:'Plus Jakarta Sans',sans-serif;">🔑 Mis visitas</span>
+          </div>
+          <div style="flex:1;border-radius:8px;padding:6px;text-align:center;">
+            <span style="font-size:9px;color:#78716c;font-family:'Plus Jakarta Sans',sans-serif;">⚙️ Gestión</span>
+          </div>
+        </div>
+      </div>
+      <!-- Contenido pestaña "Mis visitas" (igual a vecino) -->
+      <div style="background:#fafaf9;padding:10px 12px;">
+        <div style="background:white;border-radius:16px;box-shadow:0 4px 20px rgba(0,0,0,0.1);padding:16px;text-align:center;margin-bottom:8px;">
+          <div style="width:48px;height:48px;background:#fff7ed;border-radius:14px;margin:0 auto 8px;display:flex;align-items:center;justify-content:center;font-size:22px;">🔑</div>
+          <div style="font-size:13px;font-weight:800;color:#1c1917;font-family:'Plus Jakarta Sans',sans-serif;">Nueva Visita</div>
+          <div style="font-size:10px;color:#78716c;font-family:'Plus Jakarta Sans',sans-serif;margin-top:2px;">Generá un código QR</div>
+          <div style="margin-top:12px;background:#ea580c;border-radius:10px;padding:10px;">
+            <span style="color:white;font-size:11px;font-weight:700;font-family:'Plus Jakarta Sans',sans-serif;">Crear visita →</span>
+          </div>
+        </div>
+        <div style="background:white;border-radius:12px;padding:11px 14px;box-shadow:0 1px 6px rgba(0,0,0,0.06);display:flex;align-items:center;gap:10px;">
+          <div style="font-size:18px;">📋</div>
+          <div>
+            <div style="font-size:11px;font-weight:700;color:#1c1917;font-family:'Plus Jakarta Sans',sans-serif;">Mi historial</div>
+            <div style="font-size:9px;color:#78716c;font-family:'Plus Jakarta Sans',sans-serif;">3 visitas este mes</div>
+          </div>
+          <div style="margin-left:auto;color:#e7e5e4;font-size:14px;">›</div>
+        </div>
+      </div>
+    </div>
+    <div style="margin-top:10px;background:#fafaf9;border-radius:10px;padding:10px;border:1px solid #e7e5e4;width:210px;box-sizing:border-box;">
+      <div style="font-size:10px;font-weight:700;color:#1c1917;margin-bottom:4px;">Pro</div>
+      <div style="font-size:9px;color:#78716c;line-height:1.6;">Contextos separados y limpios. No mezcla vecino con admin.</div>
+      <div style="font-size:10px;font-weight:700;color:#1c1917;margin-top:6px;margin-bottom:4px;">Contra</div>
+      <div style="font-size:9px;color:#78716c;line-height:1.6;">Un tap extra para llegar a gestión. Badge de pendientes queda oculto.</div>
+    </div>
+  </div>
+
+  <!-- OPCIÓN B: Dual Zone (recomendada) -->
+  <div>
+    <div style="text-align:center; margin-bottom:10px; font-size:11px; font-weight:700; color:#ea580c; letter-spacing:0.08em;">B — DUAL ZONE ★ recomendada</div>
+    <div style="width:210px; background:#fafaf9; border-radius:24px; overflow:hidden; box-shadow:0 8px 32px rgba(0,0,0,0.15); border:6px solid #ea580c;">
+      <div style="background:#1c1917; height:28px; display:flex; align-items:center; justify-content:space-between; padding:0 14px;">
+        <span style="color:white; font-size:9px; font-weight:600;">9:41</span>
+        <span style="color:white; font-size:9px;">●●●</span>
+      </div>
+      <!-- Header con stats -->
+      <div style="background:#1c1917; padding:14px 16px 20px;">
+        <div style="display:flex; align-items:flex-start; justify-content:space-between;">
+          <div>
+            <div style="font-size:9px; color:#78716c; font-family:'Plus Jakarta Sans',sans-serif; margin-bottom:2px;">Buenos días</div>
+            <div style="font-size:15px; font-weight:800; color:white; font-family:'Plus Jakarta Sans',sans-serif; line-height:1.1;">Calle Roble 42 B</div>
+          </div>
+          <div style="background:#ea580c;border-radius:8px;padding:3px 8px;flex-shrink:0;">
+            <span style="font-size:8px;color:white;font-weight:700;font-family:'Plus Jakarta Sans',sans-serif;">Admin</span>
+          </div>
+        </div>
+        <!-- Mini stats -->
+        <div style="display:flex;gap:6px;margin-top:10px;">
+          <div style="flex:1;background:rgba(255,255,255,0.08);border-radius:8px;padding:6px;text-align:center;">
+            <div style="font-size:14px;font-weight:800;color:white;font-family:'Plus Jakarta Sans',sans-serif;">24</div>
+            <div style="font-size:7px;color:#78716c;font-family:'Plus Jakarta Sans',sans-serif;">Vecinos</div>
+          </div>
+          <div style="flex:1;background:rgba(234,88,12,0.25);border-radius:8px;padding:6px;text-align:center;">
+            <div style="font-size:14px;font-weight:800;color:#ea580c;font-family:'Plus Jakarta Sans',sans-serif;">3</div>
+            <div style="font-size:7px;color:#78716c;font-family:'Plus Jakarta Sans',sans-serif;">Pendientes</div>
+          </div>
+          <div style="flex:1;background:rgba(255,255,255,0.08);border-radius:8px;padding:6px;text-align:center;">
+            <div style="font-size:14px;font-weight:800;color:white;font-family:'Plus Jakarta Sans',sans-serif;">5</div>
+            <div style="font-size:7px;color:#78716c;font-family:'Plus Jakarta Sans',sans-serif;">Vigilantes</div>
+          </div>
+        </div>
+      </div>
+
+      <div style="background:#fafaf9;padding:10px 12px;">
+        <!-- ZONA VECINO -->
+        <div style="font-size:8px;color:#78716c;font-weight:700;letter-spacing:0.06em;font-family:'Plus Jakarta Sans',sans-serif;margin-bottom:6px;">MIS VISITAS</div>
+        <div style="display:flex;gap:8px;margin-bottom:10px;">
+          <div style="flex:1;background:white;border-radius:12px;padding:12px 8px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,0.07);">
+            <div style="font-size:20px;margin-bottom:4px;">🔑</div>
+            <div style="font-size:9px;color:#1c1917;font-weight:700;font-family:'Plus Jakarta Sans',sans-serif;">Nueva</div>
+          </div>
+          <div style="flex:1;background:white;border-radius:12px;padding:12px 8px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,0.07);">
+            <div style="font-size:20px;margin-bottom:4px;">📋</div>
+            <div style="font-size:9px;color:#1c1917;font-weight:700;font-family:'Plus Jakarta Sans',sans-serif;">Historial</div>
+          </div>
+        </div>
+
+        <!-- Divider con label -->
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
+          <div style="flex:1;height:1px;background:#e7e5e4;"></div>
+          <div style="font-size:8px;color:#78716c;font-weight:700;letter-spacing:0.06em;font-family:'Plus Jakarta Sans',sans-serif;">ADMINISTRACIÓN</div>
+          <div style="flex:1;height:1px;background:#e7e5e4;"></div>
+        </div>
+
+        <!-- ZONA ADMIN -->
+        <div style="background:white;border-radius:12px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,0.06);">
+          <div style="padding:9px 12px;display:flex;align-items:center;gap:8px;border-bottom:1px solid #f5f5f4;">
+            <div style="font-size:14px;">📋</div>
+            <div style="flex:1;font-size:10px;font-weight:700;color:#1c1917;font-family:'Plus Jakarta Sans',sans-serif;">Registros pendientes</div>
+            <div style="background:#ea580c;width:16px;height:16px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+              <span style="font-size:8px;color:white;font-weight:700;">3</span>
+            </div>
+          </div>
+          <div style="padding:9px 12px;display:flex;align-items:center;gap:8px;border-bottom:1px solid #f5f5f4;">
+            <div style="font-size:14px;">🏘️</div>
+            <div style="flex:1;font-size:10px;font-weight:700;color:#1c1917;font-family:'Plus Jakarta Sans',sans-serif;">Vecinos</div>
+            <div style="color:#e7e5e4;font-size:12px;">›</div>
+          </div>
+          <div style="padding:9px 12px;display:flex;align-items:center;gap:8px;">
+            <div style="font-size:14px;">🛡️</div>
+            <div style="flex:1;font-size:10px;font-weight:700;color:#1c1917;font-family:'Plus Jakarta Sans',sans-serif;">Vigilantes</div>
+            <div style="color:#e7e5e4;font-size:12px;">›</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div style="margin-top:10px;background:#fff7ed;border-radius:10px;padding:10px;border:1px solid #fed7aa;width:210px;box-sizing:border-box;">
+      <div style="font-size:10px;font-weight:700;color:#c2410c;margin-bottom:4px;">Pro</div>
+      <div style="font-size:9px;color:#78716c;line-height:1.6;">Todo visible en una pantalla. Badge de pendientes siempre visible. Dos zonas claramente separadas.</div>
+      <div style="font-size:10px;font-weight:700;color:#c2410c;margin-top:6px;margin-bottom:4px;">Contra</div>
+      <div style="font-size:9px;color:#78716c;line-height:1.6;">Pantalla más larga — requiere scroll en teléfonos pequeños.</div>
+    </div>
+  </div>
+
+  <!-- OPCIÓN C: Quick Actions flotantes -->
+  <div>
+    <div style="text-align:center; margin-bottom:10px; font-size:11px; font-weight:700; opacity:0.5; letter-spacing:0.08em;">C — QUICK ACTIONS</div>
+    <div style="width:210px; background:#fafaf9; border-radius:24px; overflow:hidden; box-shadow:0 8px 32px rgba(0,0,0,0.15); border:6px solid #1c1917;">
+      <div style="background:#1c1917; height:28px; display:flex; align-items:center; justify-content:space-between; padding:0 14px;">
+        <span style="color:white; font-size:9px; font-weight:600;">9:41</span>
+        <span style="color:white; font-size:9px;">●●●</span>
+      </div>
+      <!-- Header grande con todo -->
+      <div style="background:#1c1917; padding:14px 16px 32px;">
+        <div style="display:flex; align-items:flex-start; justify-content:space-between;margin-bottom:12px;">
+          <div>
+            <div style="font-size:9px; color:#78716c; font-family:'Plus Jakarta Sans',sans-serif; margin-bottom:2px;">Panel Admin · Calle Roble 42 B</div>
+            <div style="font-size:15px; font-weight:800; color:white; font-family:'Plus Jakarta Sans',sans-serif;">Buenos días</div>
+          </div>
+          <div style="background:#ea580c;border-radius:8px;padding:3px 8px;flex-shrink:0;">
+            <span style="font-size:8px;color:white;font-weight:700;font-family:'Plus Jakarta Sans',sans-serif;">Admin</span>
+          </div>
+        </div>
+        <!-- Grid de acciones rápidas 2x3 -->
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;">
+          <div style="background:rgba(234,88,12,0.2);border-radius:10px;padding:10px 6px;text-align:center;border:1px solid rgba(234,88,12,0.3);">
+            <div style="font-size:18px;margin-bottom:3px;">🔑</div>
+            <div style="font-size:8px;color:#fed7aa;font-weight:700;font-family:'Plus Jakarta Sans',sans-serif;">Nueva<br/>Visita</div>
+          </div>
+          <div style="background:rgba(255,255,255,0.08);border-radius:10px;padding:10px 6px;text-align:center;">
+            <div style="font-size:18px;margin-bottom:3px;">📋</div>
+            <div style="font-size:8px;color:#a8a29e;font-weight:700;font-family:'Plus Jakarta Sans',sans-serif;">Mi<br/>Historial</div>
+          </div>
+          <div style="background:rgba(255,255,255,0.08);border-radius:10px;padding:10px 6px;text-align:center;position:relative;">
+            <div style="font-size:18px;margin-bottom:3px;">📝</div>
+            <div style="font-size:8px;color:#a8a29e;font-weight:700;font-family:'Plus Jakarta Sans',sans-serif;">Pendientes</div>
+            <div style="position:absolute;top:5px;right:5px;background:#ea580c;width:14px;height:14px;border-radius:50%;display:flex;align-items:center;justify-content:center;">
+              <span style="font-size:7px;color:white;font-weight:700;">3</span>
+            </div>
+          </div>
+          <div style="background:rgba(255,255,255,0.08);border-radius:10px;padding:10px 6px;text-align:center;">
+            <div style="font-size:18px;margin-bottom:3px;">🏘️</div>
+            <div style="font-size:8px;color:#a8a29e;font-weight:700;font-family:'Plus Jakarta Sans',sans-serif;">Vecinos</div>
+          </div>
+          <div style="background:rgba(255,255,255,0.08);border-radius:10px;padding:10px 6px;text-align:center;">
+            <div style="font-size:18px;margin-bottom:3px;">🛡️</div>
+            <div style="font-size:8px;color:#a8a29e;font-weight:700;font-family:'Plus Jakarta Sans',sans-serif;">Vigilantes</div>
+          </div>
+          <div style="background:rgba(255,255,255,0.08);border-radius:10px;padding:10px 6px;text-align:center;">
+            <div style="font-size:18px;margin-bottom:3px;">➕</div>
+            <div style="font-size:8px;color:#a8a29e;font-weight:700;font-family:'Plus Jakarta Sans',sans-serif;">Reg. vigil.</div>
+          </div>
+        </div>
+      </div>
+      <!-- Actividad reciente -->
+      <div style="background:#fafaf9;padding:10px 12px;">
+        <div style="font-size:8px;color:#78716c;font-weight:700;letter-spacing:0.06em;font-family:'Plus Jakarta Sans',sans-serif;margin-bottom:8px;">ACTIVIDAD RECIENTE</div>
+        <div style="background:white;border-radius:12px;overflow:hidden;box-shadow:0 1px 6px rgba(0,0,0,0.06);">
+          <div style="padding:9px 12px;display:flex;align-items:center;gap:8px;border-bottom:1px solid #f5f5f4;">
+            <div style="font-size:12px;">✅</div>
+            <div>
+              <div style="font-size:10px;font-weight:700;color:#1c1917;font-family:'Plus Jakarta Sans',sans-serif;">Registro aprobado</div>
+              <div style="font-size:8px;color:#78716c;font-family:'Plus Jakarta Sans',sans-serif;">Hace 2h · Carlos M.</div>
+            </div>
+          </div>
+          <div style="padding:9px 12px;display:flex;align-items:center;gap:8px;">
+            <div style="font-size:12px;">🔑</div>
+            <div>
+              <div style="font-size:10px;font-weight:700;color:#1c1917;font-family:'Plus Jakarta Sans',sans-serif;">Tu visita: Juan G.</div>
+              <div style="font-size:8px;color:#78716c;font-family:'Plus Jakarta Sans',sans-serif;">Hoy · 14:00 · Pendiente</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div style="margin-top:10px;background:#fafaf9;border-radius:10px;padding:10px;border:1px solid #e7e5e4;width:210px;box-sizing:border-box;">
+      <div style="font-size:10px;font-weight:700;color:#1c1917;margin-bottom:4px;">Pro</div>
+      <div style="font-size:9px;color:#78716c;line-height:1.6;">Todo accesible en un tap. Compacto. Buen overview de actividad.</div>
+      <div style="font-size:10px;font-weight:700;color:#1c1917;margin-top:6px;margin-bottom:4px;">Contra</div>
+      <div style="font-size:9px;color:#78716c;line-height:1.6;">El grid de 6 ítems puede ser abrumador. Sin jerarquía visual clara.</div>
+    </div>
+  </div>
+
+</div>

@@ -1,0 +1,147 @@
+<h2>Sección 1 — Design Tokens</h2>
+<p class="subtitle">La base de todo el sistema. Colores, tipografía, espaciado y radios. ¿Se entiende la dirección?</p>
+
+<div style="display:grid; grid-template-columns:1fr 1fr; gap:24px; max-width:900px; margin:0 auto;">
+
+  <!-- Colores -->
+  <div class="section">
+    <div class="label">Paleta de color</div>
+    <div style="margin-top:12px;">
+      <div style="display:flex; align-items:center; gap:12px; margin-bottom:8px;">
+        <div style="width:40px;height:40px;background:#1c1917;border-radius:8px;flex-shrink:0;"></div>
+        <div>
+          <div style="font-size:12px;font-weight:700;">--rp-stone-950</div>
+          <div style="font-size:11px;opacity:0.6;">#1c1917 · Header, texto principal</div>
+        </div>
+      </div>
+      <div style="display:flex; align-items:center; gap:12px; margin-bottom:8px;">
+        <div style="width:40px;height:40px;background:#44403c;border-radius:8px;flex-shrink:0;"></div>
+        <div>
+          <div style="font-size:12px;font-weight:700;">--rp-stone-700</div>
+          <div style="font-size:11px;opacity:0.6;">#44403c · Texto secundario</div>
+        </div>
+      </div>
+      <div style="display:flex; align-items:center; gap:12px; margin-bottom:8px;">
+        <div style="width:40px;height:40px;background:#ea580c;border-radius:8px;flex-shrink:0;"></div>
+        <div>
+          <div style="font-size:12px;font-weight:700;">--rp-primary</div>
+          <div style="font-size:11px;opacity:0.6;">#ea580c · Acento, CTA principal</div>
+        </div>
+      </div>
+      <div style="display:flex; align-items:center; gap:12px; margin-bottom:8px;">
+        <div style="width:40px;height:40px;background:#c2410c;border-radius:8px;flex-shrink:0;"></div>
+        <div>
+          <div style="font-size:12px;font-weight:700;">--rp-primary-dark</div>
+          <div style="font-size:11px;opacity:0.6;">#c2410c · Pressed state, badges</div>
+        </div>
+      </div>
+      <div style="display:flex; align-items:center; gap:12px; margin-bottom:8px;">
+        <div style="width:40px;height:40px;background:#fff7ed;border-radius:8px;flex-shrink:0;border:1px solid #fed7aa;"></div>
+        <div>
+          <div style="font-size:12px;font-weight:700;">--rp-primary-tint</div>
+          <div style="font-size:11px;opacity:0.6;">#fff7ed · Fondos de iconos</div>
+        </div>
+      </div>
+      <div style="display:flex; align-items:center; gap:12px; margin-bottom:8px;">
+        <div style="width:40px;height:40px;background:#fafaf9;border-radius:8px;flex-shrink:0;border:1px solid #e7e5e4;"></div>
+        <div>
+          <div style="font-size:12px;font-weight:700;">--rp-bg</div>
+          <div style="font-size:11px;opacity:0.6;">#fafaf9 · Fondo de página</div>
+        </div>
+      </div>
+      <div style="display:flex; align-items:center; gap:12px; margin-bottom:8px;">
+        <div style="width:40px;height:40px;background:white;border-radius:8px;flex-shrink:0;border:1px solid #e7e5e4;"></div>
+        <div>
+          <div style="font-size:12px;font-weight:700;">--rp-surface</div>
+          <div style="font-size:11px;opacity:0.6;">#ffffff · Cards, inputs</div>
+        </div>
+      </div>
+      <div style="display:flex; align-items:center; gap:12px; margin-bottom:8px;">
+        <div style="width:40px;height:40px;background:#16a34a;border-radius:8px;flex-shrink:0;"></div>
+        <div>
+          <div style="font-size:12px;font-weight:700;">--rp-success</div>
+          <div style="font-size:11px;opacity:0.6;">#16a34a · Estado completado</div>
+        </div>
+      </div>
+      <div style="display:flex; align-items:center; gap:12px;">
+        <div style="width:40px;height:40px;background:#dc2626;border-radius:8px;flex-shrink:0;"></div>
+        <div>
+          <div style="font-size:12px;font-weight:700;">--rp-danger</div>
+          <div style="font-size:11px;opacity:0.6;">#dc2626 · Errores, cancelar</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tipografía + Espaciado -->
+  <div>
+    <div class="section">
+      <div class="label">Tipografía — Plus Jakarta Sans</div>
+      <!-- Preview con fondo fijo claro para que sea legible independiente del dark mode -->
+      <div style="margin-top:12px; background:#fafaf9; border-radius:12px; padding:16px; border:1px solid #e7e5e4;">
+        <div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:26px;font-weight:800;color:#1c1917;line-height:1.1;">Residencial</div>
+        <div style="font-size:10px;color:#78716c;margin-bottom:14px;">Display · 26px · ExtraBold 800</div>
+
+        <div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:18px;font-weight:700;color:#1c1917;">Calle Roble 42 B</div>
+        <div style="font-size:10px;color:#78716c;margin-bottom:14px;">Heading · 18px · Bold 700</div>
+
+        <div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:14px;font-weight:600;color:#44403c;">Nueva Visita</div>
+        <div style="font-size:10px;color:#78716c;margin-bottom:14px;">Label · 14px · SemiBold 600</div>
+
+        <div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:13px;font-weight:400;color:#44403c;">Juan García · Visitante</div>
+        <div style="font-size:10px;color:#78716c;margin-bottom:14px;">Body · 13px · Regular 400</div>
+
+        <div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:11px;font-weight:400;color:#78716c;">Hoy a las 14:00 · Pendiente</div>
+        <div style="font-size:10px;color:#78716c;">Caption · 11px · Regular 400</div>
+      </div>
+    </div>
+
+    <div class="section" style="margin-top:20px;">
+      <div class="label">Radios & Espaciado</div>
+      <div style="margin-top:12px;display:flex;gap:8px;align-items:flex-end;">
+        <div style="text-align:center;">
+          <div style="width:32px;height:32px;background:#ea580c;border-radius:6px;margin:0 auto;"></div>
+          <div style="font-size:9px;opacity:0.6;margin-top:4px;">sm<br/>6px</div>
+        </div>
+        <div style="text-align:center;">
+          <div style="width:40px;height:40px;background:#ea580c;border-radius:10px;margin:0 auto;"></div>
+          <div style="font-size:9px;opacity:0.6;margin-top:4px;">md<br/>10px</div>
+        </div>
+        <div style="text-align:center;">
+          <div style="width:48px;height:48px;background:#ea580c;border-radius:14px;margin:0 auto;"></div>
+          <div style="font-size:9px;opacity:0.6;margin-top:4px;">lg<br/>14px</div>
+        </div>
+        <div style="text-align:center;">
+          <div style="width:56px;height:56px;background:#ea580c;border-radius:18px;margin:0 auto;"></div>
+          <div style="font-size:9px;opacity:0.6;margin-top:4px;">xl<br/>18px</div>
+        </div>
+        <div style="text-align:center;">
+          <div style="width:60px;height:60px;background:#ea580c;border-radius:9999px;margin:0 auto;"></div>
+          <div style="font-size:9px;opacity:0.6;margin-top:4px;">full<br/>50%</div>
+        </div>
+      </div>
+      <div style="margin-top:16px;">
+        <div style="font-size:10px;opacity:0.6;margin-bottom:6px;">Touch targets mínimos: 48px</div>
+        <div style="font-size:10px;opacity:0.6;margin-bottom:6px;">Padding de página: 20px horizontal</div>
+        <div style="font-size:10px;opacity:0.6;">Sombra card: 0 2px 12px rgba(0,0,0,0.08)</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div style="margin-top:24px;background:#fff7ed;border:1px solid #fed7aa;border-radius:12px;padding:16px;max-width:900px;margin-left:auto;margin-right:auto;">
+  <div style="font-size:12px;font-weight:700;color:#c2410c;margin-bottom:6px;">📦 CSS custom properties en global.scss</div>
+  <div style="font-size:11px;color:#78716c;font-family:monospace;line-height:1.8;">
+    :root {<br/>
+    &nbsp;&nbsp;--rp-primary: #ea580c;<br/>
+    &nbsp;&nbsp;--rp-primary-dark: #c2410c;<br/>
+    &nbsp;&nbsp;--rp-stone-950: #1c1917;<br/>
+    &nbsp;&nbsp;--rp-stone-700: #44403c;<br/>
+    &nbsp;&nbsp;--rp-bg: #fafaf9;<br/>
+    &nbsp;&nbsp;--rp-surface: #ffffff;<br/>
+    &nbsp;&nbsp;--rp-radius-lg: 14px;<br/>
+    &nbsp;&nbsp;--rp-font: 'Plus Jakarta Sans', sans-serif;<br/>
+    }
+  </div>
+</div>

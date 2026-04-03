@@ -1,0 +1,135 @@
+<h2>Modo Claro vs Modo Oscuro</h2>
+<p class="subtitle">Mismos tokens, dos temas. El modo oscuro adapta fondos y superficies — el acento naranja permanece igual en ambos.</p>
+
+<div style="display:flex; gap:32px; justify-content:center; flex-wrap:wrap; margin-top:8px;">
+
+  <!-- MODO CLARO -->
+  <div>
+    <div style="text-align:center; margin-bottom:12px; font-size:12px; font-weight:700; letter-spacing:0.08em; opacity:0.6;">☀️ MODO CLARO</div>
+    <div style="width:220px; background:#fafaf9; border-radius:24px; overflow:hidden; box-shadow:0 8px 32px rgba(0,0,0,0.15); border:6px solid #1c1917;">
+      <!-- Status bar -->
+      <div style="background:#1c1917; height:32px; display:flex; align-items:center; justify-content:space-between; padding:0 16px;">
+        <span style="color:white; font-size:10px; font-weight:600; font-family:'Plus Jakarta Sans',sans-serif;">9:41</span>
+        <span style="color:white; font-size:10px;">●●●</span>
+      </div>
+      <!-- Header -->
+      <div style="background:#1c1917; padding:20px 16px 28px;">
+        <div style="font-size:9px; color:#a8a29e; font-family:'Plus Jakarta Sans',sans-serif; margin-bottom:3px;">Buenos días</div>
+        <div style="font-size:17px; font-weight:800; color:white; font-family:'Plus Jakarta Sans',sans-serif; line-height:1.1;">Calle Roble<br/>42 B</div>
+        <div style="margin-top:10px; display:inline-flex; align-items:center; gap:5px; background:#c2410c; border-radius:20px; padding:4px 10px;">
+          <div style="width:5px;height:5px;background:#fca5a5;border-radius:50%;"></div>
+          <span style="color:white; font-size:9px; font-weight:700; font-family:'Plus Jakarta Sans',sans-serif;">2 pendientes</span>
+        </div>
+      </div>
+      <!-- Main action card -->
+      <div style="margin:-16px 12px 0; background:white; border-radius:18px; box-shadow:0 4px 20px rgba(0,0,0,0.12); padding:20px 16px; text-align:center; margin-bottom:10px;">
+        <div style="width:56px;height:56px;background:#fff7ed;border-radius:16px;margin:0 auto 10px;display:flex;align-items:center;justify-content:center;">
+          <div style="width:32px;height:32px;background:#ea580c;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:18px;">🔑</div>
+        </div>
+        <div style="font-size:14px;font-weight:700;color:#1c1917;font-family:'Plus Jakarta Sans',sans-serif;">Nueva Visita</div>
+        <div style="font-size:10px;color:#78716c;margin-top:3px;font-family:'Plus Jakarta Sans',sans-serif;">Generá tu código QR</div>
+        <div style="margin-top:14px;background:#ea580c;border-radius:12px;padding:10px;color:white;font-size:11px;font-weight:700;font-family:'Plus Jakarta Sans',sans-serif;">Crear visita</div>
+      </div>
+      <!-- Secondary actions -->
+      <div style="display:flex;gap:8px;padding:0 12px 16px;">
+        <div style="flex:1;background:white;border-radius:12px;padding:12px 8px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,0.06);">
+          <div style="font-size:20px;margin-bottom:4px;">📋</div>
+          <div style="font-size:9px;color:#44403c;font-weight:600;font-family:'Plus Jakarta Sans',sans-serif;">Historial</div>
+        </div>
+        <div style="flex:1;background:white;border-radius:12px;padding:12px 8px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,0.06);">
+          <div style="font-size:20px;margin-bottom:4px;">👤</div>
+          <div style="font-size:9px;color:#44403c;font-weight:600;font-family:'Plus Jakarta Sans',sans-serif;">Perfil</div>
+        </div>
+      </div>
+      <!-- Visita reciente -->
+      <div style="margin:0 12px 16px;background:white;border-radius:12px;padding:12px;box-shadow:0 2px 8px rgba(0,0,0,0.06);">
+        <div style="font-size:9px;color:#78716c;font-family:'Plus Jakarta Sans',sans-serif;margin-bottom:6px;font-weight:600;letter-spacing:0.05em;">PRÓXIMA VISITA</div>
+        <div style="font-size:12px;font-weight:700;color:#1c1917;font-family:'Plus Jakarta Sans',sans-serif;">Juan García</div>
+        <div style="font-size:10px;color:#78716c;font-family:'Plus Jakarta Sans',sans-serif;margin-top:2px;">Hoy · 14:00 · Visitante</div>
+        <div style="margin-top:8px;display:inline-block;background:#fff7ed;border:1px solid #fed7aa;border-radius:6px;padding:2px 8px;">
+          <span style="font-size:9px;color:#c2410c;font-weight:700;font-family:'Plus Jakarta Sans',sans-serif;">● Pendiente</span>
+        </div>
+      </div>
+    </div>
+    <!-- Tokens claro -->
+    <div style="margin-top:16px;background:#fafaf9;border-radius:10px;padding:12px;border:1px solid #e7e5e4;width:220px;box-sizing:border-box;">
+      <div style="font-size:10px;font-weight:700;color:#44403c;margin-bottom:8px;">Tokens modo claro</div>
+      <div style="display:flex;flex-direction:column;gap:5px;">
+        <div style="display:flex;align-items:center;gap:8px;"><div style="width:16px;height:16px;background:#fafaf9;border-radius:3px;border:1px solid #e7e5e4;flex-shrink:0;"></div><span style="font-size:9px;color:#44403c;font-family:monospace;">--rp-bg: #fafaf9</span></div>
+        <div style="display:flex;align-items:center;gap:8px;"><div style="width:16px;height:16px;background:#ffffff;border-radius:3px;border:1px solid #e7e5e4;flex-shrink:0;"></div><span style="font-size:9px;color:#44403c;font-family:monospace;">--rp-surface: #ffffff</span></div>
+        <div style="display:flex;align-items:center;gap:8px;"><div style="width:16px;height:16px;background:#1c1917;border-radius:3px;flex-shrink:0;"></div><span style="font-size:9px;color:#44403c;font-family:monospace;">--rp-text: #1c1917</span></div>
+        <div style="display:flex;align-items:center;gap:8px;"><div style="width:16px;height:16px;background:#ea580c;border-radius:3px;flex-shrink:0;"></div><span style="font-size:9px;color:#44403c;font-family:monospace;">--rp-primary: #ea580c</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODO OSCURO -->
+  <div>
+    <div style="text-align:center; margin-bottom:12px; font-size:12px; font-weight:700; letter-spacing:0.08em; opacity:0.6;">🌙 MODO OSCURO</div>
+    <div style="width:220px; background:#111110; border-radius:24px; overflow:hidden; box-shadow:0 8px 32px rgba(0,0,0,0.4); border:6px solid #292524;">
+      <!-- Status bar -->
+      <div style="background:#111110; height:32px; display:flex; align-items:center; justify-content:space-between; padding:0 16px;">
+        <span style="color:#e7e5e4; font-size:10px; font-weight:600; font-family:'Plus Jakarta Sans',sans-serif;">9:41</span>
+        <span style="color:#e7e5e4; font-size:10px;">●●●</span>
+      </div>
+      <!-- Header oscuro -->
+      <div style="background:#111110; padding:20px 16px 28px; border-bottom:1px solid #292524;">
+        <div style="font-size:9px; color:#78716c; font-family:'Plus Jakarta Sans',sans-serif; margin-bottom:3px;">Buenos días</div>
+        <div style="font-size:17px; font-weight:800; color:#fafaf9; font-family:'Plus Jakarta Sans',sans-serif; line-height:1.1;">Calle Roble<br/>42 B</div>
+        <div style="margin-top:10px; display:inline-flex; align-items:center; gap:5px; background:#7c2d12; border-radius:20px; padding:4px 10px;">
+          <div style="width:5px;height:5px;background:#ea580c;border-radius:50%;"></div>
+          <span style="color:#fed7aa; font-size:9px; font-weight:700; font-family:'Plus Jakarta Sans',sans-serif;">2 pendientes</span>
+        </div>
+      </div>
+      <!-- Main action card oscuro -->
+      <div style="margin:10px 12px; background:#1c1917; border-radius:18px; border:1px solid #292524; padding:20px 16px; text-align:center; margin-bottom:10px;">
+        <div style="width:56px;height:56px;background:#292524;border-radius:16px;margin:0 auto 10px;display:flex;align-items:center;justify-content:center;">
+          <div style="width:32px;height:32px;background:#ea580c;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:18px;">🔑</div>
+        </div>
+        <div style="font-size:14px;font-weight:700;color:#fafaf9;font-family:'Plus Jakarta Sans',sans-serif;">Nueva Visita</div>
+        <div style="font-size:10px;color:#78716c;margin-top:3px;font-family:'Plus Jakarta Sans',sans-serif;">Generá tu código QR</div>
+        <div style="margin-top:14px;background:#ea580c;border-radius:12px;padding:10px;color:white;font-size:11px;font-weight:700;font-family:'Plus Jakarta Sans',sans-serif;">Crear visita</div>
+      </div>
+      <!-- Secondary actions oscuro -->
+      <div style="display:flex;gap:8px;padding:0 12px 16px;">
+        <div style="flex:1;background:#1c1917;border-radius:12px;padding:12px 8px;text-align:center;border:1px solid #292524;">
+          <div style="font-size:20px;margin-bottom:4px;">📋</div>
+          <div style="font-size:9px;color:#a8a29e;font-weight:600;font-family:'Plus Jakarta Sans',sans-serif;">Historial</div>
+        </div>
+        <div style="flex:1;background:#1c1917;border-radius:12px;padding:12px 8px;text-align:center;border:1px solid #292524;">
+          <div style="font-size:20px;margin-bottom:4px;">👤</div>
+          <div style="font-size:9px;color:#a8a29e;font-weight:600;font-family:'Plus Jakarta Sans',sans-serif;">Perfil</div>
+        </div>
+      </div>
+      <!-- Visita reciente oscuro -->
+      <div style="margin:0 12px 16px;background:#1c1917;border-radius:12px;padding:12px;border:1px solid #292524;">
+        <div style="font-size:9px;color:#78716c;font-family:'Plus Jakarta Sans',sans-serif;margin-bottom:6px;font-weight:600;letter-spacing:0.05em;">PRÓXIMA VISITA</div>
+        <div style="font-size:12px;font-weight:700;color:#fafaf9;font-family:'Plus Jakarta Sans',sans-serif;">Juan García</div>
+        <div style="font-size:10px;color:#78716c;font-family:'Plus Jakarta Sans',sans-serif;margin-top:2px;">Hoy · 14:00 · Visitante</div>
+        <div style="margin-top:8px;display:inline-block;background:#7c2d12;border:1px solid #9a3412;border-radius:6px;padding:2px 8px;">
+          <span style="font-size:9px;color:#fed7aa;font-weight:700;font-family:'Plus Jakarta Sans',sans-serif;">● Pendiente</span>
+        </div>
+      </div>
+    </div>
+    <!-- Tokens oscuro -->
+    <div style="margin-top:16px;background:#1c1917;border-radius:10px;padding:12px;border:1px solid #292524;width:220px;box-sizing:border-box;">
+      <div style="font-size:10px;font-weight:700;color:#a8a29e;margin-bottom:8px;">Tokens modo oscuro</div>
+      <div style="display:flex;flex-direction:column;gap:5px;">
+        <div style="display:flex;align-items:center;gap:8px;"><div style="width:16px;height:16px;background:#111110;border-radius:3px;border:1px solid #292524;flex-shrink:0;"></div><span style="font-size:9px;color:#a8a29e;font-family:monospace;">--rp-bg: #111110</span></div>
+        <div style="display:flex;align-items:center;gap:8px;"><div style="width:16px;height:16px;background:#1c1917;border-radius:3px;border:1px solid #292524;flex-shrink:0;"></div><span style="font-size:9px;color:#a8a29e;font-family:monospace;">--rp-surface: #1c1917</span></div>
+        <div style="display:flex;align-items:center;gap:8px;"><div style="width:16px;height:16px;background:#fafaf9;border-radius:3px;flex-shrink:0;"></div><span style="font-size:9px;color:#a8a29e;font-family:monospace;">--rp-text: #fafaf9</span></div>
+        <div style="display:flex;align-items:center;gap:8px;"><div style="width:16px;height:16px;background:#ea580c;border-radius:3px;flex-shrink:0;"></div><span style="font-size:9px;color:#a8a29e;font-family:monospace;">--rp-primary: #ea580c
+        </span></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div style="margin-top:28px;max-width:480px;margin-left:auto;margin-right:auto;background:#fff7ed;border:1px solid #fed7aa;border-radius:12px;padding:16px;">
+  <div style="font-size:12px;font-weight:700;color:#c2410c;margin-bottom:6px;">💡 Cómo funciona en Ionic</div>
+  <div style="font-size:11px;color:#78716c;line-height:1.7;">
+    Un <code style="background:#fed7aa;padding:1px 4px;border-radius:3px;color:#c2410c;">prefers-color-scheme</code> media query en <code style="background:#fed7aa;padding:1px 4px;border-radius:3px;color:#c2410c;">global.scss</code> sobreescribe los tokens.<br/><br/>
+    El acento naranja <strong style="color:#ea580c;">#ea580c</strong> es idéntico en ambos modos — funciona sobre fondo claro y oscuro.
+  </div>
+</div>

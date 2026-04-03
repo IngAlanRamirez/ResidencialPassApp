@@ -1,0 +1,177 @@
+<h2>Sección 2 — Component Library</h2>
+<p class="subtitle">5 componentes base custom. Todo el resto de la app se construye con estos bloques.</p>
+
+<div style="display:grid; grid-template-columns:1fr 1fr; gap:20px; max-width:900px; margin:0 auto;">
+
+  <!-- rp-button -->
+  <div style="background:#fafaf9; border-radius:14px; padding:18px; border:1px solid #e7e5e4;">
+    <div style="font-size:11px; font-weight:700; color:#ea580c; letter-spacing:0.08em; margin-bottom:14px;">RpButtonComponent</div>
+
+    <!-- Primary -->
+    <div style="margin-bottom:10px;">
+      <div style="font-size:9px; color:#78716c; margin-bottom:6px; font-weight:600;">primary (default)</div>
+      <div style="background:#ea580c; border-radius:12px; padding:14px 20px; text-align:center; display:inline-block; min-width:140px;">
+        <span style="color:white; font-size:13px; font-weight:700; font-family:'Plus Jakarta Sans',sans-serif;">Crear visita</span>
+      </div>
+    </div>
+
+    <!-- Secondary -->
+    <div style="margin-bottom:10px;">
+      <div style="font-size:9px; color:#78716c; margin-bottom:6px; font-weight:600;">secondary</div>
+      <div style="background:white; border-radius:12px; padding:14px 20px; text-align:center; display:inline-block; min-width:140px; border:1.5px solid #e7e5e4;">
+        <span style="color:#1c1917; font-size:13px; font-weight:700; font-family:'Plus Jakarta Sans',sans-serif;">Cancelar</span>
+      </div>
+    </div>
+
+    <!-- Danger -->
+    <div style="margin-bottom:10px;">
+      <div style="font-size:9px; color:#78716c; margin-bottom:6px; font-weight:600;">danger</div>
+      <div style="background:#fef2f2; border-radius:12px; padding:14px 20px; text-align:center; display:inline-block; min-width:140px; border:1.5px solid #fecaca;">
+        <span style="color:#dc2626; font-size:13px; font-weight:700; font-family:'Plus Jakarta Sans',sans-serif;">Eliminar</span>
+      </div>
+    </div>
+
+    <!-- Loading -->
+    <div style="margin-bottom:10px;">
+      <div style="font-size:9px; color:#78716c; margin-bottom:6px; font-weight:600;">loading state</div>
+      <div style="background:#ea580c; border-radius:12px; padding:14px 20px; text-align:center; display:inline-block; min-width:140px; opacity:0.7;">
+        <span style="color:white; font-size:13px; font-weight:700; font-family:'Plus Jakarta Sans',sans-serif;">⟳ Cargando...</span>
+      </div>
+    </div>
+
+    <div style="font-size:9px; color:#78716c; margin-top:8px; padding-top:10px; border-top:1px solid #e7e5e4;">height: 48px · border-radius: 12px · font-weight: 700</div>
+  </div>
+
+  <!-- rp-input -->
+  <div style="background:#fafaf9; border-radius:14px; padding:18px; border:1px solid #e7e5e4;">
+    <div style="font-size:11px; font-weight:700; color:#ea580c; letter-spacing:0.08em; margin-bottom:14px;">RpInputComponent</div>
+
+    <!-- Default -->
+    <div style="margin-bottom:14px;">
+      <div style="font-size:9px; color:#78716c; margin-bottom:6px; font-weight:600;">default</div>
+      <div style="background:white; border-radius:12px; padding:14px 16px; border:1.5px solid #e7e5e4;">
+        <div style="font-size:9px; color:#78716c; margin-bottom:3px; font-family:'Plus Jakarta Sans',sans-serif; font-weight:600;">Teléfono</div>
+        <div style="font-size:13px; color:#a8a29e; font-family:'Plus Jakarta Sans',sans-serif;">+52 55 1234 5678</div>
+      </div>
+    </div>
+
+    <!-- Focused -->
+    <div style="margin-bottom:14px;">
+      <div style="font-size:9px; color:#78716c; margin-bottom:6px; font-weight:600;">focused</div>
+      <div style="background:white; border-radius:12px; padding:14px 16px; border:1.5px solid #ea580c; box-shadow:0 0 0 3px #fff7ed;">
+        <div style="font-size:9px; color:#ea580c; margin-bottom:3px; font-family:'Plus Jakarta Sans',sans-serif; font-weight:600;">Teléfono</div>
+        <div style="font-size:13px; color:#1c1917; font-family:'Plus Jakarta Sans',sans-serif;">+52 55 1234 5678</div>
+      </div>
+    </div>
+
+    <!-- Error -->
+    <div style="margin-bottom:14px;">
+      <div style="font-size:9px; color:#78716c; margin-bottom:6px; font-weight:600;">error</div>
+      <div style="background:white; border-radius:12px; padding:14px 16px; border:1.5px solid #dc2626; box-shadow:0 0 0 3px #fef2f2;">
+        <div style="font-size:9px; color:#dc2626; margin-bottom:3px; font-family:'Plus Jakarta Sans',sans-serif; font-weight:600;">Contraseña</div>
+        <div style="font-size:13px; color:#1c1917; font-family:'Plus Jakarta Sans',sans-serif;">••••••</div>
+      </div>
+      <div style="font-size:10px; color:#dc2626; margin-top:4px; padding-left:4px; font-family:'Plus Jakarta Sans',sans-serif;">Mínimo 6 caracteres</div>
+    </div>
+
+    <div style="font-size:9px; color:#78716c; margin-top:4px; padding-top:10px; border-top:1px solid #e7e5e4;">min-height: 56px · label flotante · ring en focus</div>
+  </div>
+
+  <!-- rp-card -->
+  <div style="background:#fafaf9; border-radius:14px; padding:18px; border:1px solid #e7e5e4;">
+    <div style="font-size:11px; font-weight:700; color:#ea580c; letter-spacing:0.08em; margin-bottom:14px;">RpCardComponent</div>
+
+    <!-- Action card -->
+    <div style="margin-bottom:12px;">
+      <div style="font-size:9px; color:#78716c; margin-bottom:6px; font-weight:600;">action-card (hero)</div>
+      <div style="background:white; border-radius:16px; padding:16px; box-shadow:0 2px 12px rgba(0,0,0,0.08); text-align:center;">
+        <div style="width:48px;height:48px;background:#fff7ed;border-radius:14px;margin:0 auto 10px;display:flex;align-items:center;justify-content:center;font-size:24px;">🔑</div>
+        <div style="font-size:13px;font-weight:700;color:#1c1917;font-family:'Plus Jakarta Sans',sans-serif;">Nueva Visita</div>
+        <div style="font-size:10px;color:#78716c;margin-top:2px;font-family:'Plus Jakarta Sans',sans-serif;">Generá tu código QR</div>
+      </div>
+    </div>
+
+    <!-- List item card -->
+    <div style="margin-bottom:6px;">
+      <div style="font-size:9px; color:#78716c; margin-bottom:6px; font-weight:600;">list-item</div>
+      <div style="background:white; border-radius:12px; padding:12px 14px; box-shadow:0 1px 6px rgba(0,0,0,0.06); display:flex; align-items:center; gap:12px;">
+        <div style="width:40px;height:40px;background:#fff7ed;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:18px;">👤</div>
+        <div style="flex:1;">
+          <div style="font-size:12px;font-weight:700;color:#1c1917;font-family:'Plus Jakarta Sans',sans-serif;">Juan García</div>
+          <div style="font-size:10px;color:#78716c;font-family:'Plus Jakarta Sans',sans-serif;">Hoy · 14:00 · Visitante</div>
+        </div>
+        <div style="color:#e7e5e4;font-size:18px;">›</div>
+      </div>
+    </div>
+
+    <div style="font-size:9px; color:#78716c; margin-top:8px; padding-top:10px; border-top:1px solid #e7e5e4;">border-radius: 14-16px · shadow: 2px 12px</div>
+  </div>
+
+  <!-- rp-badge + rp-status -->
+  <div style="background:#fafaf9; border-radius:14px; padding:18px; border:1px solid #e7e5e4;">
+    <div style="font-size:11px; font-weight:700; color:#ea580c; letter-spacing:0.08em; margin-bottom:14px;">RpBadgeComponent</div>
+
+    <div style="display:flex; flex-wrap:wrap; gap:8px; margin-bottom:16px;">
+      <!-- Pending -->
+      <div style="background:#fff7ed; border:1px solid #fed7aa; border-radius:20px; padding:5px 12px; display:flex; align-items:center; gap:5px;">
+        <div style="width:6px;height:6px;background:#ea580c;border-radius:50%;"></div>
+        <span style="font-size:10px;color:#c2410c;font-weight:700;font-family:'Plus Jakarta Sans',sans-serif;">Pendiente</span>
+      </div>
+      <!-- Completed -->
+      <div style="background:#f0fdf4; border:1px solid #bbf7d0; border-radius:20px; padding:5px 12px; display:flex; align-items:center; gap:5px;">
+        <div style="width:6px;height:6px;background:#16a34a;border-radius:50%;"></div>
+        <span style="font-size:10px;color:#15803d;font-weight:700;font-family:'Plus Jakarta Sans',sans-serif;">Completada</span>
+      </div>
+      <!-- Cancelled -->
+      <div style="background:#fef2f2; border:1px solid #fecaca; border-radius:20px; padding:5px 12px; display:flex; align-items:center; gap:5px;">
+        <div style="width:6px;height:6px;background:#dc2626;border-radius:50%;"></div>
+        <span style="font-size:10px;color:#dc2626;font-weight:700;font-family:'Plus Jakarta Sans',sans-serif;">Cancelada</span>
+      </div>
+      <!-- Expired -->
+      <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:20px; padding:5px 12px; display:flex; align-items:center; gap:5px;">
+        <div style="width:6px;height:6px;background:#94a3b8;border-radius:50%;"></div>
+        <span style="font-size:10px;color:#64748b;font-weight:700;font-family:'Plus Jakarta Sans',sans-serif;">Vencida</span>
+      </div>
+      <!-- Active -->
+      <div style="background:#f0fdf4; border:1px solid #bbf7d0; border-radius:20px; padding:5px 12px; display:flex; align-items:center; gap:5px;">
+        <div style="width:6px;height:6px;background:#16a34a;border-radius:50%;animation:pulse 1.5s infinite;"></div>
+        <span style="font-size:10px;color:#15803d;font-weight:700;font-family:'Plus Jakarta Sans',sans-serif;">Activo</span>
+      </div>
+      <!-- Inactive -->
+      <div style="background:#fafaf9; border:1px solid #e7e5e4; border-radius:20px; padding:5px 12px; display:flex; align-items:center; gap:5px;">
+        <div style="width:6px;height:6px;background:#a8a29e;border-radius:50%;"></div>
+        <span style="font-size:10px;color:#78716c;font-weight:700;font-family:'Plus Jakarta Sans',sans-serif;">Suspendido</span>
+      </div>
+      <!-- Role admin -->
+      <div style="background:#1c1917; border-radius:20px; padding:5px 12px;">
+        <span style="font-size:10px;color:#fafaf9;font-weight:700;font-family:'Plus Jakarta Sans',sans-serif;">Admin</span>
+      </div>
+      <!-- Role vecino -->
+      <div style="background:#fff7ed; border:1px solid #fed7aa; border-radius:20px; padding:5px 12px;">
+        <span style="font-size:10px;color:#c2410c;font-weight:700;font-family:'Plus Jakarta Sans',sans-serif;">Vecino</span>
+      </div>
+      <!-- Role vigilancia -->
+      <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:20px; padding:5px 12px;">
+        <span style="font-size:10px;color:#475569;font-weight:700;font-family:'Plus Jakarta Sans',sans-serif;">Vigilancia</span>
+      </div>
+    </div>
+
+    <div style="font-size:9px; color:#78716c; padding-top:10px; border-top:1px solid #e7e5e4;">Input: status | role · Output: color semántico automático</div>
+  </div>
+
+</div>
+
+<div style="margin-top:20px; max-width:900px; margin-left:auto; margin-right:auto; background:#1c1917; border-radius:14px; padding:18px;">
+  <div style="font-size:11px; font-weight:700; color:#a8a29e; letter-spacing:0.08em; margin-bottom:12px;">📁 ESTRUCTURA DE ARCHIVOS</div>
+  <div style="font-family:monospace; font-size:11px; color:#d6d3d1; line-height:2;">
+    src/app/shared/components/<br/>
+    <span style="color:#ea580c;">├──</span> rp-button/<span style="color:#78716c;">&nbsp;&nbsp;&nbsp;→ variant: primary|secondary|danger</span><br/>
+    <span style="color:#ea580c;">├──</span> rp-input/<span style="color:#78716c;">&nbsp;&nbsp;&nbsp;&nbsp;→ label flotante, estados focus/error</span><br/>
+    <span style="color:#ea580c;">├──</span> rp-card/<span style="color:#78716c;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;→ variant: action|list-item</span><br/>
+    <span style="color:#ea580c;">└──</span> rp-badge/<span style="color:#78716c;">&nbsp;&nbsp;&nbsp;&nbsp;→ status/role → color automático</span><br/>
+    <br/>
+    src/theme/<br/>
+    <span style="color:#ea580c;">├──</span> variables.scss<span style="color:#78716c;">&nbsp;&nbsp;→ CSS custom properties (tokens)</span><br/>
+    <span style="color:#ea580c;">└──</span> typography.scss<span style="color:#78716c;"> → Plus Jakarta Sans + escala</span>
+  </div>
+</div>
