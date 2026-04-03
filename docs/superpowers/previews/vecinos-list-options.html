@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Vecinos — comparación opciones A / B / C</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --rp-stone-950: #1c1917;
+      --rp-stone-700: #44403c;
+      --rp-stone-500: #78716c;
+      --rp-stone-300: #a8a29e;
+      --rp-stone-100: #e7e5e4;
+      --rp-primary: #ea580c;
+      --rp-bg: #fafaf9;
+      --rp-surface: #ffffff;
+      --rp-font: 'Plus Jakarta Sans', system-ui, sans-serif;
+      --rp-shadow-card: 0 2px 12px rgba(0, 0, 0, 0.08);
+      --rp-radius-lg: 14px;
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: var(--rp-font);
+      background: var(--rp-bg);
+      color: var(--rp-stone-950);
+      padding: 1.25rem;
+      line-height: 1.45;
+    }
+
+    h1 {
+      font-size: 1.25rem;
+      font-weight: 800;
+      margin: 0 0 0.25rem;
+    }
+    .sub {
+      font-size: 0.875rem;
+      color: var(--rp-stone-500);
+      margin: 0 0 1.5rem;
+      max-width: 52rem;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(17rem, 1fr));
+      gap: 1.25rem;
+      align-items: start;
+    }
+
+    .col {
+      background: var(--rp-stone-100);
+      border-radius: var(--rp-radius-lg);
+      padding: 1rem;
+    }
+
+    .col h2 {
+      font-size: 0.75rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--rp-primary);
+      margin: 0 0 0.75rem;
+    }
+
+    .col p.lead {
+      font-size: 0.8125rem;
+      color: var(--rp-stone-700);
+      margin: 0 0 1rem;
+    }
+
+    .card {
+      background: var(--rp-surface);
+      border-radius: 12px;
+      box-shadow: var(--rp-shadow-card);
+      overflow: hidden;
+    }
+
+    .card-header {
+      padding: 1rem 1rem 0.5rem;
+    }
+
+    .card-title {
+      margin: 0;
+      font-weight: 800;
+      color: var(--rp-stone-950);
+      line-height: 1.2;
+    }
+
+    .card-title.opt-a {
+      font-size: 1.0625rem;
+    }
+
+    .card-title.opt-b {
+      font-size: 1.0625rem;
+    }
+
+    .card-title.opt-c {
+      font-size: 0.9375rem;
+      font-weight: 700;
+      color: var(--rp-stone-700);
+    }
+
+    .badge {
+      display: inline-block;
+      margin-left: 0.35rem;
+      font-size: 0.65rem;
+      font-weight: 700;
+      padding: 0.2rem 0.45rem;
+      border-radius: 6px;
+      background: rgba(234, 88, 12, 0.15);
+      color: var(--rp-primary);
+      vertical-align: middle;
+    }
+
+    .card-body {
+      padding: 0.5rem 1rem 1rem;
+      font-size: 0.9375rem;
+    }
+
+    .meta {
+      margin: 0 0 0.45rem;
+      color: var(--rp-stone-700);
+    }
+
+    .meta strong {
+      color: var(--rp-stone-950);
+    }
+
+    .meta:last-of-type {
+      margin-bottom: 0.85rem;
+    }
+
+    .kv {
+      display: grid;
+      grid-template-columns: 4.5rem 1fr;
+      gap: 0.25rem 0.5rem;
+      font-size: 0.875rem;
+      margin-bottom: 0.65rem;
+    }
+
+    .kv dt {
+      margin: 0;
+      font-weight: 600;
+      color: var(--rp-stone-500);
+    }
+
+    .kv dd {
+      margin: 0;
+      color: var(--rp-stone-950);
+    }
+
+    .address-block {
+      font-size: 0.9375rem;
+      line-height: 1.35;
+      margin: 0 0 0.75rem;
+      color: var(--rp-stone-950);
+    }
+
+    .address-block .line {
+      margin: 0.15rem 0;
+    }
+
+    .btn {
+      display: inline-block;
+      margin-top: 0.35rem;
+      padding: 0.5rem 0.85rem;
+      font-family: inherit;
+      font-size: 0.8125rem;
+      font-weight: 600;
+      border-radius: 10px;
+      border: 1px solid #f59e0b;
+      background: transparent;
+      color: #d97706;
+      cursor: default;
+    }
+
+    .note {
+      margin-top: 2rem;
+      padding: 1rem;
+      background: var(--rp-surface);
+      border-radius: var(--rp-radius-lg);
+      font-size: 0.8125rem;
+      color: var(--rp-stone-500);
+      border: 1px solid var(--rp-stone-100);
+    }
+  </style>
+</head>
+<body>
+  <h1>Lista de vecinos — comparación visual</h1>
+  <p class="sub">
+    Misma fila de ejemplo: <strong>Av. Revolución 1428 B</strong>, teléfono <strong>5512345678</strong> (el teléfono no se muestra en la tarjeta salvo que indiques lo contrario en la opción B/C).
+    Estilos aproximados a tokens RP (terracota, Plus Jakarta Sans).
+  </p>
+
+  <div class="grid">
+    <section class="col" aria-labelledby="opt-a">
+      <h2 id="opt-a">Opción A — Mínimo</h2>
+      <p class="lead">Domicilio solo en el título (reforzado). Sin teléfono en el cuerpo. Estado + fecha + acción.</p>
+      <article class="card">
+        <div class="card-header">
+          <h3 class="card-title opt-a">Av. Revolución 1428 B</h3>
+        </div>
+        <div class="card-body">
+          <p class="meta"><strong>Estado:</strong> Activo</p>
+          <p class="meta"><strong>Registrado:</strong> 15 mar 2026</p>
+          <button type="button" class="btn">Suspender cuenta</button>
+        </div>
+      </article>
+    </section>
+
+    <section class="col" aria-labelledby="opt-b">
+      <h2 id="opt-b">Opción B — Etiquetado</h2>
+      <p class="lead">Título con dirección resumida + cuerpo con Calle / Número / Letra explícitos (repite información).</p>
+      <article class="card">
+        <div class="card-header">
+          <h3 class="card-title opt-b">Av. Revolución 1428 B</h3>
+        </div>
+        <div class="card-body">
+          <dl class="kv">
+            <dt>Calle</dt>
+            <dd>Av. Revolución</dd>
+            <dt>Número</dt>
+            <dd>1428</dd>
+            <dt>Letra</dt>
+            <dd>B</dd>
+          </dl>
+          <p class="meta"><strong>Estado:</strong> Activo</p>
+          <p class="meta"><strong>Registrado:</strong> 15 mar 2026</p>
+          <button type="button" class="btn">Suspender cuenta</button>
+        </div>
+      </article>
+    </section>
+
+    <section class="col" aria-labelledby="opt-c">
+      <h2 id="opt-c">Opción C — Título neutro</h2>
+      <p class="lead">Título «Vecino» (+ badge admin si aplica). Todo el domicilio en el cuerpo en líneas.</p>
+      <article class="card">
+        <div class="card-header">
+          <h3 class="card-title opt-c">Vecino</h3>
+        </div>
+        <div class="card-body">
+          <div class="address-block">
+            <div class="line"><strong>Calle:</strong> Av. Revolución</div>
+            <div class="line"><strong>Número:</strong> 1428</div>
+            <div class="line"><strong>Letra:</strong> B</div>
+          </div>
+          <p class="meta"><strong>Estado:</strong> Activo</p>
+          <p class="meta"><strong>Registrado:</strong> 15 mar 2026</p>
+          <button type="button" class="btn">Suspender cuenta</button>
+        </div>
+      </article>
+    </section>
+  </div>
+
+  <div class="grid" style="margin-top: 1.25rem;">
+    <section class="col">
+      <h2 style="font-size: 0.75rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.06em; color: var(--rp-primary); margin: 0 0 0.75rem;">Ejemplo admin (A)</h2>
+      <article class="card">
+        <div class="card-header">
+          <h3 class="card-title opt-a">Administrador <span class="badge">Admin</span></h3>
+        </div>
+        <div class="card-body">
+          <p class="meta"><strong>Estado:</strong> Activo</p>
+          <p class="meta"><strong>Registrado:</strong> 01 ene 2026</p>
+          <button type="button" class="btn">Suspender cuenta</button>
+        </div>
+      </article>
+    </section>
+  </div>
+
+  <p class="note">
+    Vista estática de referencia. En la app real los componentes son Ionic; aquí se imitan sombras, radios y tipografía para comparar jerarquía visual.
+  </p>
+</body>
+</html>
