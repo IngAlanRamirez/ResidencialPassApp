@@ -1,23 +1,19 @@
-<ion-content class="auth-welcome" [fullscreen]="true">
-  <div class="auth-welcome__container">
-    <div class="auth-welcome__brand">
-      <img
-        src="assets/images/logo-villa-maria.png"
-        alt="Villa María Residencial"
-        class="auth-welcome__logo"
-      />
+<ion-content [fullscreen]="true" [scrollY]="false">
+  <div class="welcome">
+
+    <!-- Hero -->
+    <div class="welcome__hero">
+      <div class="welcome__logo">🏘️</div>
+      <h1 class="welcome__title">Residencial<br/>Villa María</h1>
+      <p class="welcome__tagline">Control de acceso inteligente</p>
     </div>
 
-    <h1 class="auth-welcome__title">Bienvenido</h1>
-    <p class="auth-welcome__subtitle">Control de acceso al fraccionamiento</p>
-
-    <div class="auth-welcome__actions">
-      <ion-button routerLink="/auth/register" expand="block" class="auth-welcome__btn">
-        Registrarme como vecino
-      </ion-button>
-      <ion-button routerLink="/auth/login" expand="block" fill="outline" class="auth-welcome__btn">
-        Iniciar sesión
-      </ion-button>
+    <!-- Actions -->
+    <div class="welcome__actions">
+      <rp-button routerLink="/auth/login">Iniciar sesión</rp-button>
+      <rp-button variant="secondary" routerLink="/auth/register">Registrarme</rp-button>
+      <p class="welcome__brand">AR Solutions MX</p>
     </div>
+
   </div>
 </ion-content>

@@ -1,52 +1,61 @@
-.auth-welcome {
-  --background: var(--ion-background-color);
+.welcome {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 }
 
-.auth-welcome__container {
-  max-width: 24rem;
-  margin-inline: auto;
-  padding: 2rem 1.5rem;
-  text-align: center;
+.welcome__hero {
+  flex: 1;
+  background: linear-gradient(160deg, #1c1917 0%, #292524 60%, #3c2415 100%);
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  min-height: 100%;
+  padding: 48px var(--rp-page-padding) 40px;
+  text-align: center;
 }
 
-.auth-welcome__brand {
-  margin-bottom: 2rem;
+.welcome__logo {
+  width: 72px;
+  height: 72px;
+  background: var(--rp-primary);
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 36px;
+  box-shadow: 0 8px 24px rgba(234, 88, 12, 0.4);
+  margin-bottom: 20px;
 }
 
-.auth-welcome__logo {
-  width: 200px;
-  height: auto;
-  border-radius: 16px;
-  object-fit: contain;
+.welcome__title {
+  font-family: var(--rp-font);
+  font-size: 28px;
+  font-weight: 800;
+  color: white;
+  line-height: 1.15;
+  margin: 0 0 8px;
 }
 
-.auth-welcome__title {
-  font-size: 1.75rem;
-  font-weight: 700;
-  margin: 0 0 0.5rem;
-  color: var(--ion-text-color);
+.welcome__tagline {
+  font-family: var(--rp-font);
+  font-size: 13px;
+  color: var(--rp-stone-300);
+  margin: 0;
 }
 
-.auth-welcome__subtitle {
-  color: var(--ion-color-medium);
-  margin: 0 0 2.5rem;
-  font-size: 0.9375rem;
-}
-
-.auth-welcome__actions {
+.welcome__actions {
+  background: var(--rp-bg);
+  padding: 24px var(--rp-page-padding) 40px;
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
-  width: 100%;
+  gap: 12px;
 }
 
-.auth-welcome__btn {
-  --border-radius: 10px;
-  font-weight: 600;
-  letter-spacing: 0.02em;
+.welcome__brand {
+  font-family: var(--rp-font);
+  font-size: 11px;
+  color: var(--rp-stone-300);
+  text-align: center;
+  margin: 4px 0 0;
 }
