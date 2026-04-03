@@ -5,7 +5,14 @@
       <p class="home-header__hello">Hola,</p>
       <h1 class="home-header__name">{{ homeUserName() }}</h1>
     </div>
-    <button type="button" class="home-header__logout" (click)="logout()">Salir</button>
+    <button
+      type="button"
+      class="home-header__logout"
+      (click)="confirmLogout()"
+      aria-label="Cerrar sesión"
+    >
+      Salir
+    </button>
   </div>
   @if (authState.isAdmin()) {
     <div class="home-header__stats">

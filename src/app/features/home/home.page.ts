@@ -6,12 +6,18 @@ import {
   OnInit,
   OnDestroy,
 } from '@angular/core';
-import { Router, RouterLink } from '@angular/router';
-import { IonContent, IonSpinner, AlertController } from '@ionic/angular/standalone';
+import { RouterLink } from '@angular/router';
+import {
+  IonContent,
+  IonSpinner,
+  ViewWillEnter,
+  ViewWillLeave,
+} from '@ionic/angular/standalone';
 import { App } from '@capacitor/app';
 import { Capacitor } from '@capacitor/core';
 
 import { AuthStateService } from '../../core/data/services/auth-state.service';
+import { LogoutPromptService } from '../../core/data/services/logout-prompt.service';
 import { UsersApiService } from '../../core/data/services/users-api.service';
 import type { UserProfile } from '../../core/domain/models/user.model';
 import { RpButtonComponent } from '../../shared/components/rp-button/rp-button.component';
@@ -34,11 +40,10 @@ type BackButtonListenerHandle = { remove: () => Promise<void> };
     RpBadgeComponent,
   ],
 })
-export class HomePage implements OnInit, OnDestroy {
+export class HomePage implements OnInit, OnDestroy, ViewWillEnter, ViewWillLeave {
   readonly authState = inject(AuthStateService);
-  private readonly router = inject(Router);
   private readonly usersApi = inject(UsersApiService);
-  private readonly alertCtrl = inject(AlertController);
+  private readonly logoutPrompt = inject(LogoutPromptService);
 
   private backButtonHandle: BackButtonListenerHandle | null = null;
   private popstateHandler: (() => void) | null = null;
@@ -113,31 +118,11 @@ export class HomePage implements OnInit, OnDestroy {
   }
 
   private async handleBackAction(): Promise<void> {
-    const alert = await this.alertCtrl.create({
-      header: 'Cerrar sesión',
-      message: '¿Quieres cerrar la sesión?',
-      buttons: [
-        {
-          text: 'Cancelar',
-          role: 'cancel',
-          handler: () => {
-            if (Capacitor.getPlatform() === 'web') {
-              window.history.pushState({ fromHome: true }, '', window.location.href);
-            }
-          },
-        },
-        {
-          text: 'Aceptar',
-          role: 'confirm',
-          handler: () => this.logout(),
-        },
-      ],
-    });
-    await alert.present();
+    await this.logoutPrompt.prompt({ fromHardwareBack: true });
   }
 
-  logout(): void {
-    this.authState.logout();
-    this.router.navigate(['/auth/login'], { replaceUrl: true });
+  /** Confirma antes de cerrar sesión (botón Salir y botón atrás del sistema). */
+  async confirmLogout(): Promise<void> {
+    await this.logoutPrompt.prompt({ fromHardwareBack: false });
   }
 }

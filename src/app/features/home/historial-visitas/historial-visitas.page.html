@@ -3,6 +3,14 @@
     ←
   </button>
   <h1 class="hist-header__title">{{ pageTitle() }}</h1>
+  <button
+    type="button"
+    class="hist-header__logout"
+    (click)="confirmLogout()"
+    aria-label="Cerrar sesión"
+  >
+    Salir
+  </button>
 </div>
 
 <div class="hist-filter">

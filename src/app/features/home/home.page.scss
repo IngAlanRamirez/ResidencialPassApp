@@ -1,4 +1,18 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+}
+
+ion-content {
+  flex: 1;
+  --background: var(--rp-bg);
+}
+
 .home-header {
+  position: relative;
+  z-index: 10;
+  flex-shrink: 0;
   background: var(--rp-stone-950);
   padding: calc(16px + var(--ion-safe-area-top, 0px)) var(--rp-page-padding) 20px;
 }

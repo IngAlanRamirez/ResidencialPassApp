@@ -17,6 +17,7 @@ import {
 import { AuthStateService } from '../../../core/data/services/auth-state.service';
 import { VisitsApiService } from '../../../core/data/services/visits-api.service';
 import { ToastService } from '../../../core/data/services/toast.service';
+import { LogoutPromptService } from '../../../core/data/services/logout-prompt.service';
 import type { VisitResponse } from '../../../core/domain/models/visit.model';
 import {
   VISIT_REASON_OPTIONS,
@@ -47,6 +48,7 @@ export class HistorialVisitasPage implements OnInit {
   private readonly visitsApi = inject(VisitsApiService);
   private readonly toast = inject(ToastService);
   private readonly alertCtrl = inject(AlertController);
+  private readonly logoutPrompt = inject(LogoutPromptService);
 
   readonly visits = signal<VisitResponse[]>([]);
   readonly loading = signal(true);
@@ -127,6 +129,10 @@ export class HistorialVisitasPage implements OnInit {
 
   goHome(): void {
     this.router.navigate(['/home']);
+  }
+
+  async confirmLogout(): Promise<void> {
+    await this.logoutPrompt.prompt();
   }
 
   toggleExpand(id: string): void {
