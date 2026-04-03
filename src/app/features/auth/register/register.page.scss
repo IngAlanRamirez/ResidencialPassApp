@@ -1,60 +1,182 @@
-.register {
-  --padding-top: 1rem;
-  --padding-bottom: 2rem;
+.register-header {
+  background: var(--rp-stone-950);
+  padding-top: calc(16px + var(--ion-safe-area-top, 0px));
+  padding-bottom: 16px;
 }
 
-.register__container {
-  max-width: 28rem;
-  margin-inline: auto;
-  padding: 1rem;
-}
-
-.register__hint {
-  margin: 0 0 1rem;
-  color: var(--ion-color-medium);
-  font-size: 0.9375rem;
-}
-
-.register__loader {
+.register-header__top {
   display: flex;
-  flex-direction: column;
   align-items: center;
-  gap: 0.75rem;
-  padding: 2rem;
+  gap: 12px;
+  padding: 0 var(--rp-page-padding) 14px;
+}
 
-  &-text {
-    font-size: 0.9375rem;
-    color: var(--ion-color-medium);
+.register-header__back {
+  width: 36px;
+  height: 36px;
+  background: rgba(255, 255, 255, 0.1);
+  border: none;
+  border-radius: 10px;
+  color: white;
+  font-size: 18px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.register-header__title {
+  font-family: var(--rp-font);
+  font-size: 18px;
+  font-weight: 800;
+  color: white;
+  margin: 0 0 2px;
+}
+
+.register-header__subtitle {
+  font-family: var(--rp-font);
+  font-size: 12px;
+  color: var(--rp-stone-500);
+  margin: 0;
+}
+
+.register-progress {
+  display: flex;
+  gap: 6px;
+  padding: 0 var(--rp-page-padding);
+}
+
+.register-progress__bar {
+  flex: 1;
+  height: 3px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 2px;
+  transition: background 0.3s ease;
+
+  &.active {
+    background: var(--rp-primary);
   }
 }
 
-.register__form {
+.register-form {
+  padding: 24px var(--rp-page-padding);
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 14px;
 }
 
-.register__field {
-  margin-bottom: 0.25rem;
+.register-step-label {
+  font-family: var(--rp-font);
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--rp-stone-500);
+  letter-spacing: 0.08em;
+  margin: 0 0 4px;
 }
 
-.register__eye-btn {
-  --padding-start: 4px;
-  --padding-end: 4px;
-  margin-top: auto;
-  margin-bottom: auto;
-  height: 36px;
-  font-size: 1.2rem;
-  color: var(--ion-color-medium);
+.register-row {
+  display: flex;
+  gap: 10px;
+
+  rp-input {
+    flex: 1;
+  }
 }
 
-.register__actions {
-  margin-top: 1.5rem;
-  padding-top: 0.5rem;
+.register-select-wrapper {
+  background: var(--rp-surface);
+  border: 1.5px solid var(--rp-stone-100);
+  border-radius: var(--rp-radius-md);
+  min-height: 56px;
+  padding: 10px 14px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
 }
 
-.register__submit {
-  margin-top: 0.5rem;
-  --border-radius: 8px;
+.register-select-label {
+  font-family: var(--rp-font);
+  font-size: 10px;
   font-weight: 600;
+  color: var(--rp-stone-500);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: 4px;
+}
+
+.register-select {
+  border: none;
+  outline: none;
+  background: transparent;
+  font-family: var(--rp-font);
+  font-size: 15px;
+  color: var(--rp-stone-950);
+  appearance: none;
+  padding-right: 24px;
+}
+
+.register-select-arrow {
+  position: absolute;
+  right: 14px;
+  bottom: 14px;
+  color: var(--rp-stone-300);
+  pointer-events: none;
+}
+
+.register-address {
+  display: flex;
+  flex-direction: column;
+}
+
+.register-summary {
+  background: var(--rp-surface);
+  border-radius: var(--rp-radius-lg);
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  box-shadow: var(--rp-shadow-card);
+}
+
+.register-summary__item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.register-summary__label {
+  font-family: var(--rp-font);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--rp-stone-500);
+}
+
+.register-summary__value {
+  font-family: var(--rp-font);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--rp-stone-950);
+  text-align: right;
+}
+
+.register-hint {
+  font-family: var(--rp-font);
+  padding: 24px var(--rp-page-padding);
+  color: var(--rp-stone-700);
+  margin: 0;
+}
+
+.register-loader {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 40px var(--rp-page-padding);
+}
+
+.register-loader__text {
+  font-family: var(--rp-font);
+  font-size: 14px;
+  color: var(--rp-stone-500);
 }

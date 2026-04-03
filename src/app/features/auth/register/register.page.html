@@ -1,143 +1,129 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-buttons slot="start">
-      <ion-back-button defaultHref="/auth"></ion-back-button>
-    </ion-buttons>
-    <ion-title>Registro de vecino</ion-title>
-  </ion-toolbar>
-</ion-header>
+<!-- Header oscuro con progress -->
+  <div class="register-header">
+    <div class="register-header__top">
+      <button
+        class="register-header__back"
+        type="button"
+        (click)="currentStep() > 1 ? prevStep() : goBack()"
+      >←</button>
+      <div>
+        <h1 class="register-header__title">Crear cuenta</h1>
+        <p class="register-header__subtitle">Tu domicilio en el residencial</p>
+      </div>
+    </div>
+    <!-- Progress bar -->
+    <div class="register-progress">
+      <div class="register-progress__bar" [class.active]="currentStep() >= 1"></div>
+      <div class="register-progress__bar" [class.active]="currentStep() >= 2"></div>
+      <div class="register-progress__bar" [class.active]="currentStep() >= 3"></div>
+    </div>
+  </div>
 
-<ion-content class="register">
-  <div class="register__container">
+  <ion-content [fullscreen]="true">
     @if (hasStreetsError()) {
-      <p class="register__hint">No hay calles disponibles. Contacta al administrador.</p>
+      <p class="register-hint">No hay calles disponibles. Contacta al administrador.</p>
     }
 
     @if (loadingStreets()) {
-      <div class="register__loader">
+      <div class="register-loader">
         <ion-spinner name="crescent"></ion-spinner>
-        <span class="register__loader-text">Cargando calles…</span>
+        <span class="register-loader__text">Cargando calles…</span>
       </div>
-    } @else {
-      <form
-        class="register__form"
-        [formGroup]="form"
-        (ngSubmit)="onSubmit()"
-      >
-        <ion-select
-          formControlName="street"
-          label="Calle"
-          labelPlacement="stacked"
-          placeholder="Selecciona tu calle"
-          interface="action-sheet"
-          fill="outline"
-          class="register__field"
-        >
-          @for (street of streets(); track street.id) {
-            <ion-select-option [value]="street.name">{{ street.name }}</ion-select-option>
-          }
-        </ion-select>
+    } @else if (!hasStreetsError()) {
+      <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="register-form">
 
-        <ion-input
-          formControlName="number"
-          type="text"
-          label="Número"
-          labelPlacement="stacked"
-          placeholder="Ej. 14"
-          inputmode="numeric"
-          errorText="El número es requerido."
-          fill="outline"
-          class="register__field"
-        ></ion-input>
+        <!-- PASO 1: Domicilio -->
+        @if (currentStep() === 1) {
+          <p class="register-step-label">PASO 1 DE 3 — DOMICILIO</p>
 
-        <ion-input
-          formControlName="letter"
-          type="text"
-          label="Letra (opcional)"
-          labelPlacement="stacked"
-          placeholder="Ej. A, B"
-          maxlength="20"
-          fill="outline"
-          class="register__field"
-        ></ion-input>
+          <div class="register-address">
+            <label class="register-select-wrapper">
+              <span class="register-select-label">CALLE</span>
+              <select class="register-select" formControlName="street">
+                <option value="" disabled>Seleccioná tu calle</option>
+                @for (street of streets(); track street.id) {
+                  <option [value]="street.name">{{ street.name }}</option>
+                }
+              </select>
+              <span class="register-select-arrow">⌄</span>
+            </label>
+          </div>
 
-        <ion-input
-          formControlName="phone"
-          type="tel"
-          label="Teléfono"
-          labelPlacement="stacked"
-          placeholder="Ej. 5512345678"
-          inputmode="tel"
-          errorText="Ingresa un teléfono válido."
-          fill="outline"
-          class="register__field"
-        ></ion-input>
+          <div class="register-row">
+            <rp-input
+              label="Número"
+              type="text"
+              placeholder="42"
+              formControlName="number"
+            />
+            <rp-input
+              label="Letra"
+              type="text"
+              placeholder="Opcional"
+              formControlName="letter"
+            />
+          </div>
 
-        <ion-input
-          formControlName="password"
-          [type]="showPassword() ? 'text' : 'password'"
-          label="Contraseña"
-          labelPlacement="stacked"
-          placeholder="Mínimo 6 caracteres"
-          errorText="Mínimo 6 caracteres."
-          fill="outline"
-          class="register__field"
-        >
-          <ion-button
-            fill="clear"
-            slot="end"
-            type="button"
-            class="register__eye-btn"
-            (click)="togglePasswordVisibility()"
-            aria-label="Mostrar u ocultar contraseña"
-          >
-            <ion-icon
-              slot="icon-only"
-              [name]="showPassword() ? 'eye-off-outline' : 'eye-outline'"
-            ></ion-icon>
-          </ion-button>
-        </ion-input>
+          <rp-button type="button" [disabled]="!step1Valid()" (click)="nextStep()">
+            Siguiente →
+          </rp-button>
+        }
 
-        <ion-input
-          formControlName="confirmPassword"
-          [type]="showConfirmPassword() ? 'text' : 'password'"
-          label="Confirmar contraseña"
-          labelPlacement="stacked"
-          placeholder="Repite tu contraseña"
-          errorText="Confirma tu contraseña correctamente."
-          fill="outline"
-          class="register__field"
-        >
-          <ion-button
-            fill="clear"
-            slot="end"
-            type="button"
-            class="register__eye-btn"
-            (click)="toggleConfirmPasswordVisibility()"
-            aria-label="Mostrar u ocultar contraseña"
-          >
-            <ion-icon
-              slot="icon-only"
-              [name]="showConfirmPassword() ? 'eye-off-outline' : 'eye-outline'"
-            ></ion-icon>
-          </ion-button>
-        </ion-input>
+        <!-- PASO 2: Acceso -->
+        @if (currentStep() === 2) {
+          <p class="register-step-label">PASO 2 DE 3 — ACCESO</p>
 
-        <div class="register__actions">
-          <ion-button
-            type="submit"
-            expand="block"
-            [disabled]="loadingSubmit()"
-            class="register__submit"
-          >
-            @if (loadingSubmit()) {
-              <ion-spinner name="crescent"></ion-spinner>
-            } @else {
-              Registrarme
-            }
-          </ion-button>
-        </div>
+          <rp-input
+            label="Teléfono"
+            type="tel"
+            placeholder="+52 55 1234 5678"
+            formControlName="phone"
+          />
+
+          <rp-input
+            label="Contraseña"
+            type="password"
+            placeholder="Mínimo 6 caracteres"
+            formControlName="password"
+          />
+
+          <rp-input
+            label="Confirmar contraseña"
+            type="password"
+            placeholder="Repetí tu contraseña"
+            formControlName="confirmPassword"
+          />
+
+          <rp-button type="button" [disabled]="!step2Valid()" (click)="nextStep()">
+            Siguiente →
+          </rp-button>
+        }
+
+        <!-- PASO 3: Confirmación -->
+        @if (currentStep() === 3) {
+          <p class="register-step-label">PASO 3 DE 3 — CONFIRMACIÓN</p>
+
+          <div class="register-summary">
+            <div class="register-summary__item">
+              <span class="register-summary__label">Domicilio</span>
+              <span class="register-summary__value">
+                {{ registerForm.get('street')?.value }} {{ registerForm.get('number')?.value }}
+                @if (registerForm.get('letter')?.value) {
+                  {{ registerForm.get('letter')?.value }}
+                }
+              </span>
+            </div>
+            <div class="register-summary__item">
+              <span class="register-summary__label">Teléfono</span>
+              <span class="register-summary__value">{{ registerForm.get('phone')?.value }}</span>
+            </div>
+          </div>
+
+          <rp-button type="submit" [loading]="loadingSubmit()">
+            Crear mi cuenta
+          </rp-button>
+        }
+
       </form>
     }
-  </div>
-</ion-content>
+  </ion-content>

@@ -6,23 +6,14 @@ import {
   computed,
   inject,
 } from '@angular/core';
-import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Location } from '@angular/common';
 import {
-  IonHeader,
-  IonToolbar,
-  IonTitle,
-  IonContent,
-  IonInput,
-  IonSelect,
-  IonSelectOption,
-  IonButton,
-  IonSpinner,
-  IonBackButton,
-  IonButtons,
-  IonIcon,
-} from '@ionic/angular/standalone';
-import { addIcons } from 'ionicons';
-import { eyeOutline, eyeOffOutline } from 'ionicons/icons';
+  ReactiveFormsModule,
+  FormBuilder,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
+import { IonContent, IonSpinner } from '@ionic/angular/standalone';
 import { Subject, takeUntil } from 'rxjs';
 
 import { Router } from '@angular/router';
@@ -31,6 +22,8 @@ import { AuthApiService } from '../../../core/data/services/auth-api.service';
 import { DeviceIdService } from '../../../core/data/services/device-id.service';
 import { ToastService } from '../../../core/data/services/toast.service';
 import { Street } from '../../../core/domain/models/street.model';
+import { RpButtonComponent } from '../../../shared/components/rp-button/rp-button.component';
+import { RpInputComponent } from '../../../shared/components/rp-input/rp-input.component';
 
 @Component({
   selector: 'app-register',
@@ -39,23 +32,16 @@ import { Street } from '../../../core/domain/models/street.model';
   standalone: true,
   imports: [
     ReactiveFormsModule,
-    IonHeader,
-    IonToolbar,
-    IonTitle,
     IonContent,
-    IonInput,
-    IonSelect,
-    IonSelectOption,
-    IonButton,
     IonSpinner,
-    IonBackButton,
-    IonButtons,
-    IonIcon,
+    RpButtonComponent,
+    RpInputComponent,
   ],
 })
 export class RegisterPage implements OnInit, OnDestroy {
   private readonly fb = inject(FormBuilder);
   private readonly router = inject(Router);
+  private readonly location = inject(Location);
   private readonly streetsApi = inject(StreetsApiService);
   private readonly authApi = inject(AuthApiService);
   private readonly deviceId = inject(DeviceIdService);
@@ -65,32 +51,33 @@ export class RegisterPage implements OnInit, OnDestroy {
   readonly streets = signal<Street[]>([]);
   readonly loadingStreets = signal(true);
   readonly loadingSubmit = signal(false);
-  readonly showPassword = signal(false);
-  readonly showConfirmPassword = signal(false);
-
-  constructor() {
-    addIcons({ eyeOutline, eyeOffOutline });
-  }
-
-  togglePasswordVisibility(): void {
-    this.showPassword.update((v) => !v);
-  }
-
-  toggleConfirmPasswordVisibility(): void {
-    this.showConfirmPassword.update((v) => !v);
-  }
+  readonly currentStep = signal<1 | 2 | 3>(1);
 
   readonly hasStreetsError = computed(
     () => !this.loadingStreets() && this.streets().length === 0
   );
 
-  form: FormGroup = this.fb.group({
+  readonly registerForm: FormGroup = this.fb.group({
     street: ['', Validators.required],
     number: ['', [Validators.required, Validators.maxLength(20)]],
     letter: [''],
     phone: ['', [Validators.required, Validators.pattern(/^\+?[0-9\s-]{10,}$/)]],
     password: ['', [Validators.required, Validators.minLength(6)]],
     confirmPassword: ['', Validators.required],
+  });
+
+  readonly step1Valid = computed(() => {
+    const f = this.registerForm;
+    return !!(f.get('street')?.valid && f.get('number')?.valid);
+  });
+
+  readonly step2Valid = computed(() => {
+    const f = this.registerForm;
+    return !!(
+      f.get('phone')?.valid &&
+      f.get('password')?.valid &&
+      f.get('confirmPassword')?.valid
+    );
   });
 
   ngOnInit(): void {
@@ -100,6 +87,20 @@ export class RegisterPage implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
+  }
+
+  goBack(): void {
+    this.location.back();
+  }
+
+  nextStep(): void {
+    const step = this.currentStep();
+    if (step < 3) this.currentStep.set((step + 1) as 1 | 2 | 3);
+  }
+
+  prevStep(): void {
+    const step = this.currentStep();
+    if (step > 1) this.currentStep.set((step - 1) as 1 | 2 | 3);
   }
 
   private loadStreets(): void {
@@ -120,23 +121,27 @@ export class RegisterPage implements OnInit, OnDestroy {
   }
 
   async onSubmit(): Promise<void> {
-    const password = this.form.get('password')?.value;
-    const confirmPassword = this.form.get('confirmPassword')?.value;
+    if (this.currentStep() !== 3) {
+      return;
+    }
+
+    const password = this.registerForm.get('password')?.value;
+    const confirmPassword = this.registerForm.get('confirmPassword')?.value;
     if (password !== confirmPassword) {
-      this.form.get('confirmPassword')?.setErrors({ mismatch: true });
+      this.registerForm.get('confirmPassword')?.setErrors({ mismatch: true });
       this.toast.error('Las contraseñas no coinciden.');
       return;
     }
 
-    if (this.form.invalid) {
-      this.form.markAllAsTouched();
+    if (this.registerForm.invalid) {
+      this.registerForm.markAllAsTouched();
       return;
     }
 
-    const raw = this.form.getRawValue();
+    const raw = this.registerForm.getRawValue();
     const letter = raw.letter?.trim() || undefined;
     this.loadingSubmit.set(true);
-    const deviceId = await this.deviceId.getDeviceId();
+    const deviceIdVal = await this.deviceId.getDeviceId();
 
     this.authApi
       .register({
@@ -145,13 +150,13 @@ export class RegisterPage implements OnInit, OnDestroy {
         letter,
         phone: raw.phone.trim(),
         password: raw.password,
-        deviceId,
+        deviceId: deviceIdVal,
       })
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: async (res) => {
           this.loadingSubmit.set(false);
-          this.form.reset();
+          this.registerForm.reset();
           await this.toast.success(res.message);
           this.router.navigate(['/auth/login']);
         },
