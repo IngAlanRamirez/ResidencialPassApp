@@ -37,8 +37,11 @@ const ROLE_LABELS: Record<RpBadgeRole, string> = {
 export class RpBadgeComponent {
   @Input() status?: RpBadgeStatus;
   @Input() role?: RpBadgeRole;
+  /** Si se define, sustituye la etiqueta derivada de status/role (p. ej. contador). */
+  @Input() text = '';
 
-  get label(): string {
+  get displayLabel(): string {
+    if (this.text !== '') return this.text;
     if (this.status) return STATUS_LABELS[this.status] ?? this.status;
     if (this.role) return ROLE_LABELS[this.role] ?? this.role;
     return '';
