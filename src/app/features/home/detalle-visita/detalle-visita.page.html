@@ -1,65 +1,69 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-buttons slot="start">
-      <ion-back-button defaultHref="/home"></ion-back-button>
-    </ion-buttons>
-    <ion-title>Detalle de visita</ion-title>
-  </ion-toolbar>
-</ion-header>
+<ion-content [fullscreen]="true">
+  @if (loading()) {
+    <div class="dv-state dv-state--loading">
+      <ion-spinner name="crescent"></ion-spinner>
+      <p>Cargando visita…</p>
+    </div>
+  } @else if (hasError()) {
+    <div class="dv-state dv-state--error">
+      <p>No se pudo cargar esta visita.</p>
+      <rp-button (click)="goHome()">Ir al inicio</rp-button>
+    </div>
+  } @else if (visit(); as v) {
+    <div class="dv-header">
+      <button class="dv-header__back" (click)="goBack()" type="button" aria-label="Volver">
+        ←
+      </button>
+      <h1 class="dv-header__title">Detalle de Visita</h1>
+      <rp-badge [status]="badgeStatus(v.status)" />
+    </div>
 
-<ion-content class="detalle-visita">
-  <div class="detalle-visita__container">
-    @if (loading()) {
-      <div class="detalle-visita__loading">
-        <ion-spinner name="crescent"></ion-spinner>
-        <p>Cargando visita...</p>
-      </div>
-    } @else if (hasError()) {
-      <ion-button expand="block" routerLink="/home">Ir al inicio</ion-button>
-    } @else if (visit(); as v) {
-      <div class="detalle-visita__success">
-        @if (v.status === 'cancelled') {
-          <div class="detalle-visita__cancelled" role="status">
-            <span class="detalle-visita__cancelled-badge">Cancelada</span>
-            <p class="detalle-visita__cancelled-text">Esta visita fue cancelada. El código QR ya no es válido.</p>
-          </div>
-        } @else {
-          <h2 class="detalle-visita__success-title">Visita registrada</h2>
-          <p class="detalle-visita__success-text">
-            Este código QR es <strong>único, de un solo uso e intransferible</strong>.
-            Válido solo para el domicilio indicado.
+    <div class="dv-content">
+      @if (v.status === 'cancelled') {
+        <div class="dv-cancelled" role="status">
+          <p class="dv-cancelled__text">
+            Esta visita fue cancelada. El código QR ya no es válido.
           </p>
-          @if (qrDataUrl(); as src) {
-            <div class="detalle-visita__qr-wrap animate-scale-in">
-              <img [src]="src" alt="Código QR de la visita" class="detalle-visita__qr" />
-            </div>
-            <ion-button expand="block" fill="outline" (click)="shareQR()" [disabled]="sharing()" class="detalle-visita__share">
-              @if (sharing()) {
-                <ion-spinner name="crescent"></ion-spinner>
-              } @else {
-                <ion-icon name="share-outline" slot="start"></ion-icon>
-                Compartir código QR
-              }
-            </ion-button>
-          }
-        }
-        <p class="detalle-visita__meta">
-          <strong>Visitante:</strong> {{ v.visitorName }}<br>
-          @if (v.identificationType) {
-            <strong>Identificación:</strong> {{ identificationLabel(v.identificationType) }}<br>
-          }
-          @if (v.hasVehicle && v.licensePlate) {
-            <strong>Vehículo:</strong> {{ v.licensePlate }}<br>
-          }
-          <strong>Motivo:</strong> {{ reasonLabel(v.reason) }}<br>
-          <strong>Entrada:</strong> {{ formatEntryExitLabel(v).entry }}<br>
-          <strong>Salida:</strong> {{ formatEntryExitLabel(v).exit }}<br>
-          <strong>Domicilio:</strong> {{ v.street }} {{ v.number }}{{ v.letter ? ' ' + v.letter : '' }}
-        </p>
-        <ion-button expand="block" (click)="goToNewVisit()">
+        </div>
+        <rp-button variant="secondary" (click)="goToNewVisit()">
           Registrar otra visita
-        </ion-button>
-      </div>
-    }
-  </div>
+        </rp-button>
+      } @else {
+        <div class="dv-qr-card">
+          <p class="dv-qr-card__hint">Mostrá este código en la entrada</p>
+          @if (qrDataUrl(); as src) {
+            <div class="dv-qr-container">
+              <img [src]="src" alt="Código QR de la visita" class="dv-qr-img" width="220" height="220" />
+            </div>
+          }
+          <h2 class="dv-qr-card__visitor">{{ v.visitorName }}</h2>
+          <p class="dv-qr-card__detail">{{ detailLine(v) }}</p>
+        </div>
+
+        <div class="dv-id-warning">
+          <span class="dv-id-warning__icon" aria-hidden="true">!</span>
+          <p class="dv-id-warning__text">
+            Se requiere <strong>INE</strong>, <strong>licencia</strong> o <strong>pasaporte</strong> para
+            ingresar.
+          </p>
+        </div>
+
+        <rp-button [loading]="sharing()" (click)="shareQR()">↗ Compartir QR</rp-button>
+
+        @if (canCancel()) {
+          <rp-button
+            variant="danger"
+            [loading]="cancelling()"
+            (click)="cancelVisit()"
+          >
+            Cancelar visita
+          </rp-button>
+        }
+
+        <rp-button variant="secondary" (click)="goToNewVisit()">
+          Registrar otra visita
+        </rp-button>
+      }
+    </div>
+  }
 </ion-content>

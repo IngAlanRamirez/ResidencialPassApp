@@ -5,17 +5,12 @@ import {
   OnInit,
   OnDestroy,
 } from '@angular/core';
-import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Location } from '@angular/common';
 import {
-  IonHeader,
-  IonToolbar,
-  IonTitle,
   IonContent,
-  IonBackButton,
-  IonButtons,
-  IonButton,
   IonSpinner,
-  IonIcon,
+  AlertController,
 } from '@ionic/angular/standalone';
 import { Subject, takeUntil } from 'rxjs';
 import * as QRCode from 'qrcode';
@@ -23,14 +18,18 @@ import { Capacitor } from '@capacitor/core';
 import { Share } from '@capacitor/share';
 import { Filesystem, Directory } from '@capacitor/filesystem';
 
+import { RpButtonComponent } from '../../../shared/components/rp-button/rp-button.component';
+import {
+  RpBadgeComponent,
+  type RpBadgeStatus,
+} from '../../../shared/components/rp-badge/rp-badge.component';
 import { VisitsApiService } from '../../../core/data/services/visits-api.service';
 import { ToastService } from '../../../core/data/services/toast.service';
+import { AuthStateService } from '../../../core/data/services/auth-state.service';
 import {
   VISIT_REASON_OPTIONS,
-  IDENTIFICATION_TYPE_OPTIONS,
   type VisitReason,
   type VisitResponse,
-  type IdentificationType,
 } from '../../../core/domain/models/visit.model';
 
 @Component({
@@ -38,33 +37,25 @@ import {
   templateUrl: './detalle-visita.page.html',
   styleUrls: ['./detalle-visita.page.scss'],
   standalone: true,
-  imports: [
-    RouterLink,
-    IonHeader,
-    IonToolbar,
-    IonTitle,
-    IonContent,
-    IonBackButton,
-    IonButtons,
-    IonButton,
-    IonSpinner,
-    IonIcon,
-  ],
+  imports: [IonContent, IonSpinner, RpButtonComponent, RpBadgeComponent],
 })
 export class DetalleVisitaPage implements OnInit, OnDestroy {
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
+  private readonly location = inject(Location);
   private readonly visitsApi = inject(VisitsApiService);
   private readonly toast = inject(ToastService);
+  private readonly alertCtrl = inject(AlertController);
+  private readonly authState = inject(AuthStateService);
   private readonly destroy$ = new Subject<void>();
 
   readonly reasonOptions = VISIT_REASON_OPTIONS;
-  readonly identificationOptions = IDENTIFICATION_TYPE_OPTIONS;
   readonly visit = signal<VisitResponse | null>(null);
   readonly qrDataUrl = signal<string | null>(null);
   readonly loading = signal(true);
   readonly hasError = signal(false);
   readonly sharing = signal(false);
+  readonly cancelling = signal(false);
 
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id');
@@ -106,7 +97,7 @@ export class DetalleVisitaPage implements OnInit, OnDestroy {
   private async generateQR(visitId: string): Promise<void> {
     try {
       const url = await QRCode.toDataURL(visitId, {
-        width: 260,
+        width: 220,
         margin: 2,
         color: { dark: '#000000', light: '#ffffff' },
       });
@@ -114,6 +105,74 @@ export class DetalleVisitaPage implements OnInit, OnDestroy {
     } catch {
       this.qrDataUrl.set(null);
     }
+  }
+
+  goBack(): void {
+    this.location.back();
+  }
+
+  goHome(): void {
+    this.router.navigate(['/home']);
+  }
+
+  badgeStatus(status: string): RpBadgeStatus {
+    return status as RpBadgeStatus;
+  }
+
+  detailLine(v: VisitResponse): string {
+    const reason = this.reasonLabel(v.reason);
+    if (v.entryOpenSchedule && v.exitOpenSchedule) {
+      return `${reason} · Horario abierto`;
+    }
+    const ref = v.entryAt ?? v.createdAt;
+    return `${reason} · ${this.formatDate(ref)}`;
+  }
+
+  canCancel(): boolean {
+    const v = this.visit();
+    if (!v || v.status !== 'pending') return false;
+    return !this.authState.isVigilancia();
+  }
+
+  async cancelVisit(): Promise<void> {
+    const v = this.visit();
+    if (!v || !this.canCancel()) return;
+    const alert = await this.alertCtrl.create({
+      header: 'Cancelar visita',
+      message: `¿Cancelar la visita de ${v.visitorName}? El código QR dejará de ser válido.`,
+      buttons: [
+        { text: 'No', role: 'cancel' },
+        {
+          text: 'Sí, cancelar',
+          role: 'destructive',
+          handler: () => this.doCancelVisit(v.id),
+        },
+      ],
+    });
+    await alert.present();
+  }
+
+  private doCancelVisit(id: string): void {
+    this.cancelling.set(true);
+    this.visitsApi
+      .cancel(id)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (updated) => {
+          this.cancelling.set(false);
+          this.visit.set(updated);
+          this.qrDataUrl.set(null);
+          this.toast.success('Visita cancelada.');
+        },
+        error: (err) => {
+          this.cancelling.set(false);
+          const msg =
+            err.error?.message ??
+            err.error?.error ??
+            'No se pudo cancelar la visita.';
+          this.toast.error(typeof msg === 'string' ? msg : 'Error al cancelar.');
+        },
+      });
   }
 
   async shareQR(): Promise<void> {
@@ -179,23 +238,8 @@ export class DetalleVisitaPage implements OnInit, OnDestroy {
     });
   }
 
-  formatEntryExitLabel(v: VisitResponse): { entry: string; exit: string } {
-    const entry = v.entryOpenSchedule
-      ? 'Abierta (se registrará al escanear en entrada)'
-      : this.formatDate(v.entryAt);
-    const exit = v.exitOpenSchedule
-      ? 'Abierta (se registrará al escanear en salida)'
-      : this.formatDate(v.exitAt);
-    return { entry, exit };
-  }
-
   reasonLabel(value: VisitReason): string {
     return this.reasonOptions.find((o) => o.value === value)?.label ?? value;
-  }
-
-  identificationLabel(value: IdentificationType | null): string {
-    if (!value) return '—';
-    return this.identificationOptions.find((o) => o.value === value)?.label ?? value;
   }
 
   goToNewVisit(): void {
