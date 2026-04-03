@@ -4,6 +4,7 @@
   "author": "AR Solutions MX",
   "homepage": "https://arsolutionsmx.com",
   "scripts": {
+    "prepare": "git rev-parse --git-dir >/dev/null 2>&1 && git config core.hooksPath .githooks || true",
     "ng": "ng",
     "generate:favicon": "node -e \"require('sharp')('assets/icon.png').resize(48,48).png().toFile('src/assets/icon/favicon.png').then(()=>console.log('Favicon OK'))\"",
     "start": "ng serve --configuration=development",

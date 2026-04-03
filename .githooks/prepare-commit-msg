@@ -1,0 +1,10 @@
+#!/bin/sh
+# Quita el trailer que añade Cursor al mensaje de commit.
+file="$1"
+[ -n "$file" ] && [ -f "$file" ] || exit 0
+tmp="${file}.hooks-$$"
+if grep -v '^Made-with: Cursor$' "$file" > "$tmp" 2>/dev/null; then
+  mv "$tmp" "$file"
+else
+  rm -f "$tmp"
+fi
