@@ -1,0 +1,32 @@
+<div class="rp-input">
+  <div
+    class="rp-input__wrapper"
+    [class.rp-input__wrapper--error]="errorMessage"
+  >
+    <label class="rp-input__label">{{ label }}</label>
+    <div class="rp-input__row">
+      <input
+        class="rp-input__field"
+        [type]="inputType"
+        [placeholder]="placeholder"
+        [disabled]="disabled"
+        [value]="value"
+        (input)="onInput($event)"
+        (blur)="onBlur()"
+      />
+      @if (type === 'password') {
+        <button
+          type="button"
+          class="rp-input__toggle"
+          (click)="togglePassword()"
+          tabindex="-1"
+        >
+          {{ showPassword() ? '🙈' : '👁' }}
+        </button>
+      }
+    </div>
+  </div>
+  @if (errorMessage) {
+    <span class="rp-input__error">{{ errorMessage }}</span>
+  }
+</div>
