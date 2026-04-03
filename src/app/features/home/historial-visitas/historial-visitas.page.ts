@@ -1,23 +1,19 @@
 import { Component, inject, signal, OnInit, computed } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { Location } from '@angular/common';
+import { Router, RouterLink } from '@angular/router';
 import {
-  IonHeader,
-  IonToolbar,
-  IonTitle,
   IonContent,
   IonRefresher,
   IonRefresherContent,
-  IonBackButton,
-  IonButtons,
-  IonCard,
-  IonCardHeader,
-  IonCardTitle,
-  IonCardContent,
   IonSpinner,
-  IonButton,
   AlertController,
 } from '@ionic/angular/standalone';
 
+import { RpButtonComponent } from '../../../shared/components/rp-button/rp-button.component';
+import {
+  RpBadgeComponent,
+  type RpBadgeStatus,
+} from '../../../shared/components/rp-badge/rp-badge.component';
 import { AuthStateService } from '../../../core/data/services/auth-state.service';
 import { VisitsApiService } from '../../../core/data/services/visits-api.service';
 import { ToastService } from '../../../core/data/services/toast.service';
@@ -36,23 +32,17 @@ import {
   standalone: true,
   imports: [
     RouterLink,
-    IonHeader,
-    IonToolbar,
-    IonTitle,
     IonContent,
     IonRefresher,
     IonRefresherContent,
-    IonBackButton,
-    IonButtons,
-    IonCard,
-    IonCardHeader,
-    IonCardTitle,
-    IonCardContent,
     IonSpinner,
-    IonButton,
+    RpButtonComponent,
+    RpBadgeComponent,
   ],
 })
 export class HistorialVisitasPage implements OnInit {
+  private readonly location = inject(Location);
+  private readonly router = inject(Router);
   private readonly authState = inject(AuthStateService);
   private readonly visitsApi = inject(VisitsApiService);
   private readonly toast = inject(ToastService);
@@ -62,14 +52,33 @@ export class HistorialVisitasPage implements OnInit {
   readonly loading = signal(true);
   readonly hasError = signal(false);
 
+  readonly activeFilter = signal<'all' | 'pending' | 'past'>('all');
+  readonly expandedVisitId = signal<string | null>(null);
+  readonly cancellingId = signal<string | null>(null);
+
+  readonly filteredVisits = computed(() => {
+    const filter = this.activeFilter();
+    const list = this.visits();
+    if (filter === 'all') return list;
+    if (filter === 'pending') {
+      return list.filter((v) => v.status === 'pending' || v.status === 'used');
+    }
+    return list.filter(
+      (v) =>
+        v.status === 'finished' ||
+        v.status === 'expired' ||
+        v.status === 'cancelled'
+    );
+  });
+
   readonly isVigilante = this.authState.isVigilancia;
   readonly pageTitle = computed(() =>
-    this.isVigilante() ? 'Bitácora de escaneos' : 'Historial de visitas'
+    this.isVigilante() ? 'Bitácora' : 'Historial'
   );
   readonly pageSubtitle = computed(() =>
     this.isVigilante()
       ? 'Visitas en las que registraste entrada o salida'
-      : 'Tus visitas registradas. Aquí puedes recuperar el código QR.'
+      : 'Tus visitas registradas. Tocá una fila para ver más.'
   );
 
   ngOnInit(): void {
@@ -96,8 +105,8 @@ export class HistorialVisitasPage implements OnInit {
     });
   }
 
-  handleRefresh(event: Event): void {
-    const ev = event as CustomEvent<{ target: HTMLIonRefresherElement }>;
+  refresh(event: Event): void {
+    const ev = event as CustomEvent<{ target: { complete: () => void } }>;
     this.visitsApi.list().subscribe({
       next: (list) => {
         this.visits.set(list);
@@ -110,6 +119,26 @@ export class HistorialVisitasPage implements OnInit {
         ev.detail.target.complete();
       },
     });
+  }
+
+  goBack(): void {
+    this.location.back();
+  }
+
+  goHome(): void {
+    this.router.navigate(['/home']);
+  }
+
+  toggleExpand(id: string): void {
+    this.expandedVisitId.update((current) => (current === id ? null : id));
+  }
+
+  badgeFromStatus(status: string): RpBadgeStatus {
+    return status as RpBadgeStatus;
+  }
+
+  listMetaLine(v: VisitResponse): string {
+    return `${this.reasonLabel(v.reason)} · ${this.formatDate(v.createdAt)}`;
   }
 
   formatDate(iso: string | null): string {
@@ -137,23 +166,23 @@ export class HistorialVisitasPage implements OnInit {
     return v.letter ? `${base} ${v.letter}` : base;
   }
 
-  statusLabel(status: string): string {
-    const map: Record<string, string> = {
-      pending: 'Pendiente',
-      used: 'Visita en progreso',
-      finished: 'Finalizada',
-      expired: 'Expirada',
-      cancelled: 'Cancelada',
-    };
-    return map[status] ?? status;
-  }
-
   canCancel(v: VisitResponse): boolean {
     return v.status === 'pending';
   }
 
-  async cancelVisit(v: VisitResponse): Promise<void> {
-    if (!this.canCancel(v)) return;
+  canCancelInline(v: VisitResponse): boolean {
+    return !this.isVigilante() && this.canCancel(v);
+  }
+
+  goToVisitQr(id: string, event: Event): void {
+    event.stopPropagation();
+    void this.router.navigate(['/home/visita', id]);
+  }
+
+  async cancelVisit(id: string, event: Event): Promise<void> {
+    event.stopPropagation();
+    const v = this.visits().find((x) => x.id === id);
+    if (!v || !this.canCancelInline(v)) return;
     const alert = await this.alertCtrl.create({
       header: 'Cancelar visita',
       message: `¿Cancelar la visita de ${v.visitorName}? El código QR dejará de ser válido.`,
@@ -170,14 +199,18 @@ export class HistorialVisitasPage implements OnInit {
   }
 
   private doCancelVisit(id: string): void {
+    this.cancellingId.set(id);
     this.visitsApi.cancel(id).subscribe({
       next: (updated) => {
+        this.cancellingId.set(null);
+        this.expandedVisitId.set(null);
         this.visits.update((list) =>
           list.map((item) => (item.id === id ? updated : item))
         );
         this.toast.success('Visita cancelada.');
       },
       error: (err) => {
+        this.cancellingId.set(null);
         const msg =
           err.error?.message ??
           err.error?.error ??
