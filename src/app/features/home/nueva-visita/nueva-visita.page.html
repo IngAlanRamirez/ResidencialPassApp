@@ -3,10 +3,18 @@
     <button class="nv-header__back" (click)="goBack()" type="button" aria-label="Volver">
       ←
     </button>
-    <div>
+    <div class="nv-header__titles">
       <h1 class="nv-header__title">Nueva Visita</h1>
       <p class="nv-header__subtitle">{{ addressLabel() }}</p>
     </div>
+    <button
+      type="button"
+      class="nv-header__logout"
+      (click)="confirmLogout()"
+      aria-label="Cerrar sesión"
+    >
+      Salir
+    </button>
   </div>
 
   <form [formGroup]="form" (ngSubmit)="onSubmit()" class="nv-form">

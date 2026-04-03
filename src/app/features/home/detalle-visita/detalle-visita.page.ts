@@ -26,6 +26,7 @@ import {
 import { VisitsApiService } from '../../../core/data/services/visits-api.service';
 import { ToastService } from '../../../core/data/services/toast.service';
 import { AuthStateService } from '../../../core/data/services/auth-state.service';
+import { LogoutPromptService } from '../../../core/data/services/logout-prompt.service';
 import {
   VISIT_REASON_OPTIONS,
   type VisitReason,
@@ -47,6 +48,7 @@ export class DetalleVisitaPage implements OnInit, OnDestroy {
   private readonly toast = inject(ToastService);
   private readonly alertCtrl = inject(AlertController);
   private readonly authState = inject(AuthStateService);
+  private readonly logoutPrompt = inject(LogoutPromptService);
   private readonly destroy$ = new Subject<void>();
 
   readonly reasonOptions = VISIT_REASON_OPTIONS;
@@ -109,6 +111,10 @@ export class DetalleVisitaPage implements OnInit, OnDestroy {
 
   goBack(): void {
     this.location.back();
+  }
+
+  async confirmLogout(): Promise<void> {
+    await this.logoutPrompt.prompt();
   }
 
   goHome(): void {

@@ -29,6 +29,7 @@ import { Subject, takeUntil } from 'rxjs';
 
 import { RegistrationRequestsApiService } from '../../../core/data/services/registration-requests-api.service';
 import { ToastService } from '../../../core/data/services/toast.service';
+import { LogoutPromptService } from '../../../core/data/services/logout-prompt.service';
 import type {
   RegistrationRequestItem,
   RegistrationRequestHistoryItem,
@@ -61,6 +62,7 @@ import type {
 export class RegistrosPendientesPage implements OnInit, OnDestroy {
   private readonly api = inject(RegistrationRequestsApiService);
   private readonly toast = inject(ToastService);
+  private readonly logoutPrompt = inject(LogoutPromptService);
   private readonly destroy$ = new Subject<void>();
 
   readonly list = signal<RegistrationRequestItem[]>([]);
@@ -82,6 +84,10 @@ export class RegistrosPendientesPage implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
+  }
+
+  async confirmLogout(): Promise<void> {
+    await this.logoutPrompt.prompt();
   }
 
   loadList(): void {

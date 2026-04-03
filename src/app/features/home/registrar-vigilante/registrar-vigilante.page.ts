@@ -30,6 +30,7 @@ import { Subject, takeUntil } from 'rxjs';
 
 import { UsersApiService } from '../../../core/data/services/users-api.service';
 import { ToastService } from '../../../core/data/services/toast.service';
+import { LogoutPromptService } from '../../../core/data/services/logout-prompt.service';
 
 @Component({
   selector: 'app-registrar-vigilante',
@@ -55,6 +56,7 @@ export class RegistrarVigilantePage implements OnDestroy {
   private readonly router = inject(Router);
   private readonly usersApi = inject(UsersApiService);
   private readonly toast = inject(ToastService);
+  private readonly logoutPrompt = inject(LogoutPromptService);
   private readonly destroy$ = new Subject<void>();
 
   readonly loadingSubmit = signal(false);
@@ -94,6 +96,10 @@ export class RegistrarVigilantePage implements OnDestroy {
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
+  }
+
+  async confirmLogout(): Promise<void> {
+    await this.logoutPrompt.prompt();
   }
 
   onSubmit(): void {

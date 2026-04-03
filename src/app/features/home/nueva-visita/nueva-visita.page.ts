@@ -17,6 +17,7 @@ import { RpInputComponent } from '../../../shared/components/rp-input/rp-input.c
 import { VisitsApiService } from '../../../core/data/services/visits-api.service';
 import { ToastService } from '../../../core/data/services/toast.service';
 import { UsersApiService } from '../../../core/data/services/users-api.service';
+import { LogoutPromptService } from '../../../core/data/services/logout-prompt.service';
 import {
   VISIT_REASON_OPTIONS,
   type VisitReason,
@@ -42,6 +43,7 @@ export class NuevaVisitaPage implements OnInit, OnDestroy {
   private readonly visitsApi = inject(VisitsApiService);
   private readonly usersApi = inject(UsersApiService);
   private readonly toast = inject(ToastService);
+  private readonly logoutPrompt = inject(LogoutPromptService);
   private readonly destroy$ = new Subject<void>();
 
   readonly reasonOptions = VISIT_REASON_OPTIONS;
@@ -105,6 +107,10 @@ export class NuevaVisitaPage implements OnInit, OnDestroy {
 
   goBack(): void {
     this.location.back();
+  }
+
+  async confirmLogout(): Promise<void> {
+    await this.logoutPrompt.prompt();
   }
 
   setScheduleType(mode: 'open' | 'datetime'): void {

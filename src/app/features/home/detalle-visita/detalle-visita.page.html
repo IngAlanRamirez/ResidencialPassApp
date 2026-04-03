@@ -14,8 +14,18 @@
       <button class="dv-header__back" (click)="goBack()" type="button" aria-label="Volver">
         ←
       </button>
-      <h1 class="dv-header__title">Detalle de Visita</h1>
-      <rp-badge [status]="badgeStatus(v.status)" />
+      <div class="dv-header__mid">
+        <h1 class="dv-header__title">Detalle de Visita</h1>
+        <rp-badge [status]="badgeStatus(v.status)" />
+      </div>
+      <button
+        type="button"
+        class="dv-header__logout"
+        (click)="confirmLogout()"
+        aria-label="Cerrar sesión"
+      >
+        Salir
+      </button>
     </div>
 
     <div class="dv-content">

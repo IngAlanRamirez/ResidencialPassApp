@@ -4,6 +4,15 @@
       <button type="button" class="scanner__back" (click)="goBack()" aria-label="Volver">
         ←
       </button>
+      <div class="scanner__top-fill" aria-hidden="true"></div>
+      <button
+        type="button"
+        class="scanner__logout"
+        (click)="confirmLogout()"
+        aria-label="Cerrar sesión"
+      >
+        Salir
+      </button>
     </div>
 
     @if (status() === 'scanning') {

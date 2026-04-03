@@ -18,6 +18,7 @@ import {
   type RpBadgeStatus,
 } from '../../../shared/components/rp-badge/rp-badge.component';
 import { VisitsApiService } from '../../../core/data/services/visits-api.service';
+import { LogoutPromptService } from '../../../core/data/services/logout-prompt.service';
 import { ToastService } from '../../../core/data/services/toast.service';
 import {
   VISIT_REASON_OPTIONS,
@@ -36,6 +37,7 @@ export class EscanearVisitaPage implements AfterViewInit, OnDestroy {
   private readonly router = inject(Router);
   private readonly visitsApi = inject(VisitsApiService);
   private readonly toast = inject(ToastService);
+  private readonly logoutPrompt = inject(LogoutPromptService);
   private readonly destroy$ = new Subject<void>();
 
   readonly reasonOptions = VISIT_REASON_OPTIONS;
@@ -261,5 +263,9 @@ export class EscanearVisitaPage implements AfterViewInit, OnDestroy {
   goBack(): void {
     void this.stopScanner();
     this.router.navigate(['/home']);
+  }
+
+  async confirmLogout(): Promise<void> {
+    await this.logoutPrompt.prompt();
   }
 }

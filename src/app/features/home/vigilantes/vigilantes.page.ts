@@ -25,6 +25,7 @@ import {
 import { Subject, takeUntil } from 'rxjs';
 
 import { UsersApiService } from '../../../core/data/services/users-api.service';
+import { LogoutPromptService } from '../../../core/data/services/logout-prompt.service';
 import { ToastService } from '../../../core/data/services/toast.service';
 import type { VigilanteListItem } from '../../../core/domain/models/user.model';
 
@@ -53,6 +54,7 @@ import type { VigilanteListItem } from '../../../core/domain/models/user.model';
 export class VigilantesPage implements OnInit, OnDestroy {
   private readonly api = inject(UsersApiService);
   private readonly alertCtrl = inject(AlertController);
+  private readonly logoutPrompt = inject(LogoutPromptService);
   private readonly toast = inject(ToastService);
   private readonly destroy$ = new Subject<void>();
 
@@ -101,6 +103,10 @@ export class VigilantesPage implements OnInit, OnDestroy {
           ev.detail.target.complete();
         },
       });
+  }
+
+  async confirmLogout(): Promise<void> {
+    await this.logoutPrompt.prompt();
   }
 
   isActive(item: VigilanteListItem): boolean {
