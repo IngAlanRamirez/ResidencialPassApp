@@ -1,0 +1,60 @@
+:host {
+  display: block;
+  width: 100%;
+}
+
+.rp-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 48px;
+  border: none;
+  border-radius: 12px;
+  font-family: var(--rp-font);
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: opacity 0.15s ease, transform 0.1s ease;
+  padding: 0 20px;
+  -webkit-tap-highlight-color: transparent;
+
+  &:active:not(:disabled) {
+    transform: scale(0.97);
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  &--primary {
+    background: var(--rp-primary);
+    color: white;
+  }
+
+  &--secondary {
+    background: var(--rp-surface);
+    color: var(--rp-stone-950);
+    border: 1.5px solid var(--rp-stone-100);
+  }
+
+  &--danger {
+    background: var(--rp-danger-bg);
+    color: var(--rp-danger);
+    border: 1.5px solid var(--rp-danger-border);
+  }
+}
+
+.rp-btn__spinner {
+  width: 20px;
+  height: 20px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top-color: white;
+  border-radius: 50%;
+  animation: rp-spin 0.7s linear infinite;
+}
+
+@keyframes rp-spin {
+  to { transform: rotate(360deg); }
+}

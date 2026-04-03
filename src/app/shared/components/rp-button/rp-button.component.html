@@ -1,0 +1,11 @@
+<button
+  [type]="type"
+  [disabled]="disabled || loading"
+  [class]="'rp-btn rp-btn--' + variant"
+>
+  @if (loading) {
+    <span class="rp-btn__spinner"></span>
+  } @else {
+    <ng-content />
+  }
+</button>
