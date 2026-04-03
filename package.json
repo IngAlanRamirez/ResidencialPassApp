@@ -1,6 +1,6 @@
 {
   "name": "ResidencialPassApp",
-  "version": "0.0.1",
+  "version": "1.0.5",
   "author": "AR Solutions MX",
   "homepage": "https://arsolutionsmx.com",
   "scripts": {
@@ -12,7 +12,9 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "lint": "ng lint"
+    "lint": "ng lint",
+    "android:sync": "ng build && npx cap sync android",
+    "android:bundle": "cd android && ./gradlew bundleRelease"
   },
   "private": true,
   "dependencies": {
