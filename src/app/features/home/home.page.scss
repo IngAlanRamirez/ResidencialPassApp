@@ -59,6 +59,14 @@ ion-content {
   word-break: break-word;
 }
 
+/* Vecino: líneas de domicilio suelen ser más largas que un teléfono */
+.home-header__name--address {
+  font-size: 1.125rem;
+  font-weight: 700;
+  line-height: 1.3;
+  letter-spacing: -0.01em;
+}
+
 .home-header__stats {
   display: flex;
   align-items: center;

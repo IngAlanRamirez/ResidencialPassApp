@@ -3,7 +3,12 @@
   <div class="home-header__row">
     <div class="home-header__greeting">
       <p class="home-header__hello">Hola,</p>
-      <h1 class="home-header__name">{{ homeUserName() }}</h1>
+      <h1
+        class="home-header__name"
+        [class.home-header__name--address]="authState.isVecino()"
+      >
+        {{ homeUserName() }}
+      </h1>
     </div>
     <button
       type="button"

@@ -61,10 +61,31 @@ export class HomePage implements OnInit, OnDestroy, ViewWillEnter, ViewWillLeave
   readonly homeUserName = computed(() => {
     if (this.authState.isAdmin()) return 'Administrador';
     if (this.authState.isVigilancia()) return 'Vigilancia';
+
+    if (this.authState.isVecino()) {
+      if (this.loadingProfile()) return '…';
+      if (this.profileError()) return 'Vecino';
+      const addr = this.formatProfileAddress(this.profile());
+      if (addr) return addr;
+      return 'Sin domicilio registrado';
+    }
+
     const p = this.profile();
     const phone = p?.phone ?? this.authState.currentUser()?.phone;
     return phone || 'Vecino';
   });
+
+  /** Domicilio para el encabezado (calle, número y letra si existe). */
+  private formatProfileAddress(p: UserProfile | null): string | null {
+    const a = p?.address;
+    if (!a) return null;
+    const street = (a.street ?? '').trim();
+    const number = (a.number ?? '').trim();
+    if (!street && !number) return null;
+    const base = `${street} ${number}`.trim();
+    const letter = (a.letter ?? '').trim();
+    return letter ? `${base} ${letter}` : base;
+  }
 
   ngOnInit(): void {
     this.usersApi.getMe().subscribe({
