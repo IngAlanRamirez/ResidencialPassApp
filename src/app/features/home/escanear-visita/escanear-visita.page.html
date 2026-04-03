@@ -1,137 +1,166 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-buttons slot="start">
-      <ion-back-button defaultHref="/home"></ion-back-button>
-    </ion-buttons>
-    <ion-title>Escanear visita</ion-title>
-  </ion-toolbar>
-</ion-header>
+<ion-content [fullscreen]="true" [scrollY]="false" class="scanner-ion-content">
+  <div class="scanner">
+    <div class="scanner__top">
+      <button type="button" class="scanner__back" (click)="goBack()" aria-label="Volver">
+        ←
+      </button>
+    </div>
 
-<ion-content class="escanear-visita">
-  <div class="escanear-visita__container">
     @if (status() === 'scanning') {
-      <p class="escanear-visita__hint">Apunta la cámara al código QR de la visita.</p>
-      <div [id]="readerId" class="escanear-visita__reader"></div>
-    }
-
-    @if (status() === 'loading_status') {
-      <div class="escanear-visita__actions-card">
-        <ion-spinner name="crescent"></ion-spinner>
-        <p class="escanear-visita__hint">Verificando estado de la visita...</p>
+      <div class="scanner__viewfinder-area">
+        <div class="scanner__camera-stack">
+          <div [id]="readerId" class="scanner__reader"></div>
+          <div class="scanner__viewfinder" aria-hidden="true">
+            <div class="scanner__corner scanner__corner--tl"></div>
+            <div class="scanner__corner scanner__corner--tr"></div>
+            <div class="scanner__corner scanner__corner--bl"></div>
+            <div class="scanner__corner scanner__corner--br"></div>
+            <div class="scanner__line"></div>
+          </div>
+        </div>
+        <p class="scanner__hint">Apuntá la cámara al código QR del visitante</p>
       </div>
     }
 
-    @if (status() === 'scanned' || status() === 'loading') {
-      <div class="escanear-visita__actions-card animate-scale-in">
-        <h2 class="escanear-visita__actions-title">Código leído</h2>
-        @if (isVisitFinished()) {
-          <p class="escanear-visita__message escanear-visita__message--success" role="status">
-            Visita ya finalizada (entrada y salida registradas).
-          </p>
-          <ion-button expand="block" fill="clear" (click)="scanAgain()">
-            Escanear otro
-          </ion-button>
-        } @else {
-          @if (scanStatus(); as st) {
-            <div class="escanear-visita__visit-info">
-              <p class="escanear-visita__visit-info-row">
-                <strong>Visitante:</strong> {{ st.visitorName }}
-              </p>
-              <p class="escanear-visita__visit-info-row">
-                <strong>Domicilio:</strong> {{ st.domicilio }}
-              </p>
-              <p class="escanear-visita__visit-info-row">
-                <strong>Motivo:</strong> {{ reasonLabel(st.reason) }}
-              </p>
-              @if (st.description) {
-                <p class="escanear-visita__visit-info-row">
-                  <strong>Descripción:</strong> {{ st.description }}
-                </p>
-              }
-            </div>
-          }
-          <p class="escanear-visita__actions-hint">
-            @if (canRegisterEntry()) {
-              Registra la entrada del visitante.
-            } @else if (canRegisterExit()) {
-              Registra la salida del visitante.
-            }
-          </p>
-          <div class="escanear-visita__buttons">
-            @if (canRegisterEntry()) {
-              <div class="escanear-visita__checkbox-group">
-                <ion-checkbox
-                  [checked]="entryHasVehicle()"
-                  (ionChange)="onEntryHasVehicleChange($event)"
-                  labelPlacement="end"
-                >
-                  Entra con vehículo
-                </ion-checkbox>
-              </div>
-              @if (entryHasVehicle()) {
-                <ion-input
-                  type="text"
-                  label="Placa del vehículo"
-                  labelPlacement="stacked"
-                  placeholder="Ej: ABC-1234"
-                  [value]="entryLicensePlate()"
-                  (ionInput)="onEntryLicensePlateInput($event)"
-                  [maxlength]="20"
-                  fill="outline"
-                  class="escanear-visita__plate-field"
-                ></ion-input>
-              }
-              <ion-select
-                label="¿Por qué medio se identificó?"
-                labelPlacement="stacked"
-                [value]="entryIdentificationType()"
-                (ionChange)="onEntryIdentificationChange($event)"
-                interface="action-sheet"
-                fill="outline"
-                class="escanear-visita__identification-select"
-              >
-                @for (opt of identificationOptions; track opt.value) {
-                  <ion-select-option [value]="opt.value">{{ opt.label }}</ion-select-option>
-                }
-              </ion-select>
-              <ion-button expand="block" (click)="registerEvent('entry')" [disabled]="status() === 'loading'">
-                @if (status() === 'loading') {
-                  <ion-spinner name="crescent"></ion-spinner>
-                } @else {
-                  Registrar entrada
-                }
-              </ion-button>
-            }
-            @if (canRegisterExit()) {
-              <ion-textarea
-                class="escanear-visita__comment-field"
-                label="Comentario o incidencia (opcional)"
-                labelPlacement="stacked"
-                [value]="exitComment()"
-                (ionInput)="onExitCommentInput($event)"
-                placeholder="Ej: incidente en salida, observación..."
-                [maxlength]="500"
-                [rows]="3"
-                fill="outline"
-              ></ion-textarea>
-              <ion-button expand="block" (click)="registerEvent('exit')" [disabled]="status() === 'loading'">
-                Registrar salida
-              </ion-button>
-            }
-            <ion-button expand="block" fill="clear" (click)="scanAgain()" [disabled]="status() === 'loading'">
-              Escanear otro
-            </ion-button>
-          </div>
-        }
+    @if (status() === 'loading_status') {
+      <div class="scanner__center-state">
+        <ion-spinner name="crescent" class="scanner__spinner"></ion-spinner>
+        <p class="scanner__hint">Verificando estado de la visita…</p>
       </div>
     }
 
     @if (status() === 'success') {
-      <p class="escanear-visita__hint">La cámara se reanudará en breve.</p>
+      <div class="scanner__center-state">
+        <p class="scanner__hint">{{ message() }}</p>
+      </div>
     }
 
     @if (status() === 'error') {
-      <ion-button expand="block" (click)="scanAgain()">Intentar de nuevo</ion-button>
+      <div class="scanner__center-state">
+        <p class="scanner__error-text">{{ message() }}</p>
+        <rp-button (click)="scanAgain()">Intentar de nuevo</rp-button>
+      </div>
+    }
+
+    @if (status() === 'scanned' || status() === 'loading') {
+      <div class="scanner__post-scan">
+        <div class="scanner__post-scan-fill"></div>
+
+        <div class="scanner__panel">
+          @if (isVisitFinished()) {
+            <p class="scanner__finished-msg" role="status">
+              Visita ya finalizada (entrada y salida registradas).
+            </p>
+            <rp-button variant="secondary" (click)="scanAgain()" [disabled]="status() === 'loading'">
+              Escanear otro
+            </rp-button>
+          } @else if (scanStatus(); as st) {
+            <div class="scanner__visit-info">
+              <div class="scanner__visit-header">
+                <h2 class="scanner__visitor-name">{{ st.visitorName }}</h2>
+                <rp-badge [status]="scanBadgeStatus()" />
+              </div>
+              <p class="scanner__visit-detail">
+                {{ st.domicilio }} · {{ reasonLabel(st.reason) }}
+              </p>
+              @if (st.description) {
+                <p class="scanner__visit-description">{{ st.description }}</p>
+              }
+            </div>
+
+            @if (canRegisterEntry()) {
+              <div class="scanner__id-section">
+                <p class="scanner__id-label">Tipo de identificación</p>
+                <div class="scanner__id-chips">
+                  <button
+                    type="button"
+                    class="scanner__chip"
+                    [class.scanner__chip--active]="idType() === 'ine'"
+                    (click)="idType.set('ine')"
+                  >
+                    INE
+                  </button>
+                  <button
+                    type="button"
+                    class="scanner__chip"
+                    [class.scanner__chip--active]="idType() === 'pasaporte'"
+                    (click)="idType.set('pasaporte')"
+                  >
+                    Pasaporte
+                  </button>
+                  <button
+                    type="button"
+                    class="scanner__chip"
+                    [class.scanner__chip--active]="idType() === 'licencia'"
+                    (click)="idType.set('licencia')"
+                  >
+                    Licencia
+                  </button>
+                </div>
+              </div>
+
+              <label class="scanner__vehicle-toggle">
+                <span class="scanner__vehicle-label">¿Con vehículo?</span>
+                <input
+                  type="checkbox"
+                  [checked]="entryHasVehicle()"
+                  (change)="toggleHasVehicle()"
+                  class="scanner__vehicle-check"
+                />
+              </label>
+
+              @if (entryHasVehicle()) {
+                <div class="scanner__plate-input">
+                  <label class="scanner__plate-label" for="scanner-plate">Placa</label>
+                  <input
+                    id="scanner-plate"
+                    class="scanner__plate-field"
+                    type="text"
+                    maxlength="20"
+                    placeholder="ABC-1234"
+                    autocomplete="off"
+                    [value]="entryLicensePlate()"
+                    (input)="onLicensePlateInput($event)"
+                  />
+                </div>
+              }
+            }
+
+            @if (canRegisterExit()) {
+              <div class="scanner__comment-wrap">
+                <label class="scanner__plate-label" for="scanner-exit-comment">Comentario (opcional)</label>
+                <textarea
+                  id="scanner-exit-comment"
+                  class="scanner__comment-field"
+                  rows="3"
+                  maxlength="500"
+                  placeholder="Incidencia u observación al registrar la salida…"
+                  [value]="exitComment()"
+                  (input)="onExitCommentInput($event)"
+                ></textarea>
+              </div>
+            }
+
+            @if (canRegisterEntry() || canRegisterExit()) {
+              <rp-button [loading]="status() === 'loading'" (click)="registerAccess()">
+                @if (canRegisterEntry()) {
+                  Registrar entrada
+                } @else {
+                  Registrar salida
+                }
+              </rp-button>
+            }
+
+            <rp-button
+              variant="secondary"
+              [disabled]="status() === 'loading'"
+              (click)="scanAgain()"
+            >
+              Escanear otro
+            </rp-button>
+          }
+        </div>
+      </div>
     }
   </div>
 </ion-content>
