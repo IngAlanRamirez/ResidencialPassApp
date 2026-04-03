@@ -1,111 +1,151 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>Villa María</ion-title>
-    <ion-buttons slot="end">
-      <ion-button (click)="logout()" fill="clear" color="primary">
-        <ion-icon name="log-out-outline" slot="start"></ion-icon>
-        Cerrar sesión
-      </ion-button>
-    </ion-buttons>
-  </ion-toolbar>
-</ion-header>
-
-<ion-content class="home">
-  <div class="home__container">
-    @if (loadingProfile()) {
-      <div class="home__welcome">
-        <ion-spinner name="crescent"></ion-spinner>
-        <p class="home__subtitle">Cargando...</p>
+<!-- Header con saludo -->
+<div class="home-header">
+  <div class="home-header__row">
+    <div class="home-header__greeting">
+      <p class="home-header__hello">Hola,</p>
+      <h1 class="home-header__name">{{ homeUserName() }}</h1>
+    </div>
+    <button type="button" class="home-header__logout" (click)="logout()">Salir</button>
+  </div>
+  @if (authState.isAdmin()) {
+    <div class="home-header__stats">
+      <div class="home-header__stat">
+        <span class="home-header__stat-value">{{ adminStats().activeResidents }}</span>
+        <span class="home-header__stat-label">Vecinos</span>
       </div>
-    } @else if (profileError()) {
-      <h1 class="home__title">¡Hola!</h1>
-      <p class="home__subtitle">Bienvenido al acceso del fraccionamiento.</p>
-    } @else {
-      <h1 class="home__title">{{ welcomeTitle() }}</h1>
-      @if (welcomeSubtitle()) {
-        <p class="home__subtitle">{{ welcomeSubtitle() }}</p>
-      }
-    }
+      <div class="home-header__stat-divider"></div>
+      <div class="home-header__stat">
+        <span class="home-header__stat-value">{{ adminStats().pendingRegistrations }}</span>
+        <span class="home-header__stat-label">Pendientes</span>
+      </div>
+      <div class="home-header__stat-divider"></div>
+      <div class="home-header__stat">
+        <span class="home-header__stat-value">{{ adminStats().guards }}</span>
+        <span class="home-header__stat-label">Vigilantes</span>
+      </div>
+    </div>
+  }
+</div>
 
-    <div class="home__cards animate-stagger">
-      @if (authState.isVigilancia()) {
-        <a routerLink="/home/escanear-visita" class="home__card">
-          <ion-card>
-            <ion-card-header>
-              <ion-card-title>Escanear visita con QR</ion-card-title>
-            </ion-card-header>
-            <ion-card-content>
-              Abre la cámara y escanea el código QR para registrar entrada o salida.
-            </ion-card-content>
-          </ion-card>
-        </a>
-      }
-      @if (!authState.isVigilancia()) {
-        <a routerLink="/home/nueva-visita" class="home__card">
-          <ion-card>
-            <ion-card-header>
-              <ion-card-title>Nueva visita</ion-card-title>
-            </ion-card-header>
-            <ion-card-content>
-              Iniciar el registro de una nueva visita.
-            </ion-card-content>
-          </ion-card>
-        </a>
-      }
+<ion-content [fullscreen]="true">
+  @if (loadingProfile()) {
+    <div class="home-loading">
+      <ion-spinner name="crescent"></ion-spinner>
+      <p class="home-loading__text">Cargando…</p>
+    </div>
+  } @else {
+    <div class="home-content">
 
-      <a routerLink="/home/historial" class="home__card">
-        <ion-card>
-          <ion-card-header>
-            <ion-card-title>{{ authState.isVigilancia() ? 'Bitácora de escaneos' : 'Historial de visitas' }}</ion-card-title>
-          </ion-card-header>
-          <ion-card-content>
-            {{ authState.isVigilancia() ? 'Ver visitas en las que registraste entrada o salida.' : 'Ver el historial de visitas registradas.' }}
-          </ion-card-content>
-        </ion-card>
-      </a>
+      @if (authState.isVecino() || authState.isAdmin()) {
+
+        @if (authState.isAdmin()) {
+          <p class="home-section-label">MIS VISITAS</p>
+        }
+
+        <rp-card variant="action" class="home-hero home-nav-card" routerLink="/home/nueva-visita">
+          <div class="home-hero__icon">🧑‍💼</div>
+          <div class="home-hero__body">
+            <h2 class="home-hero__title">Nueva Visita</h2>
+            <p class="home-hero__desc">Generá un código QR para tu visitante</p>
+          </div>
+          <rp-button type="button">Crear visita</rp-button>
+        </rp-card>
+
+        <div class="home-grid">
+          <rp-card variant="list-item" class="home-nav-card" routerLink="/home/historial">
+            <div class="home-list-icon">📋</div>
+            <div class="home-list-body">
+              <p class="home-list-title">Historial</p>
+              <p class="home-list-sub">Ver visitas pasadas</p>
+            </div>
+            <span class="home-list-arrow">›</span>
+          </rp-card>
+
+          <rp-card variant="list-item" class="home-card--soon">
+            <div class="home-list-icon">👤</div>
+            <div class="home-list-body">
+              <p class="home-list-title">Mi Perfil</p>
+              <p class="home-list-sub">Próximamente</p>
+            </div>
+            <span class="home-list-arrow">›</span>
+          </rp-card>
+        </div>
+      }
 
       @if (authState.isAdmin()) {
-        <a routerLink="/home/vecinos" class="home__card">
-          <ion-card>
-            <ion-card-header>
-              <ion-card-title>Vecinos</ion-card-title>
-            </ion-card-header>
-            <ion-card-content>
-              Ver listado de vecinos y suspender cuentas por falta de pago.
-            </ion-card-content>
-          </ion-card>
-        </a>
-        <a routerLink="/home/registros-pendientes" class="home__card">
-          <ion-card>
-            <ion-card-header>
-              <ion-card-title>Registros pendientes</ion-card-title>
-            </ion-card-header>
-            <ion-card-content>
-              Ver solicitudes de registro pendientes de autorizar.
-            </ion-card-content>
-          </ion-card>
-        </a>
-        <a routerLink="/home/vigilantes" class="home__card">
-          <ion-card>
-            <ion-card-header>
-              <ion-card-title>Consultar vigilantes</ion-card-title>
-            </ion-card-header>
-            <ion-card-content>
-              Ver lista de vigilantes y dar de baja si es necesario.
-            </ion-card-content>
-          </ion-card>
-        </a>
-        <a routerLink="/home/registrar-vigilante" class="home__card">
-          <ion-card>
-            <ion-card-header>
-              <ion-card-title>Registrar vigilante</ion-card-title>
-            </ion-card-header>
-            <ion-card-content>
-              Dar de alta un nuevo usuario con rol de vigilancia.
-            </ion-card-content>
-          </ion-card>
-        </a>
+        <div class="home-divider">
+          <span class="home-divider__label">ADMINISTRACIÓN</span>
+        </div>
+
+        <div class="home-admin-list">
+
+          <rp-card variant="list-item" class="home-nav-card" routerLink="/home/registros-pendientes">
+            <div class="home-list-icon">📝</div>
+            <div class="home-list-body">
+              <p class="home-list-title">Registros pendientes</p>
+              <p class="home-list-sub">Aprobar vecinos nuevos</p>
+            </div>
+            @if (adminStats().pendingRegistrations > 0) {
+              <rp-badge
+                status="pending"
+                [text]="'' + adminStats().pendingRegistrations"
+              />
+            }
+            <span class="home-list-arrow">›</span>
+          </rp-card>
+
+          <rp-card variant="list-item" class="home-nav-card" routerLink="/home/vecinos">
+            <div class="home-list-icon">🏘️</div>
+            <div class="home-list-body">
+              <p class="home-list-title">Vecinos</p>
+              <p class="home-list-sub">Gestionar residentes</p>
+            </div>
+            <span class="home-list-arrow">›</span>
+          </rp-card>
+
+          <rp-card variant="list-item" class="home-nav-card" routerLink="/home/vigilantes">
+            <div class="home-list-icon">🛡️</div>
+            <div class="home-list-body">
+              <p class="home-list-title">Vigilantes</p>
+              <p class="home-list-sub">Gestionar guardias</p>
+            </div>
+            <span class="home-list-arrow">›</span>
+          </rp-card>
+
+          <rp-card variant="list-item" class="home-nav-card" routerLink="/home/registrar-vigilante">
+            <div class="home-list-icon">➕</div>
+            <div class="home-list-body">
+              <p class="home-list-title">Registrar vigilante</p>
+              <p class="home-list-sub">Añadir nuevo guardia</p>
+            </div>
+            <span class="home-list-arrow">›</span>
+          </rp-card>
+
+        </div>
       }
+
+      @if (authState.isVigilancia()) {
+
+        <rp-card variant="action" class="home-hero home-hero--dark home-nav-card" routerLink="/home/escanear-visita">
+          <div class="home-hero__icon home-hero__icon--dark">📷</div>
+          <div class="home-hero__body">
+            <h2 class="home-hero__title home-hero__title--light">Escanear QR</h2>
+            <p class="home-hero__desc home-hero__desc--light">Registrá la entrada o salida</p>
+          </div>
+          <rp-button type="button">Abrir cámara</rp-button>
+        </rp-card>
+
+        <rp-card variant="list-item" class="home-nav-card" routerLink="/home/historial">
+          <div class="home-list-icon">📖</div>
+          <div class="home-list-body">
+            <p class="home-list-title">Mi Bitácora</p>
+            <p class="home-list-sub">Escaneos de este turno</p>
+          </div>
+          <span class="home-list-arrow">›</span>
+        </rp-card>
+
+      }
+
     </div>
-  </div>
+  }
 </ion-content>

@@ -7,27 +7,16 @@ import {
   OnDestroy,
 } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
-import {
-  IonHeader,
-  IonToolbar,
-  IonTitle,
-  IonContent,
-  IonCard,
-  IonCardHeader,
-  IonCardTitle,
-  IonCardContent,
-  IonSpinner,
-  IonButtons,
-  IonButton,
-  IonIcon,
-  AlertController,
-} from '@ionic/angular/standalone';
+import { IonContent, IonSpinner, AlertController } from '@ionic/angular/standalone';
 import { App } from '@capacitor/app';
 import { Capacitor } from '@capacitor/core';
 
 import { AuthStateService } from '../../core/data/services/auth-state.service';
 import { UsersApiService } from '../../core/data/services/users-api.service';
 import type { UserProfile } from '../../core/domain/models/user.model';
+import { RpButtonComponent } from '../../shared/components/rp-button/rp-button.component';
+import { RpCardComponent } from '../../shared/components/rp-card/rp-card.component';
+import { RpBadgeComponent } from '../../shared/components/rp-badge/rp-badge.component';
 
 type BackButtonListenerHandle = { remove: () => Promise<void> };
 
@@ -38,18 +27,11 @@ type BackButtonListenerHandle = { remove: () => Promise<void> };
   standalone: true,
   imports: [
     RouterLink,
-    IonHeader,
-    IonToolbar,
-    IonTitle,
     IonContent,
-    IonCard,
-    IonCardHeader,
-    IonCardTitle,
-    IonCardContent,
     IonSpinner,
-    IonButtons,
-    IonButton,
-    IonIcon,
+    RpButtonComponent,
+    RpCardComponent,
+    RpBadgeComponent,
   ],
 })
 export class HomePage implements OnInit, OnDestroy {
@@ -65,30 +47,18 @@ export class HomePage implements OnInit, OnDestroy {
   readonly loadingProfile = signal(true);
   readonly profileError = signal(false);
 
-  readonly welcomeTitle = computed(() => {
-    const p = this.profile();
-    if (!p) return '';
-    const role = (p.role ?? '').toLowerCase();
-    if (role === 'vigilancia') return 'Buen día Vigilante';
-    return 'Bienvenido Vecino';
+  readonly adminStats = signal({
+    activeResidents: 0,
+    pendingRegistrations: 0,
+    guards: 0,
   });
 
-  readonly welcomeSubtitle = computed(() => {
+  readonly homeUserName = computed(() => {
+    if (this.authState.isAdmin()) return 'Administrador';
+    if (this.authState.isVigilancia()) return 'Vigilancia';
     const p = this.profile();
-    if (!p) return 'Bienvenido al acceso del fraccionamiento.';
-    if ((p.role ?? '').toLowerCase() === 'vigilancia') return '';
-    const addr = p.address;
-    if (addr && (addr.street || addr.number)) {
-      const street = (addr.street ?? '').trim();
-      const number = (addr.number ?? '').trim();
-      const letter = addr.letter?.trim();
-      const parts: string[] = [];
-      if (street) parts.push(`Calle ${street}`);
-      if (number) parts.push(`Número ${number}`);
-      if (letter) parts.push(`Letra ${letter}`);
-      if (parts.length) return parts.join(', ');
-    }
-    return 'Bienvenido al acceso del fraccionamiento.';
+    const phone = p?.phone ?? this.authState.currentUser()?.phone;
+    return phone || 'Vecino';
   });
 
   ngOnInit(): void {
