@@ -1,90 +1,128 @@
-.nueva-visita__container {
-  max-width: 28rem;
-  margin-inline: auto;
-  padding: 1.5rem 1rem;
+.nv-header {
+  background: var(--rp-stone-950);
+  padding: calc(16px + var(--ion-safe-area-top, 0px)) var(--rp-page-padding) 20px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
 }
 
-.nueva-visita__form {
+.nv-header__back {
+  width: 36px;
+  height: 36px;
+  background: rgba(255, 255, 255, 0.1);
+  border: none;
+  border-radius: 10px;
+  color: white;
+  font-size: 18px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.nv-header__title {
+  font-family: var(--rp-font);
+  font-size: 18px;
+  font-weight: 800;
+  color: white;
+  margin: 0 0 2px;
+}
+
+.nv-header__subtitle {
+  font-family: var(--rp-font);
+  font-size: 12px;
+  color: var(--rp-stone-500);
+  margin: 0;
+}
+
+.nv-form {
+  padding: 20px var(--rp-page-padding) calc(24px + var(--ion-safe-area-bottom, 0px));
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 14px;
 }
 
-.nueva-visita__field {
-  margin-bottom: 0.25rem;
+.nv-select-wrapper {
+  background: var(--rp-surface);
+  border: 1.5px solid var(--rp-stone-100);
+  border-radius: var(--rp-radius-md);
+  min-height: 56px;
+  padding: 10px 14px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
 }
 
-.nueva-visita__checkbox-group {
-  margin-top: 0.5rem;
-  margin-bottom: 0.25rem;
-  padding-inline: 0.25rem;
-}
-
-.nueva-visita__hint {
-  font-size: 0.8125rem;
-  color: var(--ion-color-medium);
-  margin: 0.25rem 0 0.5rem 0;
-  padding-inline-start: 0.25rem;
-}
-
-.nueva-visita__actions {
-  margin-top: 1.5rem;
-}
-
-.nueva-visita__submit {
-  margin-top: 0.5rem;
-  --border-radius: 8px;
+.nv-select-label {
+  font-family: var(--rp-font);
+  font-size: 10px;
   font-weight: 600;
+  color: var(--rp-stone-500);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: 4px;
 }
 
-/* Pantalla de éxito con QR */
-.nueva-visita__success {
-  text-align: center;
-  padding: 0.5rem 0;
+.nv-select {
+  border: none;
+  outline: none;
+  background: transparent;
+  font-family: var(--rp-font);
+  font-size: 15px;
+  color: var(--rp-stone-950);
+  appearance: none;
+  padding-right: 24px;
+  cursor: pointer;
 }
 
-.nueva-visita__success-title {
-  font-size: 1.25rem;
-  font-weight: 700;
-  margin: 0 0 0.75rem;
+.nv-select-arrow {
+  position: absolute;
+  right: 14px;
+  bottom: 14px;
+  color: var(--rp-stone-300);
+  pointer-events: none;
 }
 
-.nueva-visita__success-text {
-  font-size: 0.9375rem;
-  color: var(--ion-color-medium);
-  margin: 0 0 1.5rem;
+.nv-schedule__label {
+  font-family: var(--rp-font);
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--rp-stone-500);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin: 0 0 8px;
+}
+
+.nv-schedule__chips {
+  display: flex;
+  gap: 8px;
+}
+
+.nv-schedule__hint {
+  font-family: var(--rp-font);
+  font-size: 12px;
+  color: var(--rp-stone-500);
+  margin: 10px 0 0;
   line-height: 1.4;
 }
 
-.nueva-visita__qr-wrap {
-  display: flex;
-  justify-content: center;
-  margin-bottom: 1.5rem;
-  padding: 1rem;
-  background: var(--ion-color-step-900);
-  border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
-}
+.nv-chip {
+  flex: 1;
+  height: 40px;
+  border: 1.5px solid var(--rp-stone-100);
+  border-radius: var(--rp-radius-full);
+  background: var(--rp-surface);
+  font-family: var(--rp-font);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--rp-stone-700);
+  cursor: pointer;
+  transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
 
-.nueva-visita__qr {
-  display: block;
-  width: 260px;
-  height: 260px;
-}
-
-.nueva-visita__share {
-  margin-bottom: 1rem;
-}
-
-.nueva-visita__meta {
-  text-align: left;
-  font-size: 0.9375rem;
-  margin: 0 0 1.5rem;
-  padding: 0 0.5rem;
-  line-height: 1.6;
-
-  strong {
-    display: inline-block;
-    min-width: 5rem;
+  &--active {
+    background: var(--rp-primary-tint);
+    border-color: var(--rp-primary);
+    color: var(--rp-primary);
   }
 }

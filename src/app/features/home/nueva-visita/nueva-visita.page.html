@@ -1,106 +1,83 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-buttons slot="start">
-      <ion-back-button defaultHref="/home"></ion-back-button>
-    </ion-buttons>
-    <ion-title>Nueva visita</ion-title>
-  </ion-toolbar>
-</ion-header>
-
-<ion-content class="nueva-visita">
-  <div class="nueva-visita__container">
-    <form class="nueva-visita__form" [formGroup]="form" (ngSubmit)="onSubmit()">
-      <ion-input
-        formControlName="visitorName"
-        type="text"
-        label="Nombre del visitante"
-        labelPlacement="stacked"
-        placeholder="Nombre completo"
-        maxlength="200"
-        errorText="Ingresa el nombre del visitante."
-        fill="outline"
-        class="nueva-visita__field"
-      ></ion-input>
-
-      <ion-select
-        formControlName="reason"
-        label="Motivo"
-        labelPlacement="stacked"
-        placeholder="Selecciona el motivo"
-        interface="action-sheet"
-        fill="outline"
-        class="nueva-visita__field"
-      >
-        @for (opt of reasonOptions; track opt.value) {
-          <ion-select-option [value]="opt.value">{{ opt.label }}</ion-select-option>
-        }
-      </ion-select>
-
-      <div class="nueva-visita__checkbox-group">
-        <ion-checkbox formControlName="entryOpenSchedule" labelPlacement="end">
-          Entrada abierta en horario
-        </ion-checkbox>
-        <p class="nueva-visita__hint">Si activas entrada abierta, la hora se registrará al escanear el QR en la caseta.</p>
-      </div>
-
-      @if (!form.get('entryOpenSchedule')?.value) {
-        <ion-input
-          formControlName="entryAt"
-          type="datetime-local"
-          label="Fecha y hora de entrada"
-          labelPlacement="stacked"
-          [min]="minEntryLocal"
-          errorText="Ingresa la fecha y hora de entrada (hoy o futuro)."
-          fill="outline"
-          class="nueva-visita__field"
-        ></ion-input>
-      }
-
-      <div class="nueva-visita__checkbox-group">
-        <ion-checkbox formControlName="exitOpenSchedule" labelPlacement="end">
-          Salida abierta en horario
-        </ion-checkbox>
-        <p class="nueva-visita__hint">Si activas salida abierta, la hora se registrará al escanear el QR a la salida.</p>
-      </div>
-
-      @if (!form.get('exitOpenSchedule')?.value) {
-        <ion-input
-          formControlName="exitAt"
-          type="datetime-local"
-          label="Fecha y hora de salida"
-          labelPlacement="stacked"
-          [min]="minExitLocal"
-          errorText="Ingresa la fecha y hora de salida (posterior a la entrada)."
-          fill="outline"
-          class="nueva-visita__field"
-        ></ion-input>
-      }
-
-      <ion-textarea
-        formControlName="description"
-        label="Descripción (opcional)"
-        labelPlacement="stacked"
-        placeholder="Información adicional del visitante o motivo"
-        [maxlength]="500"
-        rows="3"
-        fill="outline"
-        class="nueva-visita__field"
-      ></ion-textarea>
-
-      <div class="nueva-visita__actions">
-        <ion-button
-          type="submit"
-          expand="block"
-          [disabled]="loadingSubmit()"
-          class="nueva-visita__submit"
-        >
-          @if (loadingSubmit()) {
-            <ion-spinner name="crescent"></ion-spinner>
-          } @else {
-            Generar código de visita
-          }
-        </ion-button>
-      </div>
-    </form>
+<ion-content [fullscreen]="true">
+  <div class="nv-header">
+    <button class="nv-header__back" (click)="goBack()" type="button" aria-label="Volver">
+      ←
+    </button>
+    <div>
+      <h1 class="nv-header__title">Nueva Visita</h1>
+      <p class="nv-header__subtitle">{{ addressLabel() }}</p>
+    </div>
   </div>
+
+  <form [formGroup]="form" (ngSubmit)="onSubmit()" class="nv-form">
+    <rp-input
+      label="Nombre del visitante"
+      type="text"
+      placeholder="Ej. Juan García"
+      formControlName="visitorName"
+    />
+
+    <label class="nv-select-wrapper">
+      <span class="nv-select-label">Motivo</span>
+      <select class="nv-select" formControlName="reason">
+        @for (opt of reasonOptions; track opt.value) {
+          <option [value]="opt.value">{{ opt.label }}</option>
+        }
+      </select>
+      <span class="nv-select-arrow" aria-hidden="true">⌄</span>
+    </label>
+
+    <div class="nv-schedule">
+      <p class="nv-schedule__label">Tipo de horario</p>
+      <div class="nv-schedule__chips">
+        <button
+          type="button"
+          class="nv-chip"
+          [class.nv-chip--active]="scheduleType() === 'open'"
+          (click)="setScheduleType('open')"
+        >
+          Abierto
+        </button>
+        <button
+          type="button"
+          class="nv-chip"
+          [class.nv-chip--active]="scheduleType() === 'datetime'"
+          (click)="setScheduleType('datetime')"
+        >
+          Fecha / hora
+        </button>
+      </div>
+      @if (scheduleType() === 'open') {
+        <p class="nv-schedule__hint">
+          Las horas de entrada y salida se registran al escanear el QR en caseta.
+        </p>
+      }
+    </div>
+
+    @if (scheduleType() === 'datetime') {
+      <rp-input
+        label="Entrada"
+        type="datetime-local"
+        formControlName="entryAt"
+        [min]="minEntryLocal"
+      />
+      <rp-input
+        label="Salida"
+        type="datetime-local"
+        formControlName="exitAt"
+        [min]="minExitLocal"
+      />
+    }
+
+    <rp-input
+      label="Nota (opcional)"
+      type="text"
+      placeholder="Instrucciones adicionales"
+      formControlName="description"
+    />
+
+    <rp-button type="submit" [loading]="loadingSubmit()">
+      Generar código QR →
+    </rp-button>
+  </form>
 </ion-content>

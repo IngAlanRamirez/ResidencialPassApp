@@ -2,33 +2,26 @@ import {
   Component,
   inject,
   signal,
+  computed,
   OnDestroy,
+  OnInit,
 } from '@angular/core';
 import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
-import {
-  IonHeader,
-  IonToolbar,
-  IonTitle,
-  IonContent,
-  IonBackButton,
-  IonButtons,
-  IonInput,
-  IonSelect,
-  IonSelectOption,
-  IonTextarea,
-  IonButton,
-  IonSpinner,
-  IonCheckbox,
-} from '@ionic/angular/standalone';
+import { IonContent } from '@ionic/angular/standalone';
 import { Router } from '@angular/router';
+import { Location } from '@angular/common';
 import { Subject, takeUntil } from 'rxjs';
 
+import { RpButtonComponent } from '../../../shared/components/rp-button/rp-button.component';
+import { RpInputComponent } from '../../../shared/components/rp-input/rp-input.component';
 import { VisitsApiService } from '../../../core/data/services/visits-api.service';
 import { ToastService } from '../../../core/data/services/toast.service';
+import { UsersApiService } from '../../../core/data/services/users-api.service';
 import {
   VISIT_REASON_OPTIONS,
   type VisitReason,
 } from '../../../core/domain/models/visit.model';
+import type { UserProfile } from '../../../core/domain/models/user.model';
 
 @Component({
   selector: 'app-nueva-visita',
@@ -37,42 +30,40 @@ import {
   standalone: true,
   imports: [
     ReactiveFormsModule,
-    IonHeader,
-    IonToolbar,
-    IonTitle,
     IonContent,
-    IonBackButton,
-    IonButtons,
-    IonInput,
-    IonSelect,
-    IonSelectOption,
-    IonTextarea,
-    IonButton,
-    IonSpinner,
-    IonCheckbox,
+    RpButtonComponent,
+    RpInputComponent,
   ],
 })
-export class NuevaVisitaPage implements OnDestroy {
+export class NuevaVisitaPage implements OnInit, OnDestroy {
   private readonly fb = inject(FormBuilder);
   private readonly router = inject(Router);
+  private readonly location = inject(Location);
   private readonly visitsApi = inject(VisitsApiService);
+  private readonly usersApi = inject(UsersApiService);
   private readonly toast = inject(ToastService);
   private readonly destroy$ = new Subject<void>();
 
   readonly reasonOptions = VISIT_REASON_OPTIONS;
+  readonly scheduleType = signal<'open' | 'datetime'>('open');
   readonly loadingSubmit = signal(false);
+  readonly profile = signal<UserProfile | null>(null);
+
+  readonly addressLabel = computed(() => {
+    const a = this.profile()?.address;
+    if (!a?.street && !a?.number) return 'Tu domicilio';
+    const base = `${a.street} ${a.number}`.trim();
+    return a.letter ? `${base} ${a.letter}` : base;
+  });
 
   form = this.fb.group({
     visitorName: ['', [Validators.required, Validators.maxLength(200)]],
     reason: ['visitante' as VisitReason, Validators.required],
-    entryOpenSchedule: [false],
-    exitOpenSchedule: [false],
     entryAt: [''],
     exitAt: [''],
     description: [''],
   });
 
-  /** Mínimo para entrada: inicio del día de hoy (solo visitas de hoy en adelante). */
   get minEntryLocal(): string {
     const now = new Date();
     const y = now.getFullYear();
@@ -83,11 +74,10 @@ export class NuevaVisitaPage implements OnDestroy {
     return `${y}-${m}-${d}T${h}:${min}`;
   }
 
-  /** Mínimo para salida: igual a la entrada (para que sea posterior) o hoy si entrada abierta. */
   get minExitLocal(): string {
-    const entryOpen = this.form.get('entryOpenSchedule')?.value;
+    if (this.scheduleType() === 'open') return this.minEntryLocal;
     const entryVal = this.form.get('entryAt')?.value;
-    if (entryOpen || !entryVal) return this.minEntryLocal;
+    if (!entryVal) return this.minEntryLocal;
     const entry = new Date(entryVal);
     entry.setMinutes(entry.getMinutes() + 1);
     const y = entry.getFullYear();
@@ -98,27 +88,49 @@ export class NuevaVisitaPage implements OnDestroy {
     return `${y}-${m}-${d}T${h}:${min}`;
   }
 
+  ngOnInit(): void {
+    this.usersApi
+      .getMe()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (p) => this.profile.set(p),
+        error: () => this.profile.set(null),
+      });
+  }
+
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
   }
 
+  goBack(): void {
+    this.location.back();
+  }
+
+  setScheduleType(mode: 'open' | 'datetime'): void {
+    this.scheduleType.set(mode);
+    if (mode === 'open') {
+      this.form.patchValue({ entryAt: '', exitAt: '' });
+    }
+  }
+
   onSubmit(): void {
     const raw = this.form.getRawValue();
-    const entryOpen = !!raw.entryOpenSchedule;
-    const exitOpen = !!raw.exitOpenSchedule;
+    const scheduleOpen = this.scheduleType() === 'open';
+    const entryOpen = scheduleOpen;
+    const exitOpen = scheduleOpen;
 
     if (!raw.visitorName?.trim() || !raw.reason) {
       this.form.markAllAsTouched();
       return;
     }
-    if (!entryOpen && !raw.entryAt?.trim()) {
-      this.toast.error('Ingresa la fecha y hora de entrada o marca entrada abierta.');
+    if (!scheduleOpen && !raw.entryAt?.trim()) {
+      this.toast.error('Ingresa la fecha y hora de entrada o elegí horario abierto.');
       this.form.get('entryAt')?.markAsTouched();
       return;
     }
-    if (!exitOpen && !raw.exitAt?.trim()) {
-      this.toast.error('Ingresa la fecha y hora de salida o marca salida abierta.');
+    if (!scheduleOpen && !raw.exitAt?.trim()) {
+      this.toast.error('Ingresa la fecha y hora de salida o elegí horario abierto.');
       this.form.get('exitAt')?.markAsTouched();
       return;
     }
