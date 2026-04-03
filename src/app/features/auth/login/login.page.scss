@@ -1,46 +1,78 @@
-.login__container {
-  max-width: 28rem;
-  margin-inline: auto;
-  padding: 1rem;
+.login-header {
+  background: var(--rp-stone-950);
+  padding: 16px var(--rp-page-padding) 24px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding-top: calc(16px + var(--ion-safe-area-top, 0px));
 }
 
-.login__form {
+.login-header__back {
+  width: 36px;
+  height: 36px;
+  background: rgba(255, 255, 255, 0.1);
+  border: none;
+  border-radius: 10px;
+  color: white;
+  font-size: 18px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.login-header__title {
+  font-family: var(--rp-font);
+  font-size: 18px;
+  font-weight: 800;
+  color: white;
+  margin: 0 0 2px;
+}
+
+.login-header__subtitle {
+  font-family: var(--rp-font);
+  font-size: 12px;
+  color: var(--rp-stone-500);
+  margin: 0;
+}
+
+.login-form {
+  padding: 24px var(--rp-page-padding);
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 14px;
 }
 
-.login__field {
-  margin-bottom: 0.25rem;
+.login-remember {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
 }
 
-.login__eye-btn {
-  --padding-start: 4px;
-  --padding-end: 4px;
-  margin-top: auto;
-  margin-bottom: auto;
-  height: 36px;
-  font-size: 1.2rem;
-  color: var(--ion-color-medium);
+.login-remember__checkbox {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--rp-primary);
+  cursor: pointer;
 }
 
-.login__remember {
-  margin-top: 0.25rem;
-  padding-inline: 0.25rem;
-
-  ion-checkbox {
-    --size: 20px;
-    font-size: 0.875rem;
-  }
+.login-remember__label {
+  font-family: var(--rp-font);
+  font-size: 13px;
+  color: var(--rp-stone-700);
 }
 
-.login__actions {
-  margin-top: 1.5rem;
-  padding-top: 0.5rem;
-}
-
-.login__submit {
-  margin-top: 0.5rem;
-  --border-radius: 8px;
+.login-forgot {
+  background: none;
+  border: none;
+  font-family: var(--rp-font);
+  font-size: 13px;
   font-weight: 600;
+  color: var(--rp-primary);
+  text-decoration: underline;
+  cursor: pointer;
+  align-self: center;
+  padding: 4px 0;
 }

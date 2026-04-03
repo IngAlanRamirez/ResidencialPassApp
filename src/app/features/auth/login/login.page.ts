@@ -3,31 +3,20 @@ import {
   OnInit,
   OnDestroy,
   signal,
+  computed,
   inject,
 } from '@angular/core';
+import { Location } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
-import {
-  IonHeader,
-  IonToolbar,
-  IonTitle,
-  IonContent,
-  IonInput,
-  IonButton,
-  IonSpinner,
-  IonBackButton,
-  IonButtons,
-  IonIcon,
-  IonCheckbox,
-  NavController,
-} from '@ionic/angular/standalone';
-import { addIcons } from 'ionicons';
-import { eyeOutline, eyeOffOutline } from 'ionicons/icons';
+import { IonContent, NavController } from '@ionic/angular/standalone';
 import { Subject, takeUntil } from 'rxjs';
 
 import { AuthApiService } from '../../../core/data/services/auth-api.service';
 import { AuthStateService } from '../../../core/data/services/auth-state.service';
 import { DeviceIdService } from '../../../core/data/services/device-id.service';
 import { ToastService } from '../../../core/data/services/toast.service';
+import { RpButtonComponent } from '../../../shared/components/rp-button/rp-button.component';
+import { RpInputComponent } from '../../../shared/components/rp-input/rp-input.component';
 
 const REMEMBER_PHONE_KEY = 'rp_remember_phone';
 const REMEMBER_PASS_KEY = 'rp_remember_pass';
@@ -40,17 +29,9 @@ const REMEMBER_FLAG_KEY = 'rp_remember_enabled';
   standalone: true,
   imports: [
     ReactiveFormsModule,
-    IonHeader,
-    IonToolbar,
-    IonTitle,
     IonContent,
-    IonInput,
-    IonButton,
-    IonSpinner,
-    IonBackButton,
-    IonButtons,
-    IonIcon,
-    IonCheckbox,
+    RpButtonComponent,
+    RpInputComponent,
   ],
 })
 export class LoginPage implements OnInit, OnDestroy {
@@ -60,19 +41,27 @@ export class LoginPage implements OnInit, OnDestroy {
   private readonly deviceId = inject(DeviceIdService);
   private readonly toast = inject(ToastService);
   private readonly navCtrl = inject(NavController);
+  private readonly location = inject(Location);
   private readonly destroy$ = new Subject<void>();
 
   readonly loadingSubmit = signal(false);
-  readonly showPassword = signal(false);
   readonly rememberPassword = signal(false);
 
-  constructor() {
-    addIcons({ eyeOutline, eyeOffOutline });
-  }
-
-  form = this.fb.group({
+  readonly loginForm = this.fb.group({
     phone: ['', [Validators.required, Validators.pattern(/^\+?[0-9\s-]{10,}$/)]],
     password: ['', [Validators.required, Validators.minLength(6)]],
+  });
+
+  readonly phoneError = computed(() => {
+    const ctrl = this.loginForm.get('phone');
+    if (ctrl?.invalid && ctrl?.touched) return 'Teléfono requerido';
+    return '';
+  });
+
+  readonly passwordError = computed(() => {
+    const ctrl = this.loginForm.get('password');
+    if (ctrl?.invalid && ctrl?.touched) return 'Contraseña requerida';
+    return '';
   });
 
   ngOnInit(): void {
@@ -84,21 +73,17 @@ export class LoginPage implements OnInit, OnDestroy {
     this.destroy$.complete();
   }
 
-  togglePasswordVisibility(): void {
-    this.showPassword.update((v) => !v);
-  }
-
-  onRememberChange(event: CustomEvent): void {
-    this.rememberPassword.set(event.detail.checked);
+  goBack(): void {
+    this.location.back();
   }
 
   async onSubmit(): Promise<void> {
-    if (this.form.invalid) {
-      this.form.markAllAsTouched();
+    if (this.loginForm.invalid) {
+      this.loginForm.markAllAsTouched();
       return;
     }
 
-    const raw = this.form.getRawValue();
+    const raw = this.loginForm.getRawValue();
     const phone = raw.phone!.trim();
     const password = raw.password!;
     this.loadingSubmit.set(true);
@@ -136,7 +121,7 @@ export class LoginPage implements OnInit, OnDestroy {
         const phone = localStorage.getItem(REMEMBER_PHONE_KEY) ?? '';
         const password = localStorage.getItem(REMEMBER_PASS_KEY) ?? '';
         if (phone && password) {
-          this.form.patchValue({ phone, password });
+          this.loginForm.patchValue({ phone, password });
           this.rememberPassword.set(true);
         }
       }

@@ -1,76 +1,47 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-buttons slot="start">
-      <ion-back-button defaultHref="/auth"></ion-back-button>
-    </ion-buttons>
-    <ion-title>Iniciar sesión</ion-title>
-  </ion-toolbar>
-</ion-header>
-
-<ion-content class="login">
-  <div class="login__container">
-    <form class="login__form" [formGroup]="form" (ngSubmit)="onSubmit()">
-      <ion-input
-        formControlName="phone"
-        type="tel"
-        label="Teléfono"
-        labelPlacement="stacked"
-        placeholder="Ej. 5512345678"
-        inputmode="tel"
-        errorText="Ingresa un teléfono válido."
-        fill="outline"
-        class="login__field"
-      ></ion-input>
-
-      <ion-input
-        formControlName="password"
-        [type]="showPassword() ? 'text' : 'password'"
-        label="Contraseña"
-        labelPlacement="stacked"
-        placeholder="Tu contraseña"
-        errorText="Mínimo 6 caracteres."
-        fill="outline"
-        class="login__field"
-      >
-        <ion-button
-          fill="clear"
-          slot="end"
-          type="button"
-          class="login__eye-btn"
-          (click)="togglePasswordVisibility()"
-          aria-label="Mostrar u ocultar contraseña"
-        >
-          <ion-icon
-            slot="icon-only"
-            [name]="showPassword() ? 'eye-off-outline' : 'eye-outline'"
-          ></ion-icon>
-        </ion-button>
-      </ion-input>
-
-      <div class="login__remember">
-        <ion-checkbox
-          [checked]="rememberPassword()"
-          (ionChange)="onRememberChange($any($event))"
-          labelPlacement="end"
-        >
-          Recordar contraseña
-        </ion-checkbox>
-      </div>
-
-      <div class="login__actions">
-        <ion-button
-          type="submit"
-          expand="block"
-          [disabled]="loadingSubmit()"
-          class="login__submit"
-        >
-          @if (loadingSubmit()) {
-            <ion-spinner name="crescent"></ion-spinner>
-          } @else {
-            Entrar
-          }
-        </ion-button>
-      </div>
-    </form>
+<!-- Header oscuro -->
+  <div class="login-header">
+    <button class="login-header__back" (click)="goBack()" type="button">←</button>
+    <div>
+      <h1 class="login-header__title">Bienvenido</h1>
+      <p class="login-header__subtitle">Ingresá tus datos</p>
+    </div>
   </div>
-</ion-content>
+
+  <ion-content [fullscreen]="true">
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form">
+
+      <rp-input
+        label="Teléfono"
+        type="tel"
+        placeholder="+52 55 1234 5678"
+        formControlName="phone"
+        [errorMessage]="phoneError()"
+      />
+
+      <rp-input
+        label="Contraseña"
+        type="password"
+        placeholder="Tu contraseña"
+        formControlName="password"
+        [errorMessage]="passwordError()"
+      />
+
+      <!-- Recordar contraseña -->
+      <label class="login-remember">
+        <input
+          type="checkbox"
+          [checked]="rememberPassword()"
+          (change)="rememberPassword.set(!rememberPassword())"
+          class="login-remember__checkbox"
+        />
+        <span class="login-remember__label">Recordar contraseña</span>
+      </label>
+
+      <rp-button type="submit" [loading]="loadingSubmit()">
+        Ingresar
+      </rp-button>
+
+      <button type="button" class="login-forgot">Olvidé mi contraseña</button>
+
+    </form>
+  </ion-content>
