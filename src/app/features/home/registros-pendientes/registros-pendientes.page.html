@@ -11,14 +11,10 @@
 
 <ion-modal [isOpen]="showLogModal()" (didDismiss)="closeLogModal()">
   <ng-template>
-    <ion-header>
-      <ion-toolbar>
-        <ion-title>Bitácora de registros</ion-title>
-        <ion-buttons slot="end">
-          <ion-button (click)="closeLogModal()">Cerrar</ion-button>
-        </ion-buttons>
-      </ion-toolbar>
-    </ion-header>
+    <div class="regp-modal-header">
+      <h2 class="regp-modal-header__title">Bitácora de registros</h2>
+      <button class="regp-modal-header__close" type="button" (click)="closeLogModal()">Cerrar</button>
+    </div>
     <ion-content class="registros-pendientes__log-content">
       @if (loadingHistory()) {
         <div class="registros-pendientes__log-loading">
