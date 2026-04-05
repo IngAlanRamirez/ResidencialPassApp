@@ -1,17 +1,13 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-buttons slot="start">
-      <ion-back-button defaultHref="/home"></ion-back-button>
-    </ion-buttons>
-    <ion-title>Registros pendientes</ion-title>
-    <ion-buttons slot="end">
-      <ion-button (click)="openLogModal()" title="Bitácora de registros">
-        <ion-icon name="list-outline"></ion-icon>
-      </ion-button>
-      <ion-button fill="clear" (click)="confirmLogout()">Salir</ion-button>
-    </ion-buttons>
-  </ion-toolbar>
-</ion-header>
+<div class="regp-header">
+  <button class="regp-header__back" type="button" aria-label="Volver" (click)="goBack()">←</button>
+  <h1 class="regp-header__title">Registros pendientes</h1>
+  <div class="regp-header__actions">
+    <button class="regp-header__icon-btn" type="button" (click)="openLogModal()" title="Bitácora de registros">
+      <ion-icon name="list-outline"></ion-icon>
+    </button>
+    <button class="regp-header__logout" type="button" (click)="confirmLogout()">Salir</button>
+  </div>
+</div>
 
 <ion-modal [isOpen]="showLogModal()" (didDismiss)="closeLogModal()">
   <ng-template>

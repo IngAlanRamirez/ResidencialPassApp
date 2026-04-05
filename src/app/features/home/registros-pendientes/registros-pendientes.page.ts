@@ -5,15 +5,11 @@ import {
   OnInit,
   OnDestroy,
 } from '@angular/core';
+import { Location } from '@angular/common';
 import {
-  IonHeader,
-  IonToolbar,
-  IonTitle,
   IonContent,
   IonRefresher,
   IonRefresherContent,
-  IonBackButton,
-  IonButtons,
   IonCard,
   IonCardHeader,
   IonCardTitle,
@@ -41,14 +37,9 @@ import type {
   styleUrls: ['./registros-pendientes.page.scss'],
   standalone: true,
   imports: [
-    IonHeader,
-    IonToolbar,
-    IonTitle,
     IonContent,
     IonRefresher,
     IonRefresherContent,
-    IonBackButton,
-    IonButtons,
     IonCard,
     IonCardHeader,
     IonCardTitle,
@@ -63,6 +54,7 @@ export class RegistrosPendientesPage implements OnInit, OnDestroy {
   private readonly api = inject(RegistrationRequestsApiService);
   private readonly toast = inject(ToastService);
   private readonly logoutPrompt = inject(LogoutPromptService);
+  private readonly location = inject(Location);
   private readonly destroy$ = new Subject<void>();
 
   readonly list = signal<RegistrationRequestItem[]>([]);
@@ -84,6 +76,10 @@ export class RegistrosPendientesPage implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
+  }
+
+  goBack(): void {
+    this.location.back();
   }
 
   async confirmLogout(): Promise<void> {
