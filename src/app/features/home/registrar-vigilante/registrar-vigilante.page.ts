@@ -11,16 +11,12 @@ import {
   AbstractControl,
   ValidationErrors,
 } from '@angular/forms';
+import { Location } from '@angular/common';
 import {
-  IonHeader,
-  IonToolbar,
-  IonTitle,
   IonContent,
   IonInput,
   IonButton,
   IonSpinner,
-  IonBackButton,
-  IonButtons,
   IonIcon,
 } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
@@ -39,15 +35,10 @@ import { LogoutPromptService } from '../../../core/data/services/logout-prompt.s
   standalone: true,
   imports: [
     ReactiveFormsModule,
-    IonHeader,
-    IonToolbar,
-    IonTitle,
     IonContent,
     IonInput,
     IonButton,
     IonSpinner,
-    IonBackButton,
-    IonButtons,
     IonIcon,
   ],
 })
@@ -57,6 +48,7 @@ export class RegistrarVigilantePage implements OnDestroy {
   private readonly usersApi = inject(UsersApiService);
   private readonly toast = inject(ToastService);
   private readonly logoutPrompt = inject(LogoutPromptService);
+  private readonly location = inject(Location);
   private readonly destroy$ = new Subject<void>();
 
   readonly loadingSubmit = signal(false);
@@ -96,6 +88,10 @@ export class RegistrarVigilantePage implements OnDestroy {
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
+  }
+
+  goBack(): void {
+    this.location.back();
   }
 
   async confirmLogout(): Promise<void> {

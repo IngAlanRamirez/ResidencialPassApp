@@ -5,15 +5,11 @@ import {
   OnInit,
   OnDestroy,
 } from '@angular/core';
+import { Location } from '@angular/common';
 import {
-  IonHeader,
-  IonToolbar,
-  IonTitle,
   IonContent,
   IonRefresher,
   IonRefresherContent,
-  IonBackButton,
-  IonButtons,
   IonCard,
   IonCardHeader,
   IonCardTitle,
@@ -35,14 +31,9 @@ import type { VigilanteListItem } from '../../../core/domain/models/user.model';
   styleUrls: ['./vigilantes.page.scss'],
   standalone: true,
   imports: [
-    IonHeader,
-    IonToolbar,
-    IonTitle,
     IonContent,
     IonRefresher,
     IonRefresherContent,
-    IonBackButton,
-    IonButtons,
     IonCard,
     IonCardHeader,
     IonCardTitle,
@@ -56,6 +47,7 @@ export class VigilantesPage implements OnInit, OnDestroy {
   private readonly alertCtrl = inject(AlertController);
   private readonly logoutPrompt = inject(LogoutPromptService);
   private readonly toast = inject(ToastService);
+  private readonly location = inject(Location);
   private readonly destroy$ = new Subject<void>();
 
   readonly list = signal<VigilanteListItem[]>([]);
@@ -103,6 +95,10 @@ export class VigilantesPage implements OnInit, OnDestroy {
           ev.detail.target.complete();
         },
       });
+  }
+
+  goBack(): void {
+    this.location.back();
   }
 
   async confirmLogout(): Promise<void> {
