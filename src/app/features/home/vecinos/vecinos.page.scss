@@ -1,3 +1,65 @@
+.vecinos-header {
+  position: relative;
+  z-index: 10;
+  background: var(--rp-stone-950);
+  padding: calc(16px + var(--ion-safe-area-top, 0px)) var(--rp-page-padding) 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.vecinos-header__back {
+  width: 48px;
+  height: 48px;
+  background: rgba(255, 255, 255, 0.1);
+  border: none;
+  border-radius: 10px;
+  color: white;
+  font-size: 18px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.vecinos-header__title {
+  font-family: var(--rp-font);
+  font-size: 18px;
+  font-weight: 800;
+  color: white;
+  margin: 0;
+  flex: 1;
+  min-width: 0;
+}
+
+.vecinos-header__logout {
+  flex-shrink: 0;
+  padding: 8px 12px;
+  border: none;
+  border-radius: var(--rp-radius-md);
+  background: rgba(255, 255, 255, 0.1);
+  font-family: var(--rp-font);
+  font-size: 13px;
+  font-weight: 600;
+  color: white;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+@media (prefers-color-scheme: dark) {
+  .vecinos-header__back,
+  .vecinos-header__title,
+  .vecinos-header__logout {
+    color: #1c1917;
+  }
+
+  .vecinos-header__back,
+  .vecinos-header__logout {
+    background: rgba(0, 0, 0, 0.08);
+  }
+}
+
 .vecinos__container {
   max-width: 32rem;
   margin-inline: auto;

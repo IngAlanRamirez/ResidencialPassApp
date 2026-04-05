@@ -1,14 +1,8 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-buttons slot="start">
-      <ion-back-button defaultHref="/home"></ion-back-button>
-    </ion-buttons>
-    <ion-title>Vecinos</ion-title>
-    <ion-buttons slot="end">
-      <ion-button fill="clear" (click)="confirmLogout()">Salir</ion-button>
-    </ion-buttons>
-  </ion-toolbar>
-</ion-header>
+<div class="vecinos-header">
+  <button class="vecinos-header__back" type="button" aria-label="Volver" (click)="goBack()">←</button>
+  <h1 class="vecinos-header__title">Vecinos</h1>
+  <button class="vecinos-header__logout" type="button" (click)="confirmLogout()">Salir</button>
+</div>
 
 <ion-content class="vecinos">
   <ion-refresher slot="fixed" (ionRefresh)="handleRefresh($event)">
