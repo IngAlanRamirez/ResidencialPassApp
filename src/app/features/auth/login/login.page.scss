@@ -1,4 +1,6 @@
 .login-header {
+  position: relative;
+  z-index: 10;
   background: var(--rp-stone-950);
   padding: 16px var(--rp-page-padding) 24px;
   display: flex;
@@ -75,4 +77,15 @@
   cursor: pointer;
   align-self: center;
   padding: 4px 0;
+}
+
+@media (prefers-color-scheme: dark) {
+  .login-header__back,
+  .login-header__title {
+    color: #1c1917;
+  }
+
+  .login-header__back {
+    background: rgba(0, 0, 0, 0.08);
+  }
 }

@@ -1,4 +1,6 @@
 .register-header {
+  position: relative;
+  z-index: 10;
   background: var(--rp-stone-950);
   padding-top: calc(16px + var(--ion-safe-area-top, 0px));
   padding-bottom: 16px;
@@ -179,4 +181,15 @@
   font-family: var(--rp-font);
   font-size: 14px;
   color: var(--rp-stone-500);
+}
+
+@media (prefers-color-scheme: dark) {
+  .register-header__back,
+  .register-header__title {
+    color: #1c1917;
+  }
+
+  .register-header__back {
+    background: rgba(0, 0, 0, 0.08);
+  }
 }

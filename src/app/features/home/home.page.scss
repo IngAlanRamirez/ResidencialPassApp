@@ -267,3 +267,15 @@ rp-card.home-card--soon {
   cursor: pointer;
   -webkit-tap-highlight-color: transparent;
 }
+
+@media (prefers-color-scheme: dark) {
+  .home-header__logout,
+  .home-header__name,
+  .home-header__stat-value {
+    color: #1c1917;
+  }
+
+  .home-header__logout {
+    background: rgba(0, 0, 0, 0.08);
+  }
+}

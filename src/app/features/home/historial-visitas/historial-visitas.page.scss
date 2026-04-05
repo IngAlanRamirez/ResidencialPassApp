@@ -1,4 +1,6 @@
 .hist-header {
+  position: relative;
+  z-index: 10;
   background: var(--rp-stone-950);
   padding: calc(16px + var(--ion-safe-area-top, 0px)) var(--rp-page-padding) 16px;
   display: flex;
@@ -46,6 +48,8 @@
 }
 
 .hist-filter {
+  position: relative;
+  z-index: 10;
   display: flex;
   gap: 0;
   background: var(--rp-stone-950);
@@ -283,4 +287,17 @@
   font-weight: 600;
   text-decoration: underline;
   text-underline-offset: 2px;
+}
+
+@media (prefers-color-scheme: dark) {
+  .hist-header__back,
+  .hist-header__title,
+  .hist-header__logout {
+    color: #1c1917;
+  }
+
+  .hist-header__back,
+  .hist-header__logout {
+    background: rgba(0, 0, 0, 0.08);
+  }
 }
