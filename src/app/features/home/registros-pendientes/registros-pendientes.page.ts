@@ -7,6 +7,10 @@ import {
 } from '@angular/core';
 import { Location } from '@angular/common';
 import {
+  IonHeader,
+  IonToolbar,
+  IonTitle,
+  IonButtons,
   IonContent,
   IonRefresher,
   IonRefresherContent,
@@ -37,6 +41,10 @@ import type {
   styleUrls: ['./registros-pendientes.page.scss'],
   standalone: true,
   imports: [
+    IonHeader,
+    IonToolbar,
+    IonTitle,
+    IonButtons,
     IonContent,
     IonRefresher,
     IonRefresherContent,
