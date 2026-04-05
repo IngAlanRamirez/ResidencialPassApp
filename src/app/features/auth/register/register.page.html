@@ -78,13 +78,15 @@
             type="tel"
             placeholder="+52 55 1234 5678"
             formControlName="phone"
+            [errorMessage]="registerForm.get('phone')?.invalid && registerForm.get('phone')?.touched ? 'Ingresá un número válido (+52 10 dígitos)' : ''"
           />
 
           <rp-input
             label="Contraseña"
             type="password"
-            placeholder="Mínimo 6 caracteres"
+            placeholder="Mínimo 8 caracteres"
             formControlName="password"
+            [errorMessage]="registerForm.get('password')?.invalid && registerForm.get('password')?.touched ? 'Mínimo 8 caracteres' : ''"
           />
 
           <rp-input
@@ -92,6 +94,7 @@
             type="password"
             placeholder="Repetí tu contraseña"
             formControlName="confirmPassword"
+            [errorMessage]="registerForm.get('confirmPassword')?.touched && registerForm.get('password')?.value !== registerForm.get('confirmPassword')?.value ? 'Las contraseñas no coinciden' : ''"
           />
 
           <rp-button type="button" [disabled]="!step2Valid()" (click)="nextStep()">

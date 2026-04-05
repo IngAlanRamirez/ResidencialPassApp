@@ -75,9 +75,25 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
+    // Fondos y superficies
     --rp-bg: #111110;
     --rp-surface: #1c1917;
 
+    // Stone scale invertida para dark mode
+    --rp-stone-950: #f5f5f4;   // texto principal → claro
+    --rp-stone-700: #d6d3d1;   // texto secundario → claro
+    --rp-stone-500: #a8a29e;   // texto muted → queda igual
+    --rp-stone-300: #57534e;   // placeholder → oscuro (legible sobre surface dark)
+    --rp-stone-100: #44403c;   // bordes → visible sobre surface dark
+
+    // Semánticos adaptados a dark
+    --rp-primary-tint: rgba(234, 88, 12, 0.15);
+    --rp-danger-bg: rgba(220, 38, 38, 0.12);
+    --rp-danger-border: rgba(220, 38, 38, 0.35);
+    --rp-success-bg: rgba(22, 163, 74, 0.12);
+    --rp-success-border: rgba(22, 163, 74, 0.35);
+
+    // Ionic
     --ion-background-color: var(--rp-bg);
     --ion-text-color: #f5f5f4;
     --ion-card-background: var(--rp-surface);

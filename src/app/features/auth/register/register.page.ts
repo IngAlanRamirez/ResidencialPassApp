@@ -62,7 +62,7 @@ export class RegisterPage implements OnInit, OnDestroy {
     number: ['', [Validators.required, Validators.maxLength(20)]],
     letter: [''],
     phone: ['', [Validators.required, Validators.pattern(/^\+?[0-9\s-]{10,}$/)]],
-    password: ['', [Validators.required, Validators.minLength(6)]],
+    password: ['', [Validators.required, Validators.minLength(8)]],
     confirmPassword: ['', Validators.required],
   });
 
@@ -73,10 +73,13 @@ export class RegisterPage implements OnInit, OnDestroy {
 
   readonly step2Valid = computed(() => {
     const f = this.registerForm;
+    const passwordsMatch =
+      f.get('password')?.value === f.get('confirmPassword')?.value;
     return !!(
       f.get('phone')?.valid &&
       f.get('password')?.valid &&
-      f.get('confirmPassword')?.valid
+      f.get('confirmPassword')?.valid &&
+      passwordsMatch
     );
   });
 
