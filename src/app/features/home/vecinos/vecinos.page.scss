@@ -60,6 +60,42 @@
   }
 }
 
+.vecinos-filter {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  gap: 0;
+  background: var(--rp-stone-950);
+  padding: 0 var(--rp-page-padding) 16px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.vecinos-filter__btn {
+  flex: 1;
+  min-height: 48px;
+  border: none;
+  background: rgba(255, 255, 255, 0.08);
+  font-family: var(--rp-font);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--rp-stone-300);
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease;
+
+  &:first-child {
+    border-radius: var(--rp-radius-full) 0 0 var(--rp-radius-full);
+  }
+
+  &:last-child {
+    border-radius: 0 var(--rp-radius-full) var(--rp-radius-full) 0;
+  }
+
+  &--active {
+    background: var(--rp-primary);
+    color: white;
+  }
+}
+
 .vecinos__container {
   max-width: 32rem;
   margin-inline: auto;
@@ -83,14 +119,6 @@
   }
 }
 
-.vecinos__filters {
-  margin-bottom: 1rem;
-
-  ion-segment {
-    --background: var(--ion-color-step-100);
-    border-radius: 8px;
-  }
-}
 
 .vecinos__no-results {
   text-align: center;

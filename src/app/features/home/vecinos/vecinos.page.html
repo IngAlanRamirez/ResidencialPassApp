@@ -4,6 +4,27 @@
   <button class="vecinos-header__logout" type="button" (click)="confirmLogout()">Salir</button>
 </div>
 
+<div class="vecinos-filter">
+  <button
+    class="vecinos-filter__btn"
+    [class.vecinos-filter__btn--active]="statusFilter() === 'all'"
+    type="button"
+    (click)="setStatusFilter('all')"
+  >Todos</button>
+  <button
+    class="vecinos-filter__btn"
+    [class.vecinos-filter__btn--active]="statusFilter() === 'active'"
+    type="button"
+    (click)="setStatusFilter('active')"
+  >Activos</button>
+  <button
+    class="vecinos-filter__btn"
+    [class.vecinos-filter__btn--active]="statusFilter() === 'inactive'"
+    type="button"
+    (click)="setStatusFilter('inactive')"
+  >Suspendidos</button>
+</div>
+
 <ion-content class="vecinos">
   <ion-refresher slot="fixed" (ionRefresh)="handleRefresh($event)">
     <ion-refresher-content></ion-refresher-content>
@@ -28,20 +49,7 @@
           debounce="200"
         ></ion-searchbar>
       </div>
-      <div class="vecinos__filters">
-        <ion-segment [value]="statusFilter()" (ionChange)="onStatusFilterChange($event)">
-          <ion-segment-button value="all">
-            <ion-label>Todos</ion-label>
-          </ion-segment-button>
-          <ion-segment-button value="active">
-            <ion-label>Activos</ion-label>
-          </ion-segment-button>
-          <ion-segment-button value="inactive">
-            <ion-label>Suspendidos</ion-label>
-          </ion-segment-button>
-        </ion-segment>
-      </div>
-      <div class="vecinos__list animate-stagger">
+<div class="vecinos__list animate-stagger">
         @if (filteredList().length === 0) {
           <p class="vecinos__no-results">No se encontraron vecinos con ese criterio.</p>
         } @else {

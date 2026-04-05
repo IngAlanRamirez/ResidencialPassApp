@@ -20,9 +20,6 @@ import {
   IonBadge,
   AlertController,
   IonSearchbar,
-  IonSegment,
-  IonSegmentButton,
-  IonLabel,
 } from '@ionic/angular/standalone';
 import { Subject, takeUntil } from 'rxjs';
 
@@ -48,9 +45,6 @@ import type { VecinoListItem } from '../../../core/domain/models/user.model';
     IonSpinner,
     IonBadge,
     IonSearchbar,
-    IonSegment,
-    IonSegmentButton,
-    IonLabel,
   ],
 })
 export class VecinosPage implements OnInit, OnDestroy {
@@ -227,10 +221,8 @@ export class VecinosPage implements OnInit, OnDestroy {
     this.searchQuery.set(e.detail?.value ?? '');
   }
 
-  onStatusFilterChange(ev: Event): void {
-    const e = ev as CustomEvent<{ value?: string }>;
-    const v = e.detail?.value ?? 'all';
-    this.statusFilter.set((v === 'active' || v === 'inactive' ? v : 'all') as 'all' | 'active' | 'inactive');
+  setStatusFilter(v: 'all' | 'active' | 'inactive'): void {
+    this.statusFilter.set(v);
   }
 
   reactivateVecino(id: string): void {
