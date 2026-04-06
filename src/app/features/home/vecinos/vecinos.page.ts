@@ -11,15 +11,7 @@ import {
   IonContent,
   IonRefresher,
   IonRefresherContent,
-  IonCard,
-  IonCardHeader,
-  IonCardTitle,
-  IonCardContent,
-  IonButton,
   IonSpinner,
-  IonBadge,
-  AlertController,
-  IonSearchbar,
 } from '@ionic/angular/standalone';
 import { Subject, takeUntil } from 'rxjs';
 
@@ -37,19 +29,11 @@ import type { VecinoListItem } from '../../../core/domain/models/user.model';
     IonContent,
     IonRefresher,
     IonRefresherContent,
-    IonCard,
-    IonCardHeader,
-    IonCardTitle,
-    IonCardContent,
-    IonButton,
     IonSpinner,
-    IonBadge,
-    IonSearchbar,
   ],
 })
 export class VecinosPage implements OnInit, OnDestroy {
   private readonly api = inject(UsersApiService);
-  private readonly alertCtrl = inject(AlertController);
   private readonly toast = inject(ToastService);
   private readonly logoutPrompt = inject(LogoutPromptService);
   private readonly location = inject(Location);
@@ -60,6 +44,15 @@ export class VecinosPage implements OnInit, OnDestroy {
   readonly statusFilter = signal<'all' | 'active' | 'inactive'>('all');
   readonly loading = signal(true);
   readonly processingId = signal<string | null>(null);
+  readonly dialogState = signal<{ item: VecinoListItem; type: 'suspend' | 'reactivate' } | null>(null);
+
+  readonly countAll = computed(() => this.list().length);
+  readonly countActive = computed(() =>
+    this.list().filter(i => (i.status ?? '').toLowerCase() === 'active').length
+  );
+  readonly countInactive = computed(() =>
+    this.list().filter(i => (i.status ?? '').toLowerCase() === 'inactive').length
+  );
 
   readonly filteredList = computed(() => {
     let items = this.list();
@@ -68,17 +61,15 @@ export class VecinosPage implements OnInit, OnDestroy {
 
     if (q) {
       items = items.filter((item) => {
-        const address = this.formatAddress(item);
-        const role = item.role ?? '';
-    const searchable = `${item.phone} ${address} ${item.street} ${item.number} ${item.letter ?? ''} ${this.statusLabel(item.status)} ${role}`.toLowerCase();
+        const searchable = `${item.phone} ${item.street} ${item.number} ${item.letter ?? ''} ${this.statusLabel(item.status)} ${item.role ?? ''}`.toLowerCase();
         return searchable.includes(q);
       });
     }
 
     if (status === 'active') {
-      items = items.filter((item) => (item.status ?? '').toLowerCase() === 'active');
+      items = items.filter(i => (i.status ?? '').toLowerCase() === 'active');
     } else if (status === 'inactive') {
-      items = items.filter((item) => (item.status ?? '').toLowerCase() === 'inactive');
+      items = items.filter(i => (i.status ?? '').toLowerCase() === 'inactive');
     }
 
     return items;
@@ -148,52 +139,55 @@ export class VecinosPage implements OnInit, OnDestroy {
   }
 
   formatAddress(item: VecinoListItem): string {
-    if (item.role === 'admin' && item.street === '-' && item.number === '-') {
-      return 'Administrador';
-    }
+    if (!item.street || item.street === '-') return '—';
     const base = `${item.street} ${item.number}`.trim();
     return item.letter?.trim() ? `${base} ${item.letter.trim()}` : base;
   }
 
+  avatarInitials(item: VecinoListItem): string {
+    const words = `${item.street} ${item.number}`
+      .split(/\s+/)
+      .filter(w => w.replace(/[^a-zA-ZÀ-ÿ]/g, '').length >= 3);
+    if (words.length === 0) return '?';
+    if (words.length === 1) return words[0].slice(0, 2).toUpperCase();
+    return (words[0][0] + words[1][0]).toUpperCase();
+  }
+
   formatDate(iso: string): string {
     if (!iso) return '';
-    const d = new Date(iso);
-    return d.toLocaleDateString('es-MX', {
+    return new Date(iso).toLocaleDateString('es-MX', {
       day: '2-digit',
       month: 'short',
       year: 'numeric',
     });
   }
 
-  async confirmSuspend(item: VecinoListItem): Promise<void> {
-    const alert = await this.alertCtrl.create({
-      header: 'Suspender cuenta',
-      message: `¿Suspender la cuenta de ${item.phone} (${this.formatAddress(item)})? El vecino no podrá iniciar sesión hasta que se reactive.`,
-      buttons: [
-        { text: 'Cancelar', role: 'cancel' },
-        {
-          text: 'Suspender',
-          role: 'destructive',
-          handler: () => this.suspendVecino(item.id),
-        },
-      ],
-    });
-    await alert.present();
+  setStatusFilter(v: 'all' | 'active' | 'inactive'): void {
+    this.statusFilter.set(v);
   }
 
-  async confirmReactivate(item: VecinoListItem): Promise<void> {
-    const alert = await this.alertCtrl.create({
-      header: 'Reactivar cuenta',
-      message: `¿Reactivar la cuenta de ${item.phone} (${this.formatAddress(item)})? El vecino podrá volver a iniciar sesión.`,
-      buttons: [
-        { text: 'Cancelar', role: 'cancel' },
-        {
-          text: 'Reactivar',
-          handler: () => this.reactivateVecino(item.id),
-        },
-      ],
-    });
-    await alert.present();
+  onSearchInput(ev: Event): void {
+    this.searchQuery.set((ev.target as HTMLInputElement).value);
+  }
+
+  openDialog(item: VecinoListItem): void {
+    const type = this.isActive(item) ? 'suspend' : 'reactivate';
+    this.dialogState.set({ item, type });
+  }
+
+  closeDialog(): void {
+    this.dialogState.set(null);
+  }
+
+  confirmAction(): void {
+    const state = this.dialogState();
+    if (!state) return;
+    this.closeDialog();
+    if (state.type === 'suspend') {
+      this.suspendVecino(state.item.id);
+    } else {
+      this.reactivateVecino(state.item.id);
+    }
   }
 
   suspendVecino(id: string): void {
@@ -203,9 +197,7 @@ export class VecinosPage implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {
-          this.list.update((arr) =>
-            arr.map((v) => (v.id === id ? { ...v, status: 'inactive' } : v))
-          );
+          this.list.update(arr => arr.map(v => v.id === id ? { ...v, status: 'inactive' } : v));
           this.toast.success('Cuenta suspendida correctamente.');
           this.processingId.set(null);
         },
@@ -216,15 +208,6 @@ export class VecinosPage implements OnInit, OnDestroy {
       });
   }
 
-  onSearchInput(ev: Event): void {
-    const e = ev as CustomEvent<{ value?: string }>;
-    this.searchQuery.set(e.detail?.value ?? '');
-  }
-
-  setStatusFilter(v: 'all' | 'active' | 'inactive'): void {
-    this.statusFilter.set(v);
-  }
-
   reactivateVecino(id: string): void {
     this.processingId.set(id);
     this.api
@@ -232,9 +215,7 @@ export class VecinosPage implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {
-          this.list.update((arr) =>
-            arr.map((v) => (v.id === id ? { ...v, status: 'active' } : v))
-          );
+          this.list.update(arr => arr.map(v => v.id === id ? { ...v, status: 'active' } : v));
           this.toast.success('Cuenta reactivada correctamente.');
           this.processingId.set(null);
         },

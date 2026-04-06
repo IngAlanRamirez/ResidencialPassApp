@@ -1,3 +1,5 @@
+// ─── Header ────────────────────────────────────────────────────────────────
+
 .vecinos-header {
   position: relative;
   z-index: 10;
@@ -47,32 +49,19 @@
   -webkit-tap-highlight-color: transparent;
 }
 
-@media (prefers-color-scheme: dark) {
-  .vecinos-header__back,
-  .vecinos-header__title,
-  .vecinos-header__logout {
-    color: #1c1917;
-  }
-
-  .vecinos-header__back,
-  .vecinos-header__logout {
-    background: rgba(0, 0, 0, 0.08);
-  }
-}
+// ─── Filter tabs ───────────────────────────────────────────────────────────
 
 .vecinos-filter {
   position: relative;
   z-index: 10;
   display: flex;
-  gap: 0;
   background: var(--rp-stone-950);
-  padding: 0 var(--rp-page-padding) 16px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 0 var(--rp-page-padding) 14px;
 }
 
 .vecinos-filter__btn {
   flex: 1;
-  min-height: 48px;
+  min-height: 40px;
   border: none;
   background: rgba(255, 255, 255, 0.08);
   font-family: var(--rp-font);
@@ -80,7 +69,12 @@
   font-weight: 600;
   color: var(--rp-stone-300);
   cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
   transition: background 0.15s ease, color 0.15s ease;
+  -webkit-tap-highlight-color: transparent;
 
   &:first-child {
     border-radius: var(--rp-radius-full) 0 0 var(--rp-radius-full);
@@ -93,39 +87,107 @@
   &--active {
     background: var(--rp-primary);
     color: white;
+
+    .vecinos-filter__count {
+      background: rgba(255, 255, 255, 0.25);
+    }
   }
 }
+
+.vecinos-filter__count {
+  font-size: 10px;
+  font-weight: 700;
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 99px;
+  padding: 1px 6px;
+}
+
+// ─── Search bar ────────────────────────────────────────────────────────────
+
+.vecinos-search {
+  position: relative;
+  z-index: 10;
+  background: var(--rp-stone-950);
+  padding: 0 var(--rp-page-padding) 14px;
+}
+
+.vecinos-search__wrap {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: var(--rp-radius-full);
+  padding: 0 16px;
+  height: 44px;
+}
+
+.vecinos-search__icon {
+  font-size: 15px;
+  flex-shrink: 0;
+}
+
+.vecinos-search__input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  font-family: var(--rp-font);
+  font-size: 14px;
+  color: white;
+
+  &::placeholder {
+    color: var(--rp-stone-500);
+  }
+
+  // remove native search clear button
+  &::-webkit-search-cancel-button {
+    display: none;
+  }
+}
+
+// ─── Dark mode overrides ───────────────────────────────────────────────────
+
+@media (prefers-color-scheme: dark) {
+  .vecinos-header__back,
+  .vecinos-header__title,
+  .vecinos-header__logout {
+    color: #1c1917;
+  }
+
+  .vecinos-header__back,
+  .vecinos-header__logout {
+    background: rgba(0, 0, 0, 0.08);
+  }
+
+  .vecinos-search__wrap {
+    background: rgba(0, 0, 0, 0.08);
+  }
+
+  .vecinos-search__input {
+    color: #1c1917;
+
+    &::placeholder {
+      color: #78716c;
+    }
+  }
+
+  .vecinos-search__icon {
+    filter: grayscale(1);
+  }
+}
+
+// ─── Content container ─────────────────────────────────────────────────────
 
 .vecinos__container {
-  max-width: 32rem;
+  // max-width: 32rem;
   margin-inline: auto;
-  padding: 1rem;
+  padding: 16px var(--rp-page-padding) 120px;
 }
 
-.vecinos__hint {
-  font-size: 0.875rem;
-  color: var(--ion-color-medium);
-  margin: 0 0 1rem;
-  padding-inline: 0.25rem;
-}
-
-.vecinos__search {
-  margin-bottom: 0.75rem;
-
-  ion-searchbar {
-    --background: var(--ion-color-step-100);
-    --border-radius: 8px;
-    padding: 0;
-  }
-}
-
-
-.vecinos__no-results {
-  text-align: center;
-  color: var(--ion-color-medium);
-  padding: 2rem 1rem;
-  margin: 0;
-  font-size: 0.9375rem;
+.vecinos__list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
 .vecinos__loading,
@@ -145,30 +207,281 @@
   }
 }
 
-.vecinos__list {
+.vecinos__no-results {
+  text-align: center;
+  color: var(--ion-color-medium);
+  padding: 2rem 1rem;
+  margin: 0;
+  font-size: 0.9375rem;
+}
+
+// ─── Vecino card ───────────────────────────────────────────────────────────
+
+.vecino {
+  background: var(--rp-surface);
+  border-radius: var(--rp-radius-lg);
+  box-shadow: var(--rp-shadow-card);
+  border-left: 4px solid transparent;
+  overflow: hidden;
+
+  &--active  { border-left-color: var(--rp-success); }
+  &--inactive { border-left-color: var(--rp-stone-300); }
+  &--admin   { border-left-color: var(--rp-primary); }
+}
+
+.vecino__main {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 14px 14px 12px;
+}
+
+// Avatar
+
+.vecino__avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: 800;
+  flex-shrink: 0;
+}
+
+.vecino--active .vecino__avatar {
+  background: var(--rp-success-bg);
+  color: var(--rp-success);
+}
+
+.vecino--inactive .vecino__avatar {
+  background: var(--rp-stone-100);
+  color: var(--rp-stone-500);
+}
+
+.vecino--admin .vecino__avatar {
+  background: var(--rp-primary-tint);
+  color: var(--rp-primary);
+}
+
+// Info
+
+.vecino__info {
+  flex: 1;
+  min-width: 0;
+}
+
+.vecino__address {
+  font-size: 15px;
+  font-weight: 800;
+  color: var(--rp-stone-950);
+  margin: 0 0 3px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.vecino--inactive .vecino__address {
+  color: var(--rp-stone-500);
+}
+
+.vecino__phone {
+  font-size: 12px;
+  color: var(--rp-stone-500);
+  margin: 0 0 2px;
+}
+
+.vecino__admin-tag {
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--rp-primary);
+  margin-top: 2px;
+}
+
+// Toggle
+
+.vecino__right {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  align-items: flex-end;
+  flex-shrink: 0;
 }
 
-.vecinos__card {
-  margin: 0;
+.vecino__toggle-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
 }
 
-.vecinos__role-badge {
-  margin-left: 0.5rem;
-  vertical-align: middle;
+.vecino__toggle-lbl {
+  font-size: 10px;
+  font-weight: 700;
+
+  &--active   { color: var(--rp-success); }
+  &--inactive { color: var(--rp-stone-300); }
 }
 
-.vecinos__meta {
-  margin: 0 0 0.5rem;
-  font-size: 0.9375rem;
+.vecino__toggle {
+  position: relative;
+  width: 44px;
+  height: 26px;
+  border-radius: 99px;
+  border: none;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: background 0.2s;
+  -webkit-tap-highlight-color: transparent;
 
-  &:last-of-type {
-    margin-bottom: 1rem;
+  &::after {
+    content: '';
+    position: absolute;
+    top: 4px;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: white;
+    transition: left 0.2s;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
+  }
+
+  &--on  {
+    background: var(--rp-success);
+    &::after { left: 22px; }
+  }
+
+  &--off {
+    background: var(--rp-stone-300);
+    &::after { left: 4px; }
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
   }
 }
 
-.vecinos__actions {
-  margin-top: 0.5rem;
+.vecino__spinner {
+  width: 24px;
+  height: 24px;
+}
+
+// ─── Confirmation dialog ────────────────────────────────────────────────────
+
+.vecinos-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+  display: flex;
+  align-items: flex-end;
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+}
+
+.vecinos-dialog {
+  background: var(--rp-surface);
+  border-radius: 20px 20px 0 0;
+  width: 100%;
+  padding: 8px 0 calc(32px + var(--ion-safe-area-bottom, 0px));
+}
+
+.vecinos-dialog__handle {
+  width: 36px;
+  height: 4px;
+  background: var(--rp-stone-100);
+  border-radius: 99px;
+  margin: 0 auto 20px;
+}
+
+.vecinos-dialog__icon {
+  width: 56px;
+  height: 56px;
+  border-radius: 16px;
+  margin: 0 auto 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 26px;
+
+  &--suspend    { background: var(--rp-danger-bg); }
+  &--reactivate { background: var(--rp-success-bg); }
+}
+
+.vecinos-dialog__title {
+  font-family: var(--rp-font);
+  font-size: 17px;
+  font-weight: 800;
+  color: var(--rp-stone-950);
+  text-align: center;
+  margin: 0 0 6px;
+  padding: 0 24px;
+}
+
+.vecinos-dialog__desc {
+  font-size: 13px;
+  color: var(--rp-stone-500);
+  text-align: center;
+  margin: 0 0 20px;
+  padding: 0 28px;
+  line-height: 1.5;
+}
+
+.vecinos-dialog__tag {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--rp-stone-100);
+  border-radius: var(--rp-radius-md);
+  padding: 10px 16px;
+  margin: 0 20px 20px;
+}
+
+.vecinos-dialog__tag-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  font-size: 10px;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+
+  &--active   { background: var(--rp-success-bg); color: var(--rp-success); }
+  &--inactive { background: var(--rp-stone-100); color: var(--rp-stone-500); }
+}
+
+.vecinos-dialog__tag-text {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--rp-stone-950);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.vecinos-dialog__actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 0 20px;
+}
+
+.vecinos-dialog__btn {
+  width: 100%;
+  padding: 14px;
+  border-radius: var(--rp-radius-md);
+  border: none;
+  font-family: var(--rp-font);
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+
+  &--danger  { background: var(--rp-danger); color: white; }
+  &--success { background: var(--rp-success); color: white; }
+  &--ghost   { background: var(--rp-stone-100); color: var(--rp-stone-700); }
 }

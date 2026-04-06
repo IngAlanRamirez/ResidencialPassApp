@@ -10,25 +10,39 @@
     [class.vecinos-filter__btn--active]="statusFilter() === 'all'"
     type="button"
     (click)="setStatusFilter('all')"
-  >Todos</button>
+  >Todos <span class="vecinos-filter__count">{{ countAll() }}</span></button>
   <button
     class="vecinos-filter__btn"
     [class.vecinos-filter__btn--active]="statusFilter() === 'active'"
     type="button"
     (click)="setStatusFilter('active')"
-  >Activos</button>
+  >Activos <span class="vecinos-filter__count">{{ countActive() }}</span></button>
   <button
     class="vecinos-filter__btn"
     [class.vecinos-filter__btn--active]="statusFilter() === 'inactive'"
     type="button"
     (click)="setStatusFilter('inactive')"
-  >Suspendidos</button>
+  >Suspendidos <span class="vecinos-filter__count">{{ countInactive() }}</span></button>
+</div>
+
+<div class="vecinos-search">
+  <div class="vecinos-search__wrap">
+    <span class="vecinos-search__icon">🔍</span>
+    <input
+      class="vecinos-search__input"
+      type="search"
+      placeholder="Buscar por teléfono, calle..."
+      [value]="searchQuery()"
+      (input)="onSearchInput($event)"
+    />
+  </div>
 </div>
 
 <ion-content class="vecinos">
   <ion-refresher slot="fixed" (ionRefresh)="handleRefresh($event)">
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
+
   <div class="vecinos__container">
     @if (loading()) {
       <div class="vecinos__loading">
@@ -40,73 +54,94 @@
         <p>No hay vecinos registrados.</p>
       </div>
     } @else {
-      <p class="vecinos__hint">Suspende cuentas por falta de pago. El vecino no podrá iniciar sesión hasta reactivar.</p>
-      <div class="vecinos__search">
-        <ion-searchbar
-          placeholder="Buscar por teléfono, calle o número..."
-          [value]="searchQuery()"
-          (ionInput)="onSearchInput($event)"
-          debounce="200"
-        ></ion-searchbar>
-      </div>
-<div class="vecinos__list animate-stagger">
+      <div class="vecinos__list">
         @if (filteredList().length === 0) {
           <p class="vecinos__no-results">No se encontraron vecinos con ese criterio.</p>
         } @else {
-        @for (item of filteredList(); track item.id) {
-          <ion-card class="vecinos__card">
-            <ion-card-header>
-              <ion-card-title>
-                {{ formatAddress(item) }}
-                @if (item.role === 'admin') {
-                  <ion-badge color="primary" class="vecinos__role-badge">Admin</ion-badge>
-                }
-              </ion-card-title>
-            </ion-card-header>
-            <ion-card-content>
-              <p class="vecinos__meta">
-                <strong>Teléfono:</strong> {{ item.phone }}
-              </p>
-              <p class="vecinos__meta">
-                <strong>Estado:</strong> {{ statusLabel(item.status) }}
-              </p>
-              <p class="vecinos__meta">
-                <strong>Registrado:</strong> {{ formatDate(item.createdAt) }}
-              </p>
-              <div class="vecinos__actions">
-                @if (isActive(item)) {
-                  <ion-button
-                    color="warning"
-                    fill="outline"
-                    [disabled]="processingId() !== null"
-                    (click)="confirmSuspend(item)"
-                  >
-                    @if (processingId() === item.id) {
-                      <ion-spinner name="crescent"></ion-spinner>
-                    } @else {
-                      Suspender cuenta
-                    }
-                  </ion-button>
-                } @else {
-                  <ion-button
-                    color="success"
-                    fill="outline"
-                    [disabled]="processingId() !== null"
-                    (click)="confirmReactivate(item)"
-                  >
-                    @if (processingId() === item.id) {
-                      <ion-spinner name="crescent"></ion-spinner>
-                    } @else {
-                      Reactivar cuenta
-                    }
-                  </ion-button>
-                }
+          @for (item of filteredList(); track item.id) {
+            <div
+              class="vecino"
+              [class.vecino--active]="isActive(item)"
+              [class.vecino--inactive]="!isActive(item)"
+              [class.vecino--admin]="item.role === 'admin'"
+            >
+              <div class="vecino__main">
+                <div class="vecino__avatar">{{ avatarInitials(item) }}</div>
+                <div class="vecino__info">
+                  <p class="vecino__address">{{ formatAddress(item) }}</p>
+                  <p class="vecino__phone">{{ item.phone }}</p>
+                  @if (item.role === 'admin') {
+                    <span class="vecino__admin-tag">👑 Administrador</span>
+                  }
+                </div>
+                <div class="vecino__right">
+                  @if (processingId() === item.id) {
+                    <ion-spinner name="crescent" class="vecino__spinner"></ion-spinner>
+                  } @else {
+                    <div class="vecino__toggle-wrap">
+                      <span
+                        class="vecino__toggle-lbl"
+                        [class.vecino__toggle-lbl--active]="isActive(item)"
+                        [class.vecino__toggle-lbl--inactive]="!isActive(item)"
+                      >{{ isActive(item) ? 'Activo' : 'Suspendido' }}</span>
+                      <button
+                        type="button"
+                        class="vecino__toggle"
+                        [class.vecino__toggle--on]="isActive(item)"
+                        [class.vecino__toggle--off]="!isActive(item)"
+                        [disabled]="processingId() !== null"
+                        (click)="openDialog(item)"
+                        [attr.aria-label]="isActive(item) ? 'Suspender cuenta' : 'Reactivar cuenta'"
+                      ></button>
+                    </div>
+                  }
+                </div>
               </div>
-            </ion-card-content>
-          </ion-card>
-        }
+            </div>
+          }
         }
       </div>
     }
   </div>
 </ion-content>
+
+@if (dialogState()) {
+  <div class="vecinos-overlay" (click)="closeDialog()">
+    <div class="vecinos-dialog" (click)="$event.stopPropagation()">
+      <div class="vecinos-dialog__handle"></div>
+      <div
+        class="vecinos-dialog__icon"
+        [class.vecinos-dialog__icon--suspend]="dialogState()!.type === 'suspend'"
+        [class.vecinos-dialog__icon--reactivate]="dialogState()!.type === 'reactivate'"
+      >{{ dialogState()!.type === 'suspend' ? '⛔' : '✅' }}</div>
+      <p class="vecinos-dialog__title">
+        {{ dialogState()!.type === 'suspend' ? '¿Suspender cuenta?' : '¿Reactivar cuenta?' }}
+      </p>
+      <p class="vecinos-dialog__desc">
+        {{ dialogState()!.type === 'suspend'
+          ? 'El vecino no podrá iniciar sesión hasta que reactives su cuenta.'
+          : 'El vecino podrá volver a iniciar sesión y usar la aplicación.' }}
+      </p>
+      <div class="vecinos-dialog__tag">
+        <div
+          class="vecinos-dialog__tag-avatar"
+          [class.vecinos-dialog__tag-avatar--active]="isActive(dialogState()!.item)"
+          [class.vecinos-dialog__tag-avatar--inactive]="!isActive(dialogState()!.item)"
+        >{{ avatarInitials(dialogState()!.item) }}</div>
+        <span class="vecinos-dialog__tag-text">
+          {{ dialogState()!.item.phone }} · {{ formatAddress(dialogState()!.item) }}
+        </span>
+      </div>
+      <div class="vecinos-dialog__actions">
+        <button
+          type="button"
+          class="vecinos-dialog__btn"
+          [class.vecinos-dialog__btn--danger]="dialogState()!.type === 'suspend'"
+          [class.vecinos-dialog__btn--success]="dialogState()!.type === 'reactivate'"
+          (click)="confirmAction()"
+        >{{ dialogState()!.type === 'suspend' ? 'Sí, suspender cuenta' : 'Sí, reactivar cuenta' }}</button>
+        <button type="button" class="vecinos-dialog__btn vecinos-dialog__btn--ghost" (click)="closeDialog()">Cancelar</button>
+      </div>
+    </div>
+  </div>
+}
