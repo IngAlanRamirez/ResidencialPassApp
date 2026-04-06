@@ -24,20 +24,27 @@
       } @else if (historyList().length === 0) {
         <p class="registros-pendientes__log-empty">No hay registros aprobados ni rechazados.</p>
       } @else {
-        <ul class="registros-pendientes__log-list">
+        <div class="regp-log-list">
           @for (item of historyList(); track item.id) {
-            <li class="registros-pendientes__log-item">
-              <span class="registros-pendientes__log-address">{{ formatAddress(item) }}</span>
-              <span class="registros-pendientes__log-meta">
-                {{ formatHistoryDate(item.updatedAt) }}
-                · {{ statusLabel(item.status) }}
-                @if (item.validatedBy) {
-                  · Por: {{ item.validatedBy.phone }}
-                }
-              </span>
-            </li>
+            <div
+              class="regp-log-card"
+              [class.regp-log-card--approved]="item.status === 'approved'"
+              [class.regp-log-card--rejected]="item.status === 'rejected'"
+            >
+              <div class="regp-log-card__avatar">{{ avatarInitials(item) }}</div>
+              <div class="regp-log-card__info">
+                <p class="regp-log-card__address">{{ formatAddress(item) }}</p>
+                <p class="regp-log-card__meta">{{ formatHistoryDate(item.updatedAt) }}</p>
+                <p class="regp-log-card__status">
+                  {{ statusLabel(item.status) }}
+                  @if (item.validatedBy) {
+                    · Por: {{ item.validatedBy.phone }}
+                  }
+                </p>
+              </div>
+            </div>
           }
-        </ul>
+        </div>
       }
     </ion-content>
   </ng-template>

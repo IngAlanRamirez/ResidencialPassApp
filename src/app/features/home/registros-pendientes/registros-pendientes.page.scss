@@ -269,10 +269,7 @@
 }
 
 .registros-pendientes__log-content {
-  --padding-top: 1rem;
-  --padding-bottom: 1rem;
-  --padding-start: 1rem;
-  --padding-end: 1rem;
+  --background: var(--rp-bg);
 }
 
 .registros-pendientes__log-loading {
@@ -298,30 +295,75 @@
   margin: 0;
 }
 
-.registros-pendientes__log-list {
-  list-style: none;
-  margin: 0;
-  padding: 0;
+.regp-log-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 16px var(--rp-page-padding) 40px;
 }
 
-.registros-pendientes__log-item {
-  padding: 0.75rem 0;
-  border-bottom: 1px solid var(--ion-color-light-shade);
+.regp-log-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: var(--rp-surface);
+  border-radius: var(--rp-radius-lg);
+  box-shadow: var(--rp-shadow-card);
+  border-left: 4px solid transparent;
+  padding: 12px 14px 12px 12px;
 
-  &:last-child {
-    border-bottom: none;
+  &--approved { border-left-color: var(--rp-success); }
+  &--rejected  { border-left-color: var(--rp-danger); }
+}
+
+.regp-log-card__avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 800;
+  flex-shrink: 0;
+
+  .regp-log-card--approved & {
+    background: var(--rp-success-bg);
+    color: var(--rp-success);
+  }
+
+  .regp-log-card--rejected & {
+    background: var(--rp-danger-bg);
+    color: var(--rp-danger);
   }
 }
 
-.registros-pendientes__log-address {
-  display: block;
-  font-weight: 600;
-  font-size: 0.9375rem;
-  margin-bottom: 0.25rem;
+.regp-log-card__info {
+  flex: 1;
+  min-width: 0;
 }
 
-.registros-pendientes__log-meta {
-  display: block;
-  font-size: 0.8125rem;
-  color: var(--ion-color-medium);
+.regp-log-card__address {
+  font-size: 14px;
+  font-weight: 800;
+  color: var(--rp-stone-950);
+  margin: 0 0 2px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.regp-log-card__meta {
+  font-size: 11px;
+  color: var(--rp-stone-500);
+  margin: 0 0 1px;
+}
+
+.regp-log-card__status {
+  font-size: 11px;
+  font-weight: 600;
+  margin: 0;
+
+  .regp-log-card--approved & { color: var(--rp-success); }
+  .regp-log-card--rejected &  { color: var(--rp-danger); }
 }
