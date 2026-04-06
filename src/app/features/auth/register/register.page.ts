@@ -6,6 +6,7 @@ import {
   computed,
   inject,
 } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { Location } from '@angular/common';
 import {
   ReactiveFormsModule,
@@ -15,6 +16,7 @@ import {
 } from '@angular/forms';
 import { IonContent, IonSpinner } from '@ionic/angular/standalone';
 import { Subject, takeUntil } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 import { Router } from '@angular/router';
 import { StreetsApiService } from '../../../core/data/services/streets-api.service';
@@ -66,12 +68,24 @@ export class RegisterPage implements OnInit, OnDestroy {
     confirmPassword: ['', Validators.required],
   });
 
-  readonly step1Valid = computed(() => {
-    const f = this.registerForm;
-    return !!(f.get('street')?.valid && f.get('number')?.valid);
-  });
+  /** Validez paso 1 vía `toSignal` + `registerForm.events` (misma idea que merge(statusChanges, valueChanges)). */
+  readonly step1Valid = toSignal(
+    this.registerForm.events.pipe(map(() => this.computeStep1Valid())),
+    { initialValue: this.computeStep1Valid() }
+  );
 
-  readonly step2Valid = computed(() => {
+  readonly step2Valid = toSignal(
+    this.registerForm.events.pipe(map(() => this.computeStep2Valid())),
+    { initialValue: this.computeStep2Valid() }
+  );
+
+  private computeStep1Valid(): boolean {
+    const street = this.registerForm.get('street');
+    const numberCtrl = this.registerForm.get('number');
+    return !!(street?.valid && numberCtrl?.valid);
+  }
+
+  private computeStep2Valid(): boolean {
     const f = this.registerForm;
     const passwordsMatch =
       f.get('password')?.value === f.get('confirmPassword')?.value;
@@ -81,7 +95,7 @@ export class RegisterPage implements OnInit, OnDestroy {
       f.get('confirmPassword')?.valid &&
       passwordsMatch
     );
-  });
+  }
 
   ngOnInit(): void {
     this.loadStreets();
