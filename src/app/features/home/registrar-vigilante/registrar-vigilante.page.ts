@@ -12,21 +12,15 @@ import {
   ValidationErrors,
 } from '@angular/forms';
 import { Location } from '@angular/common';
-import {
-  IonContent,
-  IonInput,
-  IonButton,
-  IonSpinner,
-  IonIcon,
-} from '@ionic/angular/standalone';
-import { addIcons } from 'ionicons';
-import { eyeOutline, eyeOffOutline } from 'ionicons/icons';
+import { IonContent } from '@ionic/angular/standalone';
 import { Router } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
 
 import { UsersApiService } from '../../../core/data/services/users-api.service';
 import { ToastService } from '../../../core/data/services/toast.service';
 import { LogoutPromptService } from '../../../core/data/services/logout-prompt.service';
+import { RpButtonComponent } from '../../../shared/components/rp-button/rp-button.component';
+import { RpInputComponent } from '../../../shared/components/rp-input/rp-input.component';
 
 @Component({
   selector: 'app-registrar-vigilante',
@@ -36,10 +30,8 @@ import { LogoutPromptService } from '../../../core/data/services/logout-prompt.s
   imports: [
     ReactiveFormsModule,
     IonContent,
-    IonInput,
-    IonButton,
-    IonSpinner,
-    IonIcon,
+    RpButtonComponent,
+    RpInputComponent,
   ],
 })
 export class RegistrarVigilantePage implements OnDestroy {
@@ -52,34 +44,23 @@ export class RegistrarVigilantePage implements OnDestroy {
   private readonly destroy$ = new Subject<void>();
 
   readonly loadingSubmit = signal(false);
-  readonly showPassword = signal(false);
-  readonly showConfirmPassword = signal(false);
-
-  constructor() {
-    addIcons({ eyeOutline, eyeOffOutline });
-  }
-
-  togglePasswordVisibility(): void {
-    this.showPassword.update((v) => !v);
-  }
-
-  toggleConfirmPasswordVisibility(): void {
-    this.showConfirmPassword.update((v) => !v);
-  }
 
   form = this.fb.group(
     {
       phone: ['', [Validators.required, Validators.pattern(/^\+?[0-9\s-]{10,}$/)]],
-      password: ['', [Validators.required, Validators.minLength(6)]],
-      confirmPassword: ['', Validators.required],
+      password: ['', [Validators.required, Validators.minLength(8)]],
+      confirmPassword: [
+        '',
+        [Validators.required, Validators.minLength(8)],
+      ],
     },
     { validators: (control: AbstractControl) => this.passwordMatchValidator(control) }
   );
 
   private passwordMatchValidator(control: AbstractControl): ValidationErrors | null {
-    const password = control.get('password')?.value;
-    const confirm = control.get('confirmPassword')?.value;
-    if (password && confirm && password !== confirm) {
+    const password = control.get('password')?.value ?? '';
+    const confirm = control.get('confirmPassword')?.value ?? '';
+    if (confirm.length > 0 && password !== confirm) {
       return { passwordMismatch: true };
     }
     return null;
@@ -98,6 +79,17 @@ export class RegistrarVigilantePage implements OnDestroy {
     await this.logoutPrompt.prompt();
   }
 
+  confirmPasswordError(): string {
+    const c = this.form.get('confirmPassword');
+    if (!c?.touched) return '';
+    if (c.hasError('required')) return 'Repetí la contraseña';
+    if (c.hasError('minlength')) return 'Mínimo 8 caracteres';
+    if (this.form.hasError('passwordMismatch')) return 'Las contraseñas no coinciden';
+    const pwd = this.form.get('password')?.value ?? '';
+    if (pwd !== (c.value ?? '')) return 'Las contraseñas no coinciden';
+    return '';
+  }
+
   onSubmit(): void {
     if (this.form.invalid) {
       this.form.markAllAsTouched();
@@ -105,6 +97,11 @@ export class RegistrarVigilantePage implements OnDestroy {
     }
 
     const raw = this.form.getRawValue();
+    if (raw.password !== raw.confirmPassword) {
+      this.toast.error('Las contraseñas no coinciden.');
+      return;
+    }
+
     this.loadingSubmit.set(true);
 
     this.usersApi

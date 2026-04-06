@@ -1,14 +1,24 @@
-.regv-header {
+.register-header {
   position: relative;
   z-index: 10;
   background: var(--rp-stone-950);
-  padding: calc(16px + var(--ion-safe-area-top, 0px)) var(--rp-page-padding) 16px;
+  padding-top: calc(16px + var(--ion-safe-area-top, 0px));
+  padding-bottom: 16px;
+}
+
+.register-header__top {
   display: flex;
   align-items: center;
   gap: 12px;
+  padding: 0 var(--rp-page-padding) 0;
 }
 
-.regv-header__back {
+.register-header__top--with-logout .register-header__titles {
+  flex: 1;
+  min-width: 0;
+}
+
+.register-header__back {
   width: 48px;
   height: 48px;
   background: rgba(255, 255, 255, 0.1);
@@ -23,17 +33,22 @@
   flex-shrink: 0;
 }
 
-.regv-header__title {
+.register-header__title {
   font-family: var(--rp-font);
   font-size: 18px;
   font-weight: 800;
   color: white;
-  margin: 0;
-  flex: 1;
-  min-width: 0;
+  margin: 0 0 2px;
 }
 
-.regv-header__logout {
+.register-header__subtitle {
+  font-family: var(--rp-font);
+  font-size: 12px;
+  color: var(--rp-stone-500);
+  margin: 0;
+}
+
+.register-header__logout {
   flex-shrink: 0;
   padding: 8px 12px;
   border: none;
@@ -47,51 +62,31 @@
   -webkit-tap-highlight-color: transparent;
 }
 
+.register-form {
+  padding: 24px var(--rp-page-padding);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.register-step-label {
+  font-family: var(--rp-font);
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--rp-stone-500);
+  letter-spacing: 0.08em;
+  margin: 0 0 4px;
+}
+
 @media (prefers-color-scheme: dark) {
-  .regv-header__back,
-  .regv-header__title,
-  .regv-header__logout {
+  .register-header__back,
+  .register-header__title,
+  .register-header__logout {
     color: #1c1917;
   }
 
-  .regv-header__back,
-  .regv-header__logout {
+  .register-header__back,
+  .register-header__logout {
     background: rgba(0, 0, 0, 0.08);
   }
-}
-
-.registrar-vigilante__container {
-  max-width: 24rem;
-  margin-inline: auto;
-  padding: 2rem 1rem;
-}
-
-.registrar-vigilante__form {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
-
-.registrar-vigilante__field {
-  margin-bottom: 0.25rem;
-}
-
-.registrar-vigilante__eye-btn {
-  --padding-start: 4px;
-  --padding-end: 4px;
-  margin-top: auto;
-  margin-bottom: auto;
-  height: 36px;
-  font-size: 1.2rem;
-  color: var(--ion-color-medium);
-}
-
-.registrar-vigilante__actions {
-  margin-top: 1.5rem;
-}
-
-.registrar-vigilante__submit {
-  margin-top: 0.5rem;
-  --border-radius: 8px;
-  font-weight: 600;
 }

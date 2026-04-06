@@ -1,88 +1,53 @@
-<div class="regv-header">
-  <button class="regv-header__back" type="button" aria-label="Volver" (click)="goBack()">←</button>
-  <h1 class="regv-header__title">Registrar vigilante</h1>
-  <button class="regv-header__logout" type="button" (click)="confirmLogout()">Salir</button>
+<div class="register-header">
+  <div class="register-header__top register-header__top--with-logout">
+    <button
+      class="register-header__back"
+      type="button"
+      aria-label="Volver"
+      (click)="goBack()"
+    >←</button>
+    <div class="register-header__titles">
+      <h1 class="register-header__title">Registrar vigilante</h1>
+      <p class="register-header__subtitle">Alta de acceso para personal de vigilancia</p>
+    </div>
+    <button
+      class="register-header__logout"
+      type="button"
+      (click)="confirmLogout()"
+    >Salir</button>
+  </div>
 </div>
 
-<ion-content class="registrar-vigilante">
-  <div class="registrar-vigilante__container">
-    <form class="registrar-vigilante__form" [formGroup]="form" (ngSubmit)="onSubmit()">
-      <ion-input
-        formControlName="phone"
-        type="tel"
-        label="Teléfono"
-        labelPlacement="stacked"
-        placeholder="Ej. 5512345678"
-        inputmode="tel"
-        errorText="Ingresa un teléfono válido."
-        fill="outline"
-        class="registrar-vigilante__field"
-      ></ion-input>
+<ion-content [fullscreen]="true">
+  <form [formGroup]="form" (ngSubmit)="onSubmit()" class="register-form">
+    <p class="register-step-label">DATOS DE ACCESO</p>
 
-      <ion-input
-        formControlName="password"
-        [type]="showPassword() ? 'text' : 'password'"
-        label="Contraseña"
-        labelPlacement="stacked"
-        placeholder="Mínimo 6 caracteres"
-        errorText="Mínimo 6 caracteres."
-        fill="outline"
-        class="registrar-vigilante__field"
-      >
-        <ion-button
-          fill="clear"
-          slot="end"
-          type="button"
-          class="registrar-vigilante__eye-btn"
-          (click)="togglePasswordVisibility()"
-          aria-label="Mostrar u ocultar contraseña"
-        >
-          <ion-icon
-            slot="icon-only"
-            [name]="showPassword() ? 'eye-off-outline' : 'eye-outline'"
-          ></ion-icon>
-        </ion-button>
-      </ion-input>
+    <rp-input
+      label="Teléfono"
+      type="tel"
+      placeholder="+52 55 1234 5678"
+      formControlName="phone"
+      [errorMessage]="form.get('phone')?.invalid && form.get('phone')?.touched ? 'Ingresá un número válido' : ''"
+    />
 
-      <ion-input
-        formControlName="confirmPassword"
-        [type]="showConfirmPassword() ? 'text' : 'password'"
-        label="Confirmar contraseña"
-        labelPlacement="stacked"
-        placeholder="Repite la contraseña"
-        errorText="Las contraseñas no coinciden."
-        fill="outline"
-        class="registrar-vigilante__field"
-      >
-        <ion-button
-          fill="clear"
-          slot="end"
-          type="button"
-          class="registrar-vigilante__eye-btn"
-          (click)="toggleConfirmPasswordVisibility()"
-          aria-label="Mostrar u ocultar contraseña"
-        >
-          <ion-icon
-            slot="icon-only"
-            [name]="showConfirmPassword() ? 'eye-off-outline' : 'eye-outline'"
-          ></ion-icon>
-        </ion-button>
-      </ion-input>
+    <rp-input
+      label="Contraseña"
+      type="password"
+      placeholder="Mínimo 8 caracteres"
+      formControlName="password"
+      [errorMessage]="form.get('password')?.invalid && form.get('password')?.touched ? 'Mínimo 8 caracteres' : ''"
+    />
 
-      <div class="registrar-vigilante__actions">
-        <ion-button
-          type="submit"
-          expand="block"
-          [disabled]="loadingSubmit()"
-          class="registrar-vigilante__submit"
-        >
-          @if (loadingSubmit()) {
-            <ion-spinner name="crescent"></ion-spinner>
-          } @else {
-            Registrar vigilante
-          }
-        </ion-button>
-      </div>
-    </form>
-  </div>
+    <rp-input
+      label="Confirmar contraseña"
+      type="password"
+      placeholder="Repetí la contraseña"
+      formControlName="confirmPassword"
+      [errorMessage]="confirmPasswordError()"
+    />
+
+    <rp-button type="submit" [loading]="loadingSubmit()" [disabled]="form.invalid || loadingSubmit()">
+      Registrar vigilante
+    </rp-button>
+  </form>
 </ion-content>
