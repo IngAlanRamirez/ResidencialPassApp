@@ -61,11 +61,11 @@
   flex: 1;
   min-height: 48px;
   border: none;
-  background: rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.16);
   font-family: var(--rp-font);
   font-size: 12px;
   font-weight: 600;
-  color: var(--rp-stone-300);
+  color: rgba(255, 255, 255, 0.7);
   cursor: pointer;
   transition: background 0.15s ease, color 0.15s ease;
 
@@ -299,5 +299,15 @@
   .hist-header__back,
   .hist-header__logout {
     background: rgba(0, 0, 0, 0.08);
+  }
+
+  .hist-filter__btn {
+    background: rgba(0, 0, 0, 0.08);
+    color: rgba(0, 0, 0, 0.5);
+
+    &.hist-filter__btn--active {
+      background: var(--rp-primary);
+      color: white;
+    }
   }
 }
