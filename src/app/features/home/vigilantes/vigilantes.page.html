@@ -1,6 +1,6 @@
 <div class="vig-header">
   <button class="vig-header__back" type="button" aria-label="Volver" (click)="goBack()">←</button>
-  <h1 class="vig-header__title">Consultar vigilantes</h1>
+  <h1 class="vig-header__title">Vigilantes</h1>
   <button class="vig-header__logout" type="button" (click)="confirmLogout()">Salir</button>
 </div>
 
@@ -8,48 +8,45 @@
   <ion-refresher slot="fixed" (ionRefresh)="handleRefresh($event)">
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
+
   <div class="vigilantes__container">
     @if (loading()) {
-      <div class="vigilantes__loading">
+      <div class="vigilantes__state">
         <ion-spinner name="crescent"></ion-spinner>
         <p>Cargando vigilantes...</p>
       </div>
     } @else if (list().length === 0) {
-      <div class="vigilantes__empty">
+      <div class="vigilantes__state">
         <p>No hay vigilantes registrados.</p>
       </div>
     } @else {
-      <div class="vigilantes__list animate-stagger">
+      <div class="vigilantes__list">
         @for (item of list(); track item.id) {
-          <ion-card class="vigilantes__card">
-            <ion-card-header>
-              <ion-card-title>{{ item.phone }}</ion-card-title>
-            </ion-card-header>
-            <ion-card-content>
-              <p class="vigilantes__meta">
-                <strong>Estado:</strong> {{ statusLabel(item.status) }}
-              </p>
-              <p class="vigilantes__meta">
-                <strong>Registrado:</strong> {{ formatDate(item.createdAt) }}
-              </p>
-              @if (isActive(item)) {
-                <div class="vigilantes__actions">
-                  <ion-button
-                    color="danger"
-                    fill="outline"
+          <div
+            class="vigilante"
+            [class.vigilante--active]="isActive(item)"
+            [class.vigilante--inactive]="!isActive(item)"
+          >
+            <div class="vigilante__main">
+              <div class="vigilante__avatar">{{ avatarInitials(item.phone) }}</div>
+              <div class="vigilante__info">
+                <p class="vigilante__phone">{{ item.phone }}</p>
+                <p class="vigilante__meta">{{ formatDate(item.createdAt) }} · {{ statusLabel(item.status) }}</p>
+              </div>
+              <div class="vigilante__right">
+                @if (processingId() === item.id) {
+                  <ion-spinner name="crescent" class="vigilante__spinner"></ion-spinner>
+                } @else if (isActive(item)) {
+                  <button
+                    type="button"
+                    class="vigilante__delete-btn"
                     [disabled]="processingId() !== null"
                     (click)="confirmDelete(item)"
-                  >
-                    @if (processingId() === item.id) {
-                      <ion-spinner name="crescent"></ion-spinner>
-                    } @else {
-                      Eliminar vigilante
-                    }
-                  </ion-button>
-                </div>
-              }
-            </ion-card-content>
-          </ion-card>
+                  >Dar de baja</button>
+                }
+              </div>
+            </div>
+          </div>
         }
       </div>
     }

@@ -10,11 +10,6 @@ import {
   IonContent,
   IonRefresher,
   IonRefresherContent,
-  IonCard,
-  IonCardHeader,
-  IonCardTitle,
-  IonCardContent,
-  IonButton,
   IonSpinner,
   AlertController,
 } from '@ionic/angular/standalone';
@@ -34,11 +29,6 @@ import type { VigilanteListItem } from '../../../core/domain/models/user.model';
     IonContent,
     IonRefresher,
     IonRefresherContent,
-    IonCard,
-    IonCardHeader,
-    IonCardTitle,
-    IonCardContent,
-    IonButton,
     IonSpinner,
   ],
 })
@@ -103,6 +93,11 @@ export class VigilantesPage implements OnInit, OnDestroy {
 
   async confirmLogout(): Promise<void> {
     await this.logoutPrompt.prompt();
+  }
+
+  avatarInitials(phone: string): string {
+    const digits = phone.replace(/\D/g, '');
+    return digits.length >= 4 ? digits.slice(-4, -2) : digits.slice(0, 2);
   }
 
   isActive(item: VigilanteListItem): boolean {
