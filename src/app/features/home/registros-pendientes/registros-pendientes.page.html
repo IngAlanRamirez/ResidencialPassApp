@@ -58,47 +58,38 @@
         <p>No hay solicitudes pendientes de autorizar.</p>
       </div>
     } @else {
-      <div class="registros-pendientes__list animate-stagger">
+      <div class="registros-pendientes__list">
         @for (item of list(); track item.id) {
-          <ion-card class="registros-pendientes__card">
-            <ion-card-header>
-              <ion-card-title>{{ formatAddress(item) }}</ion-card-title>
-            </ion-card-header>
-            <ion-card-content>
-              <p class="registros-pendientes__meta">
-                <strong>Teléfono:</strong> {{ item.user.phone }}
-              </p>
-              <p class="registros-pendientes__meta">
-                <strong>Solicitud:</strong> {{ formatDate(item.createdAt) }}
-              </p>
-              <div class="registros-pendientes__actions">
-                <ion-button
-                  color="success"
-                  fill="solid"
+          <div class="regp-card">
+            <div class="regp-card__main">
+              <div class="regp-card__avatar">{{ avatarInitials(item) }}</div>
+              <div class="regp-card__info">
+                <p class="regp-card__address">{{ formatAddress(item) }}</p>
+                <p class="regp-card__phone">{{ item.user.phone }}</p>
+                <p class="regp-card__date">{{ formatDate(item.createdAt) }}</p>
+              </div>
+            </div>
+            <div class="regp-card__actions">
+              @if (processingId() === item.id) {
+                <div class="regp-card__processing">
+                  <ion-spinner name="crescent"></ion-spinner>
+                </div>
+              } @else {
+                <button
+                  type="button"
+                  class="regp-card__btn regp-card__btn--approve"
                   [disabled]="processingId() !== null"
                   (click)="approve(item)"
-                >
-                  @if (processingId() === item.id) {
-                    <ion-spinner name="crescent"></ion-spinner>
-                  } @else {
-                    Aprobar
-                  }
-                </ion-button>
-                <ion-button
-                  color="danger"
-                  fill="outline"
+                >Aprobar</button>
+                <button
+                  type="button"
+                  class="regp-card__btn regp-card__btn--reject"
                   [disabled]="processingId() !== null"
                   (click)="reject(item)"
-                >
-                  @if (processingId() === item.id) {
-                    <ion-spinner name="crescent"></ion-spinner>
-                  } @else {
-                    Rechazar
-                  }
-                </ion-button>
-              </div>
-            </ion-card-content>
-          </ion-card>
+                >Rechazar</button>
+              }
+            </div>
+          </div>
         }
       </div>
     }

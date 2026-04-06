@@ -10,11 +10,6 @@ import {
   IonContent,
   IonRefresher,
   IonRefresherContent,
-  IonCard,
-  IonCardHeader,
-  IonCardTitle,
-  IonCardContent,
-  IonButton,
   IonSpinner,
   IonModal,
   IonIcon,
@@ -40,11 +35,6 @@ import type {
     IonContent,
     IonRefresher,
     IonRefresherContent,
-    IonCard,
-    IonCardHeader,
-    IonCardTitle,
-    IonCardContent,
-    IonButton,
     IonSpinner,
     IonModal,
     IonIcon,
@@ -164,6 +154,15 @@ export class RegistrosPendientesPage implements OnInit, OnDestroy {
   formatAddress(item: RegistrationRequestItem): string {
     const part = `${item.street} ${item.number}`.trim();
     return item.letter?.trim() ? `${part} ${item.letter.trim()}` : part;
+  }
+
+  avatarInitials(item: RegistrationRequestItem): string {
+    const words = `${item.street} ${item.number}`
+      .split(/\s+/)
+      .filter(w => w.replace(/[^a-zA-ZÀ-ÿ]/g, '').length >= 3);
+    if (words.length === 0) return '?';
+    if (words.length === 1) return words[0].slice(0, 2).toUpperCase();
+    return (words[0][0] + words[1][0]).toUpperCase();
   }
 
   openLogModal(): void {
