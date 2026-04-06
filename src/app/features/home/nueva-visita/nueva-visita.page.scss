@@ -1,4 +1,6 @@
 .nv-header {
+  position: relative;
+  z-index: 10;
   background: var(--rp-stone-950);
   padding: calc(16px + var(--ion-safe-area-top, 0px)) var(--rp-page-padding) 20px;
   display: flex;
@@ -51,8 +53,25 @@
 .nv-header__subtitle {
   font-family: var(--rp-font);
   font-size: 12px;
-  color: var(--rp-stone-500);
+  color: rgba(255, 255, 255, 0.55);
   margin: 0;
+}
+
+@media (prefers-color-scheme: dark) {
+  .nv-header__back,
+  .nv-header__title,
+  .nv-header__logout {
+    color: #1c1917;
+  }
+
+  .nv-header__back,
+  .nv-header__logout {
+    background: rgba(0, 0, 0, 0.08);
+  }
+
+  .nv-header__subtitle {
+    color: rgba(0, 0, 0, 0.45);
+  }
 }
 
 .nv-form {
